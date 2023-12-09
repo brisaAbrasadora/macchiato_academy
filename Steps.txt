@@ -1,0 +1,9 @@
+🎀 Steps 🎀
+🩷 = done 🖤 = to do
+
+🩷 Identify patterns
+🩷 Separate views
+🖤 Prepare exceptions
+🖤 Setup config
+🖤 Setup routes
+🖤 Setup routes and response
