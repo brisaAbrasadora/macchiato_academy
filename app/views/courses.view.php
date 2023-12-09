@@ -31,7 +31,7 @@
           </div>
           <div
             class="probootstrap-image probootstrap-animate"
-            style="background-image: url(img/slider_3.jpg)"
+            style="background-image: url(../../public/img/slider_3.jpg)"
           >
             <a href="https://vimeo.com/45830194" class="btn-video popup-vimeo"
               ><i class="icon-play3"></i
@@ -51,7 +51,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_1.jpg"
+                src="../../public/img/img_sm_1.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -76,7 +76,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_3.jpg"
+                src="../../public/img/img_sm_3.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -102,7 +102,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_2.jpg"
+                src="../../public/img/img_sm_2.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -127,7 +127,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_4.jpg"
+                src="../../public/img/img_sm_4.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -156,7 +156,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_1.jpg"
+                src="../../public/img/img_sm_1.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -181,7 +181,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_3.jpg"
+                src="../../public/img/img_sm_3.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -207,7 +207,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_2.jpg"
+                src="../../public/img/img_sm_2.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -232,7 +232,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_4.jpg"
+                src="../../public/img/img_sm_4.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -277,7 +277,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_1.jpg"
+              src="../../public/img/person_1.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -306,7 +306,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_5.jpg"
+              src="../../public/img/person_5.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -336,7 +336,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_6.jpg"
+              src="../../public/img/person_6.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -365,7 +365,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_7.jpg"
+              src="../../public/img/person_7.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />

@@ -30,11 +30,11 @@
                 <div class="probootstrap-footer-widget">
                     <h3>Links</h3>
                     <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">Courses</a></li>
-                        <li><a href="#">Teachers</a></li>
-                        <li><a href="#">News</a></li>
-                        <li><a href="#">Contact</a></li>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/courses">Courses</a></li>
+                        <li><a href="/teachers">Teachers</a></li>
+                        <li><a href="/news">News</a></li>
+                        <li><a href="/contact">Contact</a></li>
                     </ul>
                 </div>
             </div>
@@ -112,9 +112,9 @@
 </div>
 
 
-<script src="js/scripts.min.js"></script>
-<script src="js/main.min.js"></script>
-<script src="js/custom.js"></script>
+<script src="../../../public/js/scripts.js"></script>
+<script src="../../../public/js/main.js"></script>
+<script src="../../../public/js/custom.js"></script>
 
 </body>
 

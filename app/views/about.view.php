@@ -26,7 +26,7 @@
           </div>
           <div
             class="probootstrap-image probootstrap-animate"
-            style="background-image: url(img/slider_4.jpg)"
+            style="background-image: url(../../public/../../public/img/slider_4.jpg)"
           >
             <a href="https://vimeo.com/45830194" class="btn-video popup-vimeo"
               ><i class="icon-play3"></i
@@ -43,7 +43,7 @@
     <div class="col-md-6">
       <p>
         <img
-          src="img/slider_1.jpg"
+          src="../../public/img/slider_1.jpg"
           alt="Free Bootstrap Template by ProBootstrap.com"
           class="img-responsive"
         />

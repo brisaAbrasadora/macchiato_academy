@@ -34,7 +34,7 @@
           </div>
           <div
             class="probootstrap-image probootstrap-animate"
-            style="background-image: url(img/slider_4.jpg)"
+            style="background-image: url(../../public/img/slider_4.jpg)"
           >
             <a href="https://vimeo.com/45830194" class="btn-video popup-vimeo"
               ><i class="icon-play3"></i
@@ -53,7 +53,7 @@
         <a href="#" class="probootstrap-featured-news-box">
           <figure class="probootstrap-media">
             <img
-              src="img/img_sm_1.jpg"
+              src="../../public/img/img_sm_1.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -73,7 +73,7 @@
         <a href="#" class="probootstrap-featured-news-box">
           <figure class="probootstrap-media">
             <img
-              src="img/img_sm_2.jpg"
+              src="../../public/img/img_sm_2.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -94,7 +94,7 @@
         <a href="#" class="probootstrap-featured-news-box">
           <figure class="probootstrap-media">
             <img
-              src="img/img_sm_3.jpg"
+              src="../../public/img/img_sm_3.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -117,7 +117,7 @@
         <a href="#" class="probootstrap-featured-news-box">
           <figure class="probootstrap-media">
             <img
-              src="img/img_sm_1.jpg"
+              src="../../public/img/img_sm_1.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -139,7 +139,7 @@
         <a href="#" class="probootstrap-featured-news-box">
           <figure class="probootstrap-media">
             <img
-              src="img/img_sm_2.jpg"
+              src="../../public/img/img_sm_2.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -159,7 +159,7 @@
         <a href="#" class="probootstrap-featured-news-box">
           <figure class="probootstrap-media">
             <img
-              src="img/img_sm_3.jpg"
+              src="../../public/img/img_sm_3.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />

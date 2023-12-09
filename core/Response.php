@@ -2,7 +2,7 @@
 namespace macchiato_academy\core;
 
 class Response {
-    public static function renderView(array $data = [], string $name, string $layout = 'layout') {
+    public static function renderView(string $name, array $data = [], string $layout = 'layout') {
         extract($data);
         ob_start();
         require __DIR__ . "/../app/views/$name.view.php";

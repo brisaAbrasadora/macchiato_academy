@@ -23,12 +23,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_1.jpg"
+                href="../../public/img/gal_img_full_1.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_1.jpg"
+                  src="../../public/img/gal_img_sm_1.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -44,12 +44,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_2.jpg"
+                href="../../public/img/gal_img_full_2.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_2.jpg"
+                  src="../../public/img/gal_img_sm_2.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -65,12 +65,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_3.jpg"
+                href="../../public/img/gal_img_full_3.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_3.jpg"
+                  src="../../public/img/gal_img_sm_3.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -86,12 +86,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_4.jpg"
+                href="../../public/img/gal_img_full_4.jpg"
                 itemprop="contentUrl"
                 data-size="1000x667"
               >
                 <img
-                  src="img/gal_img_sm_4.jpg"
+                  src="../../public/img/gal_img_sm_4.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -107,12 +107,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_1.jpg"
+                href="../../public/img/gal_img_full_1.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_1.jpg"
+                  src="../../public/img/gal_img_sm_1.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -128,12 +128,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_2.jpg"
+                href="../../public/img/gal_img_full_2.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_2.jpg"
+                  src="../../public/img/gal_img_sm_2.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -149,12 +149,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_3.jpg"
+                href="../../public/img/gal_img_full_3.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_3.jpg"
+                  src="../../public/img/gal_img_sm_3.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -170,12 +170,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_4.jpg"
+                href="../../public/img/gal_img_full_4.jpg"
                 itemprop="contentUrl"
                 data-size="1000x667"
               >
                 <img
-                  src="img/gal_img_sm_4.jpg"
+                  src="../../public/img/gal_img_sm_4.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -191,12 +191,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_1.jpg"
+                href="../../public/img/gal_img_full_1.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_1.jpg"
+                  src="../../public/img/gal_img_sm_1.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -212,12 +212,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_2.jpg"
+                href="../../public/img/gal_img_full_2.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_2.jpg"
+                  src="../../public/img/gal_img_sm_2.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -233,12 +233,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_3.jpg"
+                href="../../public/img/gal_img_full_3.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_3.jpg"
+                  src="../../public/img/gal_img_sm_3.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -254,12 +254,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_4.jpg"
+                href="../../public/img/gal_img_full_4.jpg"
                 itemprop="contentUrl"
                 data-size="1000x667"
               >
                 <img
-                  src="img/gal_img_sm_4.jpg"
+                  src="../../public/img/gal_img_sm_4.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -275,12 +275,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_1.jpg"
+                href="../../public/img/gal_img_full_1.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_1.jpg"
+                  src="../../public/img/gal_img_sm_1.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -296,12 +296,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_2.jpg"
+                href="../../public/img/gal_img_full_2.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_2.jpg"
+                  src="../../public/img/gal_img_sm_2.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -317,12 +317,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_3.jpg"
+                href="../../public/img/gal_img_full_3.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_3.jpg"
+                  src="../../public/img/gal_img_sm_3.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -338,12 +338,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_4.jpg"
+                href="../../public/img/gal_img_full_4.jpg"
                 itemprop="contentUrl"
                 data-size="1000x667"
               >
                 <img
-                  src="img/gal_img_sm_4.jpg"
+                  src="../../public/img/gal_img_sm_4.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -359,12 +359,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_1.jpg"
+                href="../../public/img/gal_img_full_1.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_1.jpg"
+                  src="../../public/img/gal_img_sm_1.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -380,12 +380,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_2.jpg"
+                href="../../public/img/gal_img_full_2.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_2.jpg"
+                  src="../../public/img/gal_img_sm_2.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -401,12 +401,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_3.jpg"
+                href="../../public/img/gal_img_full_3.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_3.jpg"
+                  src="../../public/img/gal_img_sm_3.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -422,12 +422,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_4.jpg"
+                href="../../public/img/gal_img_full_4.jpg"
                 itemprop="contentUrl"
                 data-size="1000x667"
               >
                 <img
-                  src="img/gal_img_sm_4.jpg"
+                  src="../../public/img/gal_img_sm_4.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -443,12 +443,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_1.jpg"
+                href="../../public/img/gal_img_full_1.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_1.jpg"
+                  src="../../public/img/gal_img_sm_1.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -464,12 +464,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_2.jpg"
+                href="../../public/img/gal_img_full_2.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_2.jpg"
+                  src="../../public/img/gal_img_sm_2.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -485,12 +485,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_3.jpg"
+                href="../../public/img/gal_img_full_3.jpg"
                 itemprop="contentUrl"
                 data-size="1000x632"
               >
                 <img
-                  src="img/gal_img_sm_3.jpg"
+                  src="../../public/img/gal_img_sm_3.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
@@ -506,12 +506,12 @@
               class="grid-item probootstrap-animate"
             >
               <a
-                href="img/gal_img_full_4.jpg"
+                href="../../public/img/gal_img_full_4.jpg"
                 itemprop="contentUrl"
                 data-size="1000x667"
               >
                 <img
-                  src="img/gal_img_sm_4.jpg"
+                  src="../../public/img/gal_img_sm_4.jpg"
                   itemprop="thumbnail"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />

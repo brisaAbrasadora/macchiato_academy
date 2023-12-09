@@ -5,5 +5,9 @@
 🩷 Separate views
 🩷 Prepare exceptions
 🖤 Setup config
-🖤 Setup routes
-🖤 Setup routes and response
+🩷 Setup routes
+🩷 Setup routes and response
+🖤 Create User
+🖤 Create Image
+🖤 Create Course
+🖤 Create DB

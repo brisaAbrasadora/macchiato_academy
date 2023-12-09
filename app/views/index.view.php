@@ -1,6 +1,6 @@
 <section class="flexslider">
   <ul class="slides">
-    <li style="background-image: url(img/slider_1.jpg)" class="overlay">
+    <li style="background-image: url('../../public/img/slider_1.jpg')" class="overlay">
       <div class="container">
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
@@ -13,7 +13,7 @@
         </div>
       </div>
     </li>
-    <li style="background-image: url(img/slider_2.jpg)" class="overlay">
+    <li style="background-image: url('../../public/img/slider_2.jpg')" class="overlay">
       <div class="container">
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
@@ -26,7 +26,7 @@
         </div>
       </div>
     </li>
-    <li style="background-image: url(img/slider_3.jpg)" class="overlay">
+    <li style="background-image: url('../../public/img/slider_3.jpg')" class="overlay">
       <div class="container">
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
@@ -69,7 +69,7 @@
           </div>
           <div
             class="probootstrap-image probootstrap-animate"
-            style="background-image: url(img/slider_3.jpg)"
+            style="background-image: url(../../public/img/slider_3.jpg)"
           >
             <a href="https://vimeo.com/45830194" class="btn-video popup-vimeo"
               ><i class="icon-play3"></i
@@ -173,7 +173,7 @@
 
 <section
   class="probootstrap-section probootstrap-section-colored probootstrap-bg probootstrap-custom-heading probootstrap-tab-section"
-  style="background-image: url(img/slider_2.jpg)"
+  style="background-image: url(../../public/img/slider_2.jpg)"
 >
   <div class="container">
     <div class="row">
@@ -205,7 +205,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_3.jpg"
+                          src="../../public/img/img_sm_3.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -227,7 +227,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_1.jpg"
+                          src="../../public/img/img_sm_1.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -249,7 +249,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_2.jpg"
+                          src="../../public/img/img_sm_2.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -271,7 +271,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_3.jpg"
+                          src="../../public/img/img_sm_3.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -307,7 +307,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_3.jpg"
+                          src="../../public/img/img_sm_3.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -329,7 +329,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_1.jpg"
+                          src="../../public/img/img_sm_1.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -351,7 +351,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_2.jpg"
+                          src="../../public/img/img_sm_2.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -373,7 +373,7 @@
                     <a href="#" class="probootstrap-featured-news-box">
                       <figure class="probootstrap-media">
                         <img
-                          src="img/img_sm_3.jpg"
+                          src="../../public/img/img_sm_3.jpg"
                           alt="Free Bootstrap Template by ProBootstrap.com"
                           class="img-responsive"
                         />
@@ -428,7 +428,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_1.jpg"
+                src="../../public/img/img_sm_1.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -453,7 +453,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_3.jpg"
+                src="../../public/img/img_sm_3.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -479,7 +479,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_2.jpg"
+                src="../../public/img/img_sm_2.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -504,7 +504,7 @@
           <div class="image">
             <div class="image-bg">
               <img
-                src="img/img_sm_4.jpg"
+                src="../../public/img/img_sm_4.jpg"
                 alt="Free Bootstrap Template by ProBootstrap.com"
               />
             </div>
@@ -549,7 +549,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_1.jpg"
+              src="../../public/img/person_1.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -578,7 +578,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_5.jpg"
+              src="../../public/img/person_5.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -608,7 +608,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_6.jpg"
+              src="../../public/img/person_6.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -637,7 +637,7 @@
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
             <img
-              src="img/person_7.jpg"
+              src="../../public/img/person_7.jpg"
               alt="Free Bootstrap Template by ProBootstrap.com"
               class="img-responsive"
             />
@@ -667,7 +667,7 @@
 </section>
 <section
   class="probootstrap-section probootstrap-bg probootstrap-section-colored probootstrap-testimonial"
-  style="background-image: url(img/slider_4.jpg)"
+  style="background-image: url(../../public/img/slider_4.jpg)"
 >
   <div class="container">
     <div class="row">
@@ -689,7 +689,7 @@
             <div class="probootstrap-testimony-wrap text-center">
               <figure>
                 <img
-                  src="img/person_1.jpg"
+                  src="../../public/img/person_1.jpg"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
               </figure>
@@ -705,14 +705,14 @@
             <div class="probootstrap-testimony-wrap text-center">
               <figure>
                 <img
-                  src="img/person_2.jpg"
+                  src="../../public/img/person_2.jpg"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
               </figure>
               <blockquote class="quote">
                 &ldquo;Creativity is just connecting things. When you ask
                 creative people how they did something, they feel a little
-                guilty because they didn’t really do it, they just saw
+                guilty because they didn't really do it, they just saw
                 something. It seemed obvious to them after a while.&rdquo;
                 <cite class="author"> &mdash;<span>Jorge Smith</span></cite>
               </blockquote>
@@ -722,7 +722,7 @@
             <div class="probootstrap-testimony-wrap text-center">
               <figure>
                 <img
-                  src="img/person_3.jpg"
+                  src="../../public/img/person_3.jpg"
                   alt="Free Bootstrap Template by ProBootstrap.com"
                 />
               </figure>

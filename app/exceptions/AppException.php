@@ -1,9 +1,8 @@
 <?php
-namespace macchiato_academy\exceptions;
+namespace macchiato_academy\app\exceptions;
 
 use macchiato_academy\core\Response;
 use Exception;
-
 
 class AppException extends Exception {
     public function __construct(string $message = '', int $code = 500) {
@@ -28,8 +27,8 @@ class AppException extends Exception {
             $errorMessage = $this->getMessage();
 
             Response::renderView(
+                'contact',
                 compact ('httpHeaderMessage', 'errorMessage'),
-                'error',
             );
         } catch (Exception $exception) {
             die('An error occurred at out exceptions mannager');
