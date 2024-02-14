@@ -3,7 +3,7 @@ namespace macchiato_academy\app\controllers;
 
 use macchiato_academy\core\Response;
 use macchiato_academy\core\App;
-use dwes\app\exceptions\ValidationException;
+use macchiato_academy\app\exceptions\ValidationException;
 use macchiato_academy\app\entity\User;
 use macchiato_academy\app\repository\UserRepository;
 
