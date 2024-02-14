@@ -12,4 +12,5 @@
 🖤 Create Course
 🖤 Create DB
 
-No consigo loggearme
+
+db must be utb8mb4_spanish_ci

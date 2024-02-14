@@ -1005,8 +1005,12 @@ a:hover, a:focus, a:active {
 }
 
 .section-heading {
-  margin-bottom: 70px;
+  margin-bottom: 0px;
 }
+
+.section-heading:not(.login) {
+    margin-bottom: 70px;
+  }
 
 .section-heading h1 {
   color: #ffffff;

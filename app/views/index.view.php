@@ -7,6 +7,12 @@
             <div class="probootstrap-slider-text text-center">
               <h1 class="probootstrap-heading probootstrap-animate">
                 Your Bright Future is Our Mission
+                <!-- <?php if ($app['user']->getRole() === 'ROLE_ADMIN') {
+                    echo 'hola';
+                    } else {
+                        echo 'adios';
+                    }
+                ?> -->
               </h1>
             </div>
           </div>

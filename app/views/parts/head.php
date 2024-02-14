@@ -18,7 +18,7 @@
 
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700|Open+Sans" rel="stylesheet">
     <link rel="stylesheet" href="/public/css/styles-merged.css">
-    <link rel="stylesheet" href="/public/css/style.min.css">
+    <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="/public/css/custom.css">
 
     <!--[if lt IE 9]>
