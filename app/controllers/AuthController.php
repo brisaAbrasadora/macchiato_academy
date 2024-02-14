@@ -6,28 +6,30 @@ use macchiato_academy\core\App;
 use macchiato_academy\app\exceptions\ValidationException;
 use macchiato_academy\app\entity\User;
 use macchiato_academy\app\repository\UserRepository;
+use macchiato_academy\core\helpers\FlashMessage;
 
 
 class AuthController {
     public function login() {
-        // $errores = FlashMessage::get('login-error', []);
-        // $email = FlashMessage::get('email');
+        $errors = FlashMessage::get('login-error', []);
+        $email = FlashMessage::get('email');
         $title = "Login | Macchiato Academy";
 
         Response::renderView(
             'login',
-            compact('title')
+            compact('title', 'errors', 'email')
         );
     }
 
     public function checkLogin() {
         try {
             if (!isset($_POST['email']) || empty($_POST['email']))
-                throw new ValidationException('Usuario no puede estar vacio');
+                throw new ValidationException('Email can\'t be empty');
 
+            FlashMessage::set('email', $_POST['email']);
            
             if (!isset($_POST['password']) || empty($_POST['password']))
-                throw new ValidationException('Contraseña no puede estar vacia');
+                throw new ValidationException('Password can\'t be empty');
 
             $usuario = App::getRepository(UserRepository::class)->findOneBy([
                 'email' => $_POST['email'],
@@ -38,12 +40,13 @@ class AuthController {
                 //Guardamos el usuario en la sesion y redireccionamos a la pagina principal
                 $_SESSION['loggedUser'] = $usuario->getId();
                 
-                App::get('router')->redirect('');
+            FlashMessage::unset('email');
+            App::get('router')->redirect('');
             }
 
             throw new ValidationException('El usuario o la contraseña introducidos no existen');
         } catch (ValidationException $validationException) {
-            
+            FlashMessage::set('login-error', [$validationException->getMessage()]);
             App::get('router')->redirect('login');
         }
     }
