@@ -18,7 +18,7 @@
             <p>Login using the form below.</p>
             <form action="/check-login" method="post" class="probootstrap-form">
               <div class="form-group">
-                <label for="email">email</label>
+                <label for="email">Email</label>
                 <input type="email" class="form-control" value="<?= $email ?? '' ?>" name="email" />
               </div>
               <div class="form-group">
