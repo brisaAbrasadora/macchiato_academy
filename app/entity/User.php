@@ -21,16 +21,19 @@ class User implements IEntity {
     protected $password;
     /**@var string */
     protected $role;
+    /**@var string */
+    protected $favoriteLanguage;
 
-    public function __construct(string $profilePicture = '', string $email = '', string $username = '', string $password = '', string $role = '') {
+    public function __construct(string $profilePicture = '', string $email = '', string $username = '', string $password = '', string $role = '', string $favoriteLanguage = '') {
         $this->id = null;
         $this->dateOfBirth = null;
         $this->profilePicture = $profilePicture;
         $this->email = $email;
         $this->username = $username;
-        $this->dateOfJoin = new DateTime('now', new DateTimeZone("Europe/Madrid"));
+        $this->dateOfJoin = null;
         $this->password = $password;
         $this->role = $role;
+        $this->favoriteLanguage = $favoriteLanguage;
     }
 
     public function getId(): ?int
@@ -43,7 +46,7 @@ class User implements IEntity {
         return $this->profilePicture;
     }
 
-    public function getemail(): string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -58,6 +61,11 @@ class User implements IEntity {
         return $this->dateOfBirth;
     }
 
+    public function getDateOfJoin(): DateTime
+    {
+        return $this->dateOfJoin;
+    }
+
     public function getPassword(): string
     {
         return $this->password;
@@ -68,9 +76,34 @@ class User implements IEntity {
         return $this->role;
     }
 
+    public function getFavoriteLanguage(): string
+    {
+        return $this->role;
+    }
+
+    public function setUsername(string $username): User {
+        $this->username = $username;
+        return $this;
+    }
+
+    public function setPassword(string $password): User {
+        $this->password = $password;
+        return $this;
+    }
+
     public function toArray(): array
     {
-        return [];
+        return [
+            'id' => $this->getId(),
+            'username' => $this->getUsername(),
+            'password' => $this->getPassword(),
+            'email' => $this->getEmail(),
+            'profilePicture' => $this->getProfilePicture(),
+            'dateOfBirth' => $this->getDateOfBirth(),
+            'dateOfJoin' => $this->getDateOfJoin(),
+            'favoriteLanguage' => $this->getFavoriteLanguage(),
+            'role' => $this->getRole(),
+        ];
     }
 
 

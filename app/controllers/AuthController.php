@@ -7,6 +7,8 @@ use macchiato_academy\app\exceptions\ValidationException;
 use macchiato_academy\app\entity\User;
 use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\helpers\FlashMessage;
+use macchiato_academy\core\Security;
+use macchiato_academy\app\entity\Student;
 
 
 class AuthController {
@@ -48,6 +50,52 @@ class AuthController {
         } catch (ValidationException $validationException) {
             FlashMessage::set('login-error', [$validationException->getMessage()]);
             App::get('router')->redirect('login');
+        }
+    }
+
+    public function registerStudent() {
+        $errors = FlashMessage::get('register-error', []);
+        $email = FlashMessage::get('email');
+        $title = "Sign-up | Macchiato Academy";
+
+        Response::renderView(
+            'sign-up',
+            compact('title', 'errors', 'email')
+        );
+    }
+
+    public function checkRegisterStudent() {
+        try {
+            if (!isset($_POST['email']) || empty($_POST['email']))
+                throw new ValidationException('Email can\'t be empty');
+
+            FlashMessage::set('email', $_POST['email']);
+
+            if(!isset($_POST['password']) || empty($_POST['password']))
+                throw new ValidationException('Password can\'t be empty');
+
+            if(!isset($_POST['passwordConfirm'])
+                || empty($_POST['passwordConfirm'])
+                || $_POST['password'] !== $_POST['passwordConfirm'])
+                throw new ValidationException('Both passwords must match');
+
+            $student = new Student();
+            $password = Security::encrypt($_POST['password']);
+            $student->setUsername($_POST['username']);
+            $student->setPassword($password);
+
+            App::getRepository(UsuarioRepository::class)->save($usuario);
+            FlashMessage::unset('username');
+
+            $mensaje = 'Se ha creado el usuario: ' . $usuario->getUsername();
+            App::get('logger')->add($mensaje);
+            FlashMessage::set('mensaje', $mensaje);
+
+
+            App::get('router')->redirect('login');
+        } catch (ValidationException $validationException) {
+            FlashMessage::set('registro-error', [$validationException->getMessage()]);
+            App::get('router')->redirect('registro');
         }
     }
 

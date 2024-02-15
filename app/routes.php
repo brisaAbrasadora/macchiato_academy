@@ -10,6 +10,7 @@ $router->get ('gallery', 'PagesController@gallery');
 $router->get ('news', 'PagesController@news');
 $router->get ('contact', 'PagesController@contact');
 $router->get ('login', 'AuthController@login');
+$router->get ('sign-up', 'AuthController@registerStudent');
 $router->get ('logout', 'AuthController@logout');
 
 $router->post ('check-login', 'AuthController@checkLogin');
