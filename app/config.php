@@ -2,7 +2,7 @@
 
 return [
     'database' => [
-        'name' => 'academia',
+        'name' => 'macchiato_academy',
         'username' => 'userCurso',
         'password' => 'php',
         'connection' => 'mysql:host=localhost',

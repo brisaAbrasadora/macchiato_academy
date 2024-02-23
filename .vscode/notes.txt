@@ -17,3 +17,8 @@ db must be utb8mb4_spanish_ci
 
 
 ESTOY HACIENDO EL SIGN UP
+
+
+
+verificar en el servidor
+

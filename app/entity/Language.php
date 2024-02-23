@@ -1,11 +1,9 @@
 <?php
 namespace macchiato_academy\app\entity;
 
-class Image implements IEntity {
-    const PROFILE_PICTURES_ROUTE = '/public/img/profilePictures/';
-
-    private ?int $id;
-    private string $name;
+class Language implements IEntity {
+    private $id;
+    private $name;
 
     public function __construct(string $name = '') {
         $this->id = null;
@@ -18,10 +16,6 @@ class Image implements IEntity {
 
     public function getName(): string {
         return $this->name;
-    }
-
-    public function getProfilePicturesPath(): string {
-        return self::PROFILE_PICTURES_ROUTE . $this->getName();
     }
 
     public function toArray(): array {

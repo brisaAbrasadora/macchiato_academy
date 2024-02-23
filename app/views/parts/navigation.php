@@ -58,7 +58,7 @@ $uri = $_SERVER['REQUEST_URI'];
                     <a href="#" data-toggle="dropdown" class="dropdown-toggle"><?= $app['user']->getUsername() ?></a>
                     <ul class="dropdown-menu">
                         <li class="<?= Utils::isActive('/profile') ? 'active' : '' ?>">
-                            <a href="<?= Utils::isActive('/profile') ? '#' : '/' ?>">Go to profile</a>
+                            <a href="<?= Utils::isActive('/profile') ? '#' : '/profile' ?>">Go to profile</a>
                         </li>
                         <li class="<?= Utils::isActive('/profile') ? 'active' : '' ?>">
                             <a href="<?= Utils::isActive('/profile') ? '#' : '/' ?>">Register teacher</a>

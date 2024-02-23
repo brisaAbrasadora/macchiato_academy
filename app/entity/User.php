@@ -1,47 +1,37 @@
 <?php
 namespace macchiato_academy\app\entity;
 
-use DateTime;
-use DateTimeZone;
-
 class User implements IEntity {
-    /**@var int */
-    protected $id;
-    /**@var string */
-    protected $profilePicture;
-    /**@var string */
-    protected $email;
-    /**@var string */
-    protected $username;
-    /**@var DateTime */
-    protected $dateOfBirth;
-    /**@var DateTime */
-    protected $dateOfJoin;
-    /**@var string */
-    protected $password;
-    /**@var string */
-    protected $role;
-    /**@var string */
-    protected $favoriteLanguage;
+    protected ?int $id;
+    protected string $username;
+    protected string $email;
+    protected string $password;
+    protected string $role;
+    protected int $profilePicture;
+    protected ?string $dateOfBirth;
+    protected string $dateOfJoin;
+    protected ?string $favoriteLanguage;
 
-    public function __construct(string $profilePicture = '', string $email = '', string $username = '', string $password = '', string $role = '', string $favoriteLanguage = '') {
+   public function __construct(string $username = '', string $email = '', string $password = '',
+   string $role = '', int $profilePicture = 1, string $dateOfJoin = '', ?string $favoriteLanguage = '')
+   {
         $this->id = null;
-        $this->dateOfBirth = null;
-        $this->profilePicture = $profilePicture;
-        $this->email = $email;
         $this->username = $username;
-        $this->dateOfJoin = null;
+        $this->email = $email;
         $this->password = $password;
         $this->role = $role;
+        $this->profilePicture = $profilePicture;
+        $this->dateOfBirth = null;
+        $this->dateOfJoin = $dateOfJoin;
         $this->favoriteLanguage = $favoriteLanguage;
-    }
+   }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProfilePicture(): string
+    public function getProfilePicture(): ?int
     {
         return $this->profilePicture;
     }
@@ -56,12 +46,12 @@ class User implements IEntity {
         return $this->username;
     }
 
-    public function getDateOfBirth(): DateTime
+    public function getDateOfBirth(): ?string
     {
         return $this->dateOfBirth;
     }
 
-    public function getDateOfJoin(): DateTime
+    public function getDateOfJoin(): string
     {
         return $this->dateOfJoin;
     }
@@ -76,9 +66,9 @@ class User implements IEntity {
         return $this->role;
     }
 
-    public function getFavoriteLanguage(): string
+    public function getFavoriteLanguage(): ?string
     {
-        return $this->role;
+        return $this->favoriteLanguage;
     }
 
     public function setUsername(string $username): User {
@@ -88,6 +78,36 @@ class User implements IEntity {
 
     public function setPassword(string $password): User {
         $this->password = $password;
+        return $this;
+    }
+
+    public function setEmail(string $email): User {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function setRole(string $role): User {
+        $this->role = $role;
+        return $this;
+    }
+
+    public function setDateOfBirth(?string $dateOfBirth): User {
+        $this->dateOfBirth = $dateOfBirth;
+        return $this;
+    }
+
+    public function setFavoriteLanguage(?string $favoriteLanguage): User {
+        $this->favoriteLanguage = $favoriteLanguage;
+        return $this;
+    }
+
+    public function setProfilePicture(int $profilePicture): User {
+        $this->profilePicture = $profilePicture;
+        return $this;
+    }
+
+    public function setDateOfJoin(string $dateOfJoin): User {
+        $this->dateOfJoin = $dateOfJoin;
         return $this;
     }
 

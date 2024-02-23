@@ -12,5 +12,7 @@ $router->get ('contact', 'PagesController@contact');
 $router->get ('login', 'AuthController@login');
 $router->get ('sign-up', 'AuthController@registerStudent');
 $router->get ('logout', 'AuthController@logout');
+$router->get ('profile', 'PagesController@profile');
 
 $router->post ('check-login', 'AuthController@checkLogin');
+$router->post ('check-register', 'AuthController@checkRegisterStudent');

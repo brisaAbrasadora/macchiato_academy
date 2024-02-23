@@ -22,12 +22,14 @@ class QueryBuilder
         $this->classEntity = $classEntity;
     }
 
+    // Returns an array formed of every row in table
     public function findAll(): array
     {
         $sql = "SELECT * FROM $this->table";
         return $this->executeQuery($sql);
     }
 
+    // Returns a single object, searched by id
     public function find(int $id): IEntity
     {
         $sql = "SELECT * FROM $this->table WHERE id=$id";
@@ -37,11 +39,21 @@ class QueryBuilder
         return $result[0];
     }
 
+    // Returns an array formed of every row in the table that matches the filters
     public function findBy(array $filters): array
     {
         $sql = "SELECT * FROM $this->table " . $this->getFilters($filters);
 
         return $this->executeQuery($sql, $filters);
+    }
+
+    // Returns a single object that matches the filters. If doesnt exist, returns null
+    public function findOneBy(array $filters): ?IEntity
+    {
+        $result = $this->findBy($filters);
+        if (count($result) > 0)
+            return $result[0];
+        return null;
     }
 
     public function getFilters(array $filters): string
@@ -51,14 +63,6 @@ class QueryBuilder
         foreach ($filters as $key => $value)
             $strFilters[] = $key . '=:' . $key;
         return ' WHERE ' . implode(' AND ', $strFilters);
-    }
-
-    public function findOneBy(array $filters): ?IEntity
-    {
-        $result = $this->findBy($filters);
-        if (count($result) > 0)
-            return $result[0];
-        return null;
     }
 
     public function save(IEntity $entity): void
