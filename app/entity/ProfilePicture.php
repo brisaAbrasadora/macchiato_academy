@@ -4,25 +4,25 @@ namespace macchiato_academy\app\entity;
 class ProfilePicture extends Image implements IEntity {
     const PROFILE_PICTURES_ROUTE = '/public/img/profilePictures/';
 
-    private ?int $id;
+    private ?int $id_image;
     private ?int $id_user;
 
-    public function __construct(string $name = '') {
-        parent::__construct($name);
-        $this->id = null;
+    public function __construct(int $id = 0, string $image_name = '') {
+        parent::__construct($id, $image_name);
+        $this->id_image = null;
         $this->id_user = null;
     }
 
-    public function getId(): ?int {
-        return $this->id;
+    public function getIdImage(): ?int {
+        return $this->id_image;
     }
 
     public function getIdUser(): ?int {
         return $this->id_user;
     }
 
-    public function setId(?int $id): ProfilePicture {
-        $this->id = $id;
+    public function setIdImage(?int $id): ProfilePicture {
+        $this->id_image = $id;
         return $this;
     }
 
@@ -32,13 +32,13 @@ class ProfilePicture extends Image implements IEntity {
     }
 
     public function getProfilePicturesPath(): string {
-        return self::PROFILE_PICTURES_ROUTE . $this->getName();
+        return self::PROFILE_PICTURES_ROUTE . $this->getImageName();
     }
 
     public function toArray(): array {
         return [
-            'id' => $this->getId(),
-            'name' => $this->getName(),
+            'id_image' => $this->getIdImage(),
+            'image_name' => $this->getImageName(),
             'id_user' => $this->getIdUser()
         ];
     }

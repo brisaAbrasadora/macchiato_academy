@@ -1,1 +1,7 @@
 /* Your custom css code goes here */
+img.pfp {
+    border-radius: 50%;
+    width: 90px;
+    margin: 0 auto;
+    box-shadow: 1px 1px 5px black;
+}

@@ -27,6 +27,14 @@ class ProfilePictureRepository extends QueryBuilder {
     //     return $imageRepository->
     // }
 
+    // public function findProfilePicture(int $id): ProfilePicture {
+    //     $sql = "SELECT ProfilePicture.id, id_user, name FROM " . ProfilePicture::class .
+    //            "INNER JOIN " . Image::class .
+    //            "ON ProfilePicture.id = Image.id " .
+    //            "WHERE ProfilePicture.id = " . $id;
+    //     return $this->executeQuery($sql);
+    // }
+
     public function saveProfilePicture(ProfilePicture $profilePicture) {
         // $fnGuardaImagen = function () use ($imagenGaleria) { // Creamos una función anónima que se llama como callable
         //     $categoria = $this->getCategoria($imagenGaleria);

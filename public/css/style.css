@@ -1519,7 +1519,7 @@ a:hover, a:focus, a:active {
 .nav-tabs.probootstrap-center > li, .nav-pills.probootstrap-center > li {
   float: none;
   display: inline-block;
-  *display: inline;
+  display: inline;
   zoom: 1;
 }
 
@@ -1592,7 +1592,7 @@ a:hover, a:focus, a:active {
   top: 2px;
   width: 30px;
   display: inline-block;
-  *display: inline;
+  display: inline;
   zoom: 1;
 }
 

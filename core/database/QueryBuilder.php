@@ -56,6 +56,18 @@ class QueryBuilder
         return null;
     }
 
+    public function findInnerJoin(array $fields, string $auxTable, array $onClause, 
+    array $whereClause): IEntity {
+        $sql =  "SELECT " . implode(", ", $fields) . " FROM $this->table " .
+                "INNER JOIN $auxTable" .
+                $this->getOnClause($onClause) .
+                $this->getFilters($whereClause);
+        $result = $this->executeQuery($sql, $whereClause);
+        if (empty($result))
+            throw new NotFoundException("Didn't found any element with id {$whereClause['id']}");
+        return $result[0];
+    }
+
     public function getFilters(array $filters): string
     {
         if (empty($filters)) return '';
@@ -63,6 +75,12 @@ class QueryBuilder
         foreach ($filters as $key => $value)
             $strFilters[] = $key . '=:' . $key;
         return ' WHERE ' . implode(' AND ', $strFilters);
+    }
+
+    public function getOnClause(array $on): string
+    {
+        if (empty($on)) return '';
+        return ' ON ' . implode(' = ', $on);
     }
 
     public function save(IEntity $entity): void

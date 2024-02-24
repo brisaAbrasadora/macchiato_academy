@@ -18,14 +18,14 @@ CREATE TABLE IF NOT EXISTS user (
 
 CREATE TABLE IF NOT EXISTS image (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(50) NOT NULL
+    image_name VARCHAR(50) NOT NULL
 );
 
 
 CREATE TABLE IF NOT EXISTS profilePicture (
-	id INT UNSIGNED NOT NULL,
+	id_image INT UNSIGNED NOT NULL,
     id_user INT UNSIGNED,
-    FOREIGN KEY (id) REFERENCES image(id)
+    FOREIGN KEY (id_image) REFERENCES image(id)
     ON DELETE CASCADE,
     FOREIGN KEY (id_user) REFERENCES user(id)
     ON DELETE CASCADE
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS profilePicture (
 
 ALTER TABLE user
 ADD CONSTRAINT fk_profilePicture
-FOREIGN KEY (profilePicture) REFERENCES profilePicture(id)
+FOREIGN KEY (profilePicture) REFERENCES profilePicture(id_image)
 ON DELETE CASCADE;
 
 CREATE TABLE IF NOT EXISTS course (
@@ -55,13 +55,13 @@ CREATE TABLE IF NOT EXISTS student_joins_course (
 );
 
 INSERT INTO image (
-	name ) VALUES (
-    "amigo.jpg"
+	image_name ) VALUES (
+    "default.jpg"
 );
 
 
 INSERT INTO profilePicture (
-	id ) VALUES (
+	id_image ) VALUES (
     1
 );
 
@@ -138,11 +138,6 @@ INSERT INTO student_joins_course (
 	id_course) VALUES (
 	4,
 	1
-);
-
-CREATE TABLE IF NOT EXISTS image (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(100) NOT NULL UNIQUE
 );
 
 CREATE TABLE IF NOT EXISTS language (
