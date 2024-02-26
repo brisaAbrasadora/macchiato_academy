@@ -104,28 +104,28 @@ class PagesController
             // la tabla ProfilePicture, con el id del usuario, el id de la imagen alojada en la tabla image
         } else {
             $profilePicture = $profilePictureRepository->findBy([
-                "id_image" => 1
+                "id" => 1
             ]);
         }
         $profilePictureObject = $profilePictureRepository->findInnerJoin(
             [
-                "id",
-                "id_image",
+                "image.id",
+                "profilepicture.id",
                 "id_user",
-                "image_name",
+                "name",
             ],
             "image",
             [
-                "id_image",
-                "id"
+                "profilepicture.id",
+                "image.id"
             ],
             [
-                "id_image" => "1"
+                "profilepicture_id" => "1"
             ],
         );
         $favoriteLanguage = null;
         if ($user->getFavoriteLanguage())
-            $favoriteLanguage = $languageRepository->find($user->getFavoriteLanguage)->getName();
+            $favoriteLanguage = $languageRepository->find($user->getFavoriteLanguage())->getName();
 
         $imageClass = Image::class;
         Response::renderView(

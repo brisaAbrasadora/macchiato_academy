@@ -55,9 +55,13 @@ use macchiato_academy\app\utils\Utils;
                 </div>
 
             </div>
-            <div class="col-md-9 testing">
-                hola
-                <br><br><br><br><br><br><br><br><br><br>
+            <div class="col-md-8 user-info">
+            <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="attribute">Biography:</h2>
+                            <p><?= $user->getBiography() ?? "--" ?></p>
+                    </div>
+                </div>
             </div>
         </div>
 

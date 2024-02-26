@@ -73,7 +73,7 @@ class QueryBuilder
         if (empty($filters)) return '';
         $strFilters = [];
         foreach ($filters as $key => $value)
-            $strFilters[] = $key . '=:' . $key;
+            $strFilters[] = str_replace("_", ".", $key) . '=:' . $key;
         return ' WHERE ' . implode(' AND ', $strFilters);
     }
 

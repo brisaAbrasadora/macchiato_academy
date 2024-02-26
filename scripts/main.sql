@@ -19,21 +19,21 @@ CREATE TABLE IF NOT EXISTS user (
 
 CREATE TABLE IF NOT EXISTS image (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    image_name VARCHAR(50) NOT NULL
+    name VARCHAR(50) NOT NULL
 );
 
 
 CREATE TABLE IF NOT EXISTS profilePicture (
-	id_image INT UNSIGNED NOT NULL,
+	id INT UNSIGNED NOT NULL,
     id_user INT UNSIGNED,
-    FOREIGN KEY (id_image) REFERENCES image(id)
+    FOREIGN KEY (id) REFERENCES image(id)
     ON DELETE CASCADE,
     FOREIGN KEY (id_user) REFERENCES user(id)
 );
 
 ALTER TABLE user
 ADD CONSTRAINT fk_profilePicture
-FOREIGN KEY (profilePicture) REFERENCES profilePicture(id_image)
+FOREIGN KEY (profilePicture) REFERENCES profilePicture(id)
 ON DELETE set null;
 
 CREATE TABLE IF NOT EXISTS course (
@@ -61,7 +61,7 @@ INSERT INTO image (
 
 
 INSERT INTO profilePicture (
-	id_image ) VALUES (
+	id ) VALUES (
     1
 );
 
@@ -69,11 +69,13 @@ INSERT INTO user (
 	username, 
 	email, 
 	password,
-	role) VALUES (
+	role,
+    biography ) VALUES (
 	'Admin',
 	'admin@macchiato-academy.com',
 	'$2y$10$6wyVygwpII0dDZ7BSs8k0.DvTZkaiZ13I9wV0n3n23FyeY2JO8c0y',
-	'ROLE_ADMIN'
+	'ROLE_ADMIN',
+    'Admin of this site. Always working on new stuff!'
 );
 
 /* INSERT INTO course (
