@@ -34,10 +34,10 @@
                                 <label for="passwordConfirm">Password confirm</label>
                                 <input type="password" class="form-control" name="passwordConfirm" novalidate />
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="profilePicture">Profile Picture</label>
                                 <input type="file" accept="image/*" class="form-control-file" name="profilePicture" novalidate />
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <label for="dateOfBirth">Date of Birth</label>
                                 <input type="date" class="form-control " name="dateOfBirth" novalidate/>

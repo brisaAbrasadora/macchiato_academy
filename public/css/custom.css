@@ -1,7 +1,31 @@
 /* Your custom css code goes here */
 img.pfp {
+    display: block;
     border-radius: 50%;
-    width: 90px;
+    width: 170px;
     margin: 0 auto;
-    box-shadow: 1px 1px 5px black;
+    border: 1px solid grey;
+    background-color: white;
+    }
+
+.fw-semi {
+    font-weight: 500;
+}
+
+.username {
+    margin: 0;
+}
+
+.attribute {
+    font-size: 20px;
+    margin: 0;
+}
+
+.user-data {
+    padding: 10px;
+    background-color: #EFF0F4;
+}
+
+.testing {
+    border: 1px solid red;
 }

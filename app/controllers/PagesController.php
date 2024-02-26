@@ -4,6 +4,8 @@ namespace macchiato_academy\app\controllers;
 
 use macchiato_academy\app\repository\ImageRepository;
 use macchiato_academy\app\entity\Image;
+use macchiato_academy\app\exceptions\LanguageException;
+use macchiato_academy\app\repository\LanguageRepository;
 use macchiato_academy\app\repository\ProfilePictureRepository;
 use macchiato_academy\core\App;
 use macchiato_academy\core\Response;
@@ -94,6 +96,7 @@ class PagesController
     {
         $title = "Profile | Macchiato Academy";
         $profilePictureRepository = App::getRepository(ProfilePictureRepository::class);
+        $languageRepository = App::getRepository(LanguageRepository::class);
         $user = App::get('appUser');
         if ($user->getProfilePicture() !== 1) {
             // En la tabla ProfilePicture, el id 1 tiene un id_user null porque es la imagen por defecto.
@@ -120,11 +123,14 @@ class PagesController
                 "id_image" => "1"
             ],
         );
+        $favoriteLanguage = null;
+        if ($user->getFavoriteLanguage())
+            $favoriteLanguage = $languageRepository->find($user->getFavoriteLanguage)->getName();
 
         $imageClass = Image::class;
         Response::renderView(
             'profile',
-            compact('title', 'user', 'profilePictureObject')
+            compact('title', 'user', 'profilePictureObject', 'favoriteLanguage')
         );
     }
 }

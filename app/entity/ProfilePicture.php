@@ -7,10 +7,11 @@ class ProfilePicture extends Image implements IEntity {
     private ?int $id_image;
     private ?int $id_user;
 
-    public function __construct(int $id = 0, string $image_name = '') {
+    public function __construct(int $id = 0, string $image_name = '', 
+    ?int $id_image = null, ?int $id_user = null) {
         parent::__construct($id, $image_name);
-        $this->id_image = null;
-        $this->id_user = null;
+        $this->id_image = $id_image;
+        $this->id_user = $id_user;
     }
 
     public function getIdImage(): ?int {

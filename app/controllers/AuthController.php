@@ -48,10 +48,9 @@ class AuthController
 
             $usuario = App::getRepository(UserRepository::class)->findOneBy([
                 'email' => $_POST['email'],
-                'password' => $_POST['password']
             ]);
 
-            if (!is_null($usuario)) {
+            if (!is_null($usuario) && Security::checkPassword($_POST['password'], $usuario->getPassword())) {
                 //Guardamos el usuario en la sesion y redireccionamos a la pagina principal
                 $_SESSION['loggedUser'] = $usuario->getId();
 
@@ -121,23 +120,33 @@ class AuthController
 
             $student = new User();
 
-            if (!isset($_POST['profilePicture'])) {
-                $typeFile = ['image/jpeg', 'image/gif', 'image/png'];
-                $profilePicture = new File('profilePicture', $typeFile);
-                $profilePicture->saveUploadFile(ProfilePicture::PROFILE_PICTURES_ROUTE);
-                $profilePicture = new Image($profilePicture->getFileName());
-                App::getRepository(ImageRepository::class)->save($profilePicture);
-            } else {
-                $student->setProfilePicture(1);
-            }
+            // if (!isset($_POST['profilePicture'])) {
+            //     $typeFile = ['image/jpeg', 'image/gif', 'image/png'];
+            //     $pfpFile = new File('profilePicture', $typeFile);
+            //     $pfpFile->saveUploadFile(ProfilePicture::PROFILE_PICTURES_ROUTE);
+            //     $image = new Image($pfpFile->getFileName());
+            //     App::getRepository(ImageRepository::class)->save($image);
+            //     $image = App::getRepository(ImageRepository::class)->findOneBy([
+            //         "image_name" => $pfpFile->getFileName(),
+            //     ]);
+            //     $profilePicture = new ProfilePicture(
+            //         $image->getId(), 
+            //         $image->getImageName(), 
+            //         $image->getId(),
+            //         $user->getId());
 
+            // } else {
+            //     $student->setProfilePicture(1);
+            // }
+
+            $student->setProfilePicture(1);
             $password = Security::encrypt($_POST['password']);
             $student->setUsername($_POST['username']);
             $student->setEmail($_POST['email']);
             $student->setPassword($password);
             $student->setRole('ROLE_STUDENT');
             $dateOfBirth = !empty($_POST['dateOfBirth']) ? new DateTime($_POST['dateOfBirth']) : null;
-            $student->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
+            if (isset($dateOfBirth))    $student->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
             $dateOfJoin = new DateTime();
             $student->setDateOfJoin($dateOfJoin->format('Y-m-d H:i:s'));
             $student->setFavoriteLanguage(!empty($_POST['favoriteLanguage']) ? $_POST['favoriteLanguage'] : null);

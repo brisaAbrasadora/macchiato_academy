@@ -10,10 +10,11 @@ class User implements IEntity {
     protected int $profilePicture;
     protected ?string $dateOfBirth;
     protected string $dateOfJoin;
-    protected ?string $favoriteLanguage;
+    protected ?int $favoriteLanguage;
+    protected ?string $biography;
 
    public function __construct(string $username = '', string $email = '', string $password = '',
-   string $role = '', int $profilePicture = 1, string $dateOfJoin = '', ?string $favoriteLanguage = '')
+   string $role = '', int $profilePicture = 1, string $dateOfJoin = '')
    {
         $this->id = null;
         $this->username = $username;
@@ -23,7 +24,8 @@ class User implements IEntity {
         $this->profilePicture = $profilePicture;
         $this->dateOfBirth = null;
         $this->dateOfJoin = $dateOfJoin;
-        $this->favoriteLanguage = $favoriteLanguage;
+        $this->favoriteLanguage = null;
+        $this->biography = null;
    }
 
     public function getId(): ?int
@@ -66,9 +68,14 @@ class User implements IEntity {
         return $this->role;
     }
 
-    public function getFavoriteLanguage(): ?string
+    public function getFavoriteLanguage(): ?int
     {
         return $this->favoriteLanguage;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
     }
 
     public function setUsername(string $username): User {
@@ -96,7 +103,7 @@ class User implements IEntity {
         return $this;
     }
 
-    public function setFavoriteLanguage(?string $favoriteLanguage): User {
+    public function setFavoriteLanguage(?int $favoriteLanguage): User {
         $this->favoriteLanguage = $favoriteLanguage;
         return $this;
     }
@@ -108,6 +115,11 @@ class User implements IEntity {
 
     public function setDateOfJoin(string $dateOfJoin): User {
         $this->dateOfJoin = $dateOfJoin;
+        return $this;
+    }
+
+    public function setBiography(string $biography): User {
+        $this->biography = $biography;
         return $this;
     }
 
@@ -123,6 +135,7 @@ class User implements IEntity {
             'dateOfJoin' => $this->getDateOfJoin(),
             'favoriteLanguage' => $this->getFavoriteLanguage(),
             'role' => $this->getRole(),
+            'biography' => $this->getBiography()
         ];
     }
 

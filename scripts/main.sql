@@ -8,11 +8,12 @@ CREATE TABLE IF NOT EXISTS user (
 	username VARCHAR(20) NOT NULL,
 	email VARCHAR(30) NOT NULL UNIQUE KEY,
 	password VARCHAR(255) NOT NULL,
-	profilePicture INT UNSIGNED NOT NULL DEFAULT 1,
-	role VARCHAR(30) NOT NULL ,
+	profilePicture INT UNSIGNED NULL DEFAULT 1,
+	role VARCHAR(30) NOT NULL,
 	dateOfBirth DATE NULL,
 	dateOfJoin DATE DEFAULT CURRENT_TIMESTAMP,
 	favoriteLanguage VARCHAR(10) NULL,
+    biography VARCHAR(500) NULL,
     INDEX(id)
 );
 
@@ -28,13 +29,12 @@ CREATE TABLE IF NOT EXISTS profilePicture (
     FOREIGN KEY (id_image) REFERENCES image(id)
     ON DELETE CASCADE,
     FOREIGN KEY (id_user) REFERENCES user(id)
-    ON DELETE CASCADE
 );
 
 ALTER TABLE user
 ADD CONSTRAINT fk_profilePicture
 FOREIGN KEY (profilePicture) REFERENCES profilePicture(id_image)
-ON DELETE CASCADE;
+ON DELETE set null;
 
 CREATE TABLE IF NOT EXISTS course (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -71,40 +71,12 @@ INSERT INTO user (
 	password,
 	role) VALUES (
 	'Admin',
-	'admin@admin.com',
-	'admin',
+	'admin@macchiato-academy.com',
+	'$2y$10$6wyVygwpII0dDZ7BSs8k0.DvTZkaiZ13I9wV0n3n23FyeY2JO8c0y',
 	'ROLE_ADMIN'
 );
 
-INSERT INTO user (
-	username,
-	email,
-	password,
-	role,
-	dateOfBirth,
-	favoriteLanguage) VALUES (
-	'Daniel',
-	'dani@mail.com',
-	'dani11',
-	'ROLE_STUDENT',
-	'2000-11-02',
-	'Java'
-);
-
-INSERT INTO user (
-	username,
-	email,
-	password,
-	role,
-	favoriteLanguage) VALUES (
-	'Dario',
-	'dario@mail.com',
-	'dario00',
-	'ROLE_TEACHER',
-	'PHP'
-);
-
-INSERT INTO course (
+/* INSERT INTO course (
 	title,
 	id_teacher) VALUES (
 	'PHP Course',
@@ -118,20 +90,6 @@ INSERT INTO student_joins_course (
 	1
 );
 
-INSERT INTO user (
-	username,
-	email,
-	password,
-	role,
-	dateOfBirth,
-	favoriteLanguage) VALUES (
-	'Sofia',
-	'vivi@mail.com',
-	'vivi12',
-	'ROLE_STUDENT',
-	'2005-12-03',
-	'HTML'
-);
 
 INSERT INTO student_joins_course (
 	id_student,
@@ -139,6 +97,7 @@ INSERT INTO student_joins_course (
 	4,
 	1
 );
+*/
 
 CREATE TABLE IF NOT EXISTS language (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,

@@ -26,7 +26,7 @@ class Security {
      * @param string $bdPassword
      * @return bool
      */
-    public static function cword(string $password, string $bdPassword):bool {
+    public static function checkPassword(string $password, string $bdPassword):bool {
         return password_verify($password, $bdPassword);
     }
 }
