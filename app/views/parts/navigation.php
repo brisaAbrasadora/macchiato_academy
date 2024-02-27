@@ -60,6 +60,9 @@ $uri = $_SERVER['REQUEST_URI'];
                         <li class="<?= Utils::isActive('/profile') ? 'active' : '' ?>">
                             <a href="<?= Utils::isActive('/profile') ? '#' : '/profile' ?>">Go to profile</a>
                         </li>
+                        <li class="<?= Utils::isActive('/profile/edit') ? 'active' : '' ?>">
+                            <a href="<?= Utils::isActive('/profile/edit') ? '#' : '/profile/edit' ?>">Edit profile</a>
+                        </li>
                         <li class="<?= Utils::isActive('/profile') ? 'active' : '' ?>">
                             <a href="<?= Utils::isActive('/profile') ? '#' : '/' ?>">Register teacher</a>
                         </li>

@@ -8,7 +8,7 @@ class ProfilePicture extends Image implements IEntity {
     private ?int $id_user;
 
     public function __construct(int $id = 0, string $name = '', ?int $id_user = null) {
-        parent::__construct($id, $name);
+        parent::__construct($name, $id);
         $this->id = $id;
         $this->id_user = $id_user;
     }
@@ -33,7 +33,7 @@ class ProfilePicture extends Image implements IEntity {
     public function toArray(): array {
         return [
             'id' => $this->getId(),
-            'name' => $this->getName(),
+            // 'name' => $this->getName(),
             'id_user' => $this->getIdUser()
         ];
     }

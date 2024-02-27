@@ -5,7 +5,7 @@ class Image implements IEntity {
     protected ?int $id;
     protected string $name;
 
-    public function __construct(?int $id = null, string $name = '') {
+    public function __construct(string $name = '', ?int $id = null) {
         $this->id = $id;
         $this->name = $name;
     }

@@ -16,6 +16,7 @@ use macchiato_academy\app\repository\LanguageRepository;
 use Exception;
 use DateTime;
 use macchiato_academy\app\repository\StudentRepository;
+use macchiato_academy\app\utils\Utils;
 
 class AuthController
 {
@@ -109,7 +110,7 @@ class AuthController
             if (!isset($_POST['email']) || empty($_POST['email']))
                 throw new ValidationException('Email can\'t be empty');
             $email = htmlspecialchars(trim($_POST['email']));
-            if (!$this->validateEmail($email))
+            if (!Utils::validateEmail($email))
                 throw new ValidationException('Email format isn\'t correct');
             $emailExists = App::getRepository(UserRepository::class)
                 ->emailExists($email);
@@ -164,7 +165,9 @@ class AuthController
             $dateOfBirth = !empty($_POST['dateOfBirth']) ? new DateTime($_POST['dateOfBirth']) : null;
             if (isset($dateOfBirth))    $student->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
 
-            $userObj = App::getRepository(UserRepository::class)->saveAndReturn($student);
+            $userObj = App::getRepository(UserRepository::class)->saveAndReturn($student, [
+                "email" => $student->getEmail()
+            ]);
             App::getRepository(StudentRepository::class)->save($userObj);
             FlashMessage::unset('username');
             FlashMessage::unset('email');
@@ -186,10 +189,5 @@ class AuthController
         }
 
         App::get('router')->redirect('login');
-    }
-
-    private function validateEmail(string $email): bool {
-        $sanitizedEmail = htmlspecialchars(trim($email));
-        return filter_var($sanitizedEmail, FILTER_VALIDATE_EMAIL);
     }
 }

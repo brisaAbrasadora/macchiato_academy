@@ -1,35 +1,61 @@
 /* Your custom css code goes here */
 img.pfp {
-    display: block;
-    border-radius: 50%;
-    width: 170px;
-    margin: 0 auto;
-    border: 1px solid grey;
-    background-color: white;
-    }
+  display: block;
+  border-radius: 50%;
+  width: 170px;
+  margin: 0 auto;
+  border: 1px solid grey;
+  background-color: white;
+}
 
 .fw-semi {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .username {
-    margin: 0;
+  margin: 0;
 }
 
 .attribute {
-    font-size: 20px;
-    margin: 0;
+  font-size: 20px;
+  margin: 0;
 }
 
 .user-data {
-    padding: 10px;
-    background-color: #EFF0F4;
+  padding: 10px;
+  background-color: #eff0f4;
 }
 
 .user-info {
-    /* margin: 0px 10px; */
+  /* margin: 0px 10px; */
 }
 
 .testing {
-    border: 1px solid red;
+  border: 1px solid red;
+}
+
+.btn.btn-secondary {
+  border: 1px solid #a7a7a7;
+  background: #a7a7a7;
+  color: white;
+}
+
+.btn.btn-secondary:hover,
+.btn.btn-secondary:active,
+.btn.btn-secondary:focus {
+  background: #b4b4b4;
+}
+
+.border {
+    border: 1px solid #8b8e94;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.probootstrap-form:has(button) {
+    margin-bottom: 10px;
+}
+
+.probootstrap-form img {
+    margin-bottom: 10px;
 }

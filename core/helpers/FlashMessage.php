@@ -22,4 +22,8 @@ class FlashMessage
         if (isset($_SESSION['flash-message']))
             unset($_SESSION['flash-message'][$key]);
     }
+    public static function isSet(string $key)
+    {
+        return isset($_SESSION['flash-message'][$key]);
+    }
 }

@@ -16,7 +16,6 @@ use macchiato_academy\app\utils\Utils;
                 <div class="row">
                     <div class="col-md-12">
                         <img src="<?= $profilePictureObject->getProfilePicturesPath(); ?>" class="pfp" />
-
                     </div>
                 </div>
                 <div class="row">

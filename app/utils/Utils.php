@@ -37,6 +37,11 @@ class Utils
         return date("jS \of F \of Y", strtotime($date));
     }
 
+    public static function validateEmail(string $email): bool {
+        $sanitizedEmail = htmlspecialchars(trim($email));
+        return filter_var($sanitizedEmail, FILTER_VALIDATE_EMAIL);
+    }
+
     public static function printMenu($menu, $uri, $level = 1)
     {
         // foreach ($menu as $key => $value) {

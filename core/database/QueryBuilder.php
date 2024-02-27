@@ -77,7 +77,7 @@ class QueryBuilder
         if (empty($filters)) return '';
         $strFilters = [];
         foreach ($filters as $key => $value)
-            $strFilters[] = str_replace("_", ".", $key) . '=:' . $key;
+            $strFilters[] = str_replace("__", ".", $key) . '=:' . $key;
         return ' WHERE ' . implode(' AND ', $strFilters);
     }
 
@@ -104,12 +104,11 @@ class QueryBuilder
         }
     }
 
-    public function saveAndReturn(IEntity $entity): IEntity
+    // Revision
+    public function saveAndReturn(IEntity $entity, array $filters): IEntity
     {
         $this->save($entity);
-        return $this->findOneBy([
-            "email" => $entity->getEmail()
-        ]);
+        return $this->findOneBy($filters);
     }
 
     private function executeQuery(string $sql, array $parameters = []): array

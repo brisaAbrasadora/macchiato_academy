@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/public/css/styles-merged.css">
     <link rel="stylesheet" href="/public/css/style.css">
     <link rel="stylesheet" href="/public/css/custom.css">
+    <script src="https://kit.fontawesome.com/1ea4b550c7.js" crossorigin="anonymous"></script>
 
     <!--[if lt IE 9]>
       <script src="js/vendor/html5shiv.min.js"></script>

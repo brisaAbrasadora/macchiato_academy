@@ -1,3 +1,4 @@
+<?php if (is_null($app['user'])) { ?>
 <section class="probootstrap-cta">
     <div class="container">
         <div class="row">
@@ -8,6 +9,7 @@
         </div>
     </div>
 </section>
+<?php } ?>
 <footer class="probootstrap-footer probootstrap-bg">
     <div class="container">
         <div class="row">

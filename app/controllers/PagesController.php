@@ -10,6 +10,7 @@ use macchiato_academy\app\repository\ProfilePictureRepository;
 use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\App;
 use macchiato_academy\core\Response;
+use macchiato_academy\core\helpers\FlashMessage;
 
 class PagesController
 {
@@ -93,52 +94,26 @@ class PagesController
         );
     }
 
-    public function profile(?int $id = null)
+    public function contact()
     {
-        $title = "Profile | Macchiato Academy";
-        $profilePictureRepository = App::getRepository(ProfilePictureRepository::class);
-        $languageRepository = App::getRepository(LanguageRepository::class);
-        $userRepository = App::getRepository(UserRepository::class);
-        if (isset($id)) {
-            $user = $userRepository->find($id);
-        } else {
-            $user = App::get('appUser');
-        }
-
-        if ($user->getProfilePicture() !== 1) {
-            // En la tabla ProfilePicture, el id 1 tiene un id_user null porque es la imagen por defecto.
-            // Entonces, si es diferente a null, contendría el id del usuario, y habría que buscar en
-            // la tabla ProfilePicture, con el id del usuario, el id de la imagen alojada en la tabla image
-        } else {
-            $profilePicture = $profilePictureRepository->findBy([
-                "id" => 1
-            ]);
-        }
-
-        $profilePictureObject = $profilePictureRepository->findInnerJoin(
-            [
-                "image.id",
-                "profilepicture.id",
-                "id_user",
-                "name",
-            ],
-            "image",
-            [
-                "profilepicture.id",
-                "image.id"
-            ],
-            [
-                "profilepicture_id" => "1"
-            ],
-        );
-
-        $favoriteLanguage = null;
-        if ($user->getFavoriteLanguage())
-            $favoriteLanguage = $languageRepository->find($user->getFavoriteLanguage())->getName();
+        $title = "Contact | Macchiato Academy";
 
         Response::renderView(
-            'profile',
-            compact('title', 'user', 'profilePictureObject', 'favoriteLanguage')
+            'contact',
+            compact('title')
+        );
+    }
+
+    public function testing()
+    {
+        $title = "Testing";
+        $isset = isset($_FILES['profilePicture']);
+        $obj = $_FILES;
+        $empty = empty($_POST['profilePicture']);
+
+        Response::renderView(
+            'testing',
+            compact('title', 'isset', 'obj', 'empty')
         );
     }
 }
