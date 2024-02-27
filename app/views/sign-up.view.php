@@ -17,30 +17,30 @@
                         <h2>Turn into a Macchiato Academy student!</h2>
                         <p>Sign up using the form below.</p>
                         <?php include __DIR__ . '/parts/show-error.php' ?>
-                        <form action="/check-register" method="post" class="probootstrap-form">
+                        <form action="/check-register" method="post" class="probootstrap-form" novalidate>
                             <div class="form-group">
                                 <label for="username">Username</label>
-                                <input type="text" class="form-control" name="username" novalidate />
+                                <input type="text" class="form-control" name="username" value="<?= $username ?>" />
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control <? if ($errors) echo 'is-invalid' ?>" value="<?= $email ?? '' ?>" name="email" novalidate />
+                                <input type="email" class="form-control <? if ($errors) echo 'is-invalid' ?>" value="<?= $email ?>" name="email"  />
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
-                                <input type="password" class="form-control" name="password" novalidate />
+                                <input type="password" class="form-control" name="password"  />
                             </div>
                             <div class="form-group">
                                 <label for="passwordConfirm">Password confirm</label>
-                                <input type="password" class="form-control" name="passwordConfirm" novalidate />
+                                <input type="password" class="form-control" name="passwordConfirm"  />
                             </div>
                             <!-- <div class="form-group">
                                 <label for="profilePicture">Profile Picture</label>
-                                <input type="file" accept="image/*" class="form-control-file" name="profilePicture" novalidate />
+                                <input type="file" accept="image/*" class="form-control-file" name="profilePicture"  />
                             </div> -->
                             <div class="form-group">
                                 <label for="dateOfBirth">Date of Birth</label>
-                                <input type="date" class="form-control " name="dateOfBirth" novalidate/>
+                                <input type="date" class="form-control " name="dateOfBirth" />
                             </div>
                             <div class="form-group">
                                 <label for="favoriteLanguage">Favorite language</label>

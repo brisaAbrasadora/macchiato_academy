@@ -11,9 +11,9 @@ use PDO;
 
 class QueryBuilder
 {
-    private $connection;
-    private $table;
-    private $classEntity;
+    protected $connection;
+    protected $table;
+    protected $classEntity;
 
     public function __construct(string $table, string $classEntity)
     {
@@ -56,12 +56,16 @@ class QueryBuilder
         return null;
     }
 
-    public function findInnerJoin(array $fields, string $auxTable, array $onClause, 
-    array $whereClause): IEntity {
+    public function findInnerJoin(
+        array $fields,
+        string $auxTable,
+        array $onClause,
+        array $whereClause
+    ): IEntity {
         $sql =  "SELECT " . implode(", ", $fields) . " FROM $this->table " .
-                "INNER JOIN $auxTable" .
-                $this->getOnClause($onClause) .
-                $this->getFilters($whereClause);
+            "INNER JOIN $auxTable" .
+            $this->getOnClause($onClause) .
+            $this->getFilters($whereClause);
         $result = $this->executeQuery($sql, $whereClause);
         if (empty($result))
             throw new NotFoundException("Didn't found any element with id {$whereClause['id']}");
@@ -98,6 +102,14 @@ class QueryBuilder
         } catch (PDOException $exception) {
             throw new QueryException("Error al insertar en la base de datos.");
         }
+    }
+
+    public function saveAndReturn(IEntity $entity): IEntity
+    {
+        $this->save($entity);
+        return $this->findOneBy([
+            "email" => $entity->getEmail()
+        ]);
     }
 
     private function executeQuery(string $sql, array $parameters = []): array

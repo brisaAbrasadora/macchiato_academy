@@ -26,6 +26,10 @@ class ProfilePicture extends Image implements IEntity {
         return self::PROFILE_PICTURES_ROUTE . $this->getName();
     }
 
+    public function deleteFile(): bool {
+        return unlink($this->getProfilePicturesPath());
+    }
+
     public function toArray(): array {
         return [
             'id' => $this->getId(),

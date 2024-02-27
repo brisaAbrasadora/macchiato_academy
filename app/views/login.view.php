@@ -17,7 +17,7 @@
                         <h2>It is so good to see you again!</h2>
                         <p>Login using the form below.</p>
                         <?php include __DIR__ . '/parts/show-error.php' ?>
-                        <form action="/check-login" method="post" class="probootstrap-form">
+                        <form action="/check-login" method="post" class="probootstrap-form" novalidate>
                             <div class="form-group">
                                 <label for="email">Email</label>
                                 <input type="email" class="form-control" value="<?= $email ?? '' ?>" name="email" />

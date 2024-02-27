@@ -5,7 +5,6 @@ namespace macchiato_academy\app\controllers;
 use macchiato_academy\core\Response;
 use macchiato_academy\core\App;
 use macchiato_academy\app\exceptions\ValidationException;
-use macchiato_academy\app\entity\User;
 use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\helpers\FlashMessage;
 use macchiato_academy\core\Security;
@@ -15,23 +14,24 @@ use macchiato_academy\app\exceptions\LanguageException;
 use macchiato_academy\app\exceptions\QueryException;
 use macchiato_academy\app\repository\LanguageRepository;
 use Exception;
-use macchiato_academy\app\utils\File;
-use macchiato_academy\app\entity\Image;
-use macchiato_academy\app\entity\ProfilePicture;
-use macchiato_academy\app\repository\ImageRepository;
 use DateTime;
+use macchiato_academy\app\repository\StudentRepository;
 
 class AuthController
 {
     public function login()
     {
         $errors = FlashMessage::get('login-error', []);
+        $message = FlashMessage::get('message');
         $email = FlashMessage::get('email');
         $title = "Login | Macchiato Academy";
 
+        FlashMessage::unset('login-error');
+        FlashMessage::unset('message');
+
         Response::renderView(
             'login',
-            compact('title', 'errors', 'email')
+            compact('title', 'errors', 'email', 'message')
         );
     }
 
@@ -40,14 +40,15 @@ class AuthController
         try {
             if (!isset($_POST['email']) || empty($_POST['email']))
                 throw new ValidationException('Email can\'t be empty');
+            $email = htmlspecialchars(trim($_POST['email']));
 
-            FlashMessage::set('email', $_POST['email']);
+            FlashMessage::set('email', $email);
 
             if (!isset($_POST['password']) || empty($_POST['password']))
                 throw new ValidationException('Password can\'t be empty');
 
             $usuario = App::getRepository(UserRepository::class)->findOneBy([
-                'email' => $_POST['email'],
+                'email' => $email,
             ]);
 
             if (!is_null($usuario) && Security::checkPassword($_POST['password'], $usuario->getPassword())) {
@@ -58,7 +59,7 @@ class AuthController
                 App::get('router')->redirect('');
             }
 
-            throw new ValidationException('El usuario o la contraseña introducidos no existen');
+            throw new ValidationException('User or password doesn\'t exist');
         } catch (ValidationException $validationException) {
             FlashMessage::set('login-error', [$validationException->getMessage()]);
             App::get('router')->redirect('login');
@@ -70,7 +71,7 @@ class AuthController
         $errors = FlashMessage::get('register-error', []);
         $email = FlashMessage::get('email');
         $username = FlashMessage::get('username');
-        
+
         $langSelected = FlashMessage::get('languageSelected');
         $title = "Sign-up | Macchiato Academy";
 
@@ -78,21 +79,22 @@ class AuthController
             $languageRepository = App::getRepository(LanguageRepository::class);
             $languages = $languageRepository->findAll();
         } catch (QueryException $queryException) {
-            FlashMessage::set('errores', [$queryException->getMessage()]);
+            FlashMessage::set('errors', [$queryException->getMessage()]);
         } catch (AppException $appException) {
-            FlashMessage::set('errores', [$appException->getMessage()]);
+            FlashMessage::set('errors', [$appException->getMessage()]);
         } catch (LanguageException $categoriaException) {
-            FlashMessage::set('errores', [$categoriaException->getMessage()]);
+            FlashMessage::set('errors', [$categoriaException->getMessage()]);
         } catch (Exception $exception) {
-            FlashMessage::set('errores', [$exception->getMessage()]);
+            FlashMessage::set('errors', [$exception->getMessage()]);
         }
 
         FlashMessage::unset('errors');
-        FlashMessage::unset('mail');
+        FlashMessage::unset('email');
+        FlashMessage::unset('username');
 
         Response::renderView(
             'sign-up',
-            compact('title', 'errors', 'email', 'langSelected', 'languages')
+            compact('title', 'errors', 'username', 'email', 'langSelected', 'languages')
         );
     }
 
@@ -101,24 +103,36 @@ class AuthController
         try {
             if (!isset($_POST['username']) || empty($_POST['username']))
                 throw new ValidationException('Username can\'t be empty');
-            FlashMessage::set('username', $_POST['username']);
+            $username = htmlspecialchars(trim($_POST['username']));
+            FlashMessage::set('username', $username);
 
             if (!isset($_POST['email']) || empty($_POST['email']))
                 throw new ValidationException('Email can\'t be empty');
-            FlashMessage::set('email', $_POST['email']);
-
+            $email = htmlspecialchars(trim($_POST['email']));
+            if (!$this->validateEmail($email))
+                throw new ValidationException('Email format isn\'t correct');
+            $emailExists = App::getRepository(UserRepository::class)
+                ->emailExists($email);
+            if ($emailExists)
+                throw new ValidationException('Email alrady exists');
+            FlashMessage::set('email', $email);
 
             if (!isset($_POST['password']) || empty($_POST['password']))
                 throw new ValidationException('Password can\'t be empty');
+            // THIS IS NOT THE BEST WAY TO DO THIS
+            $password = htmlspecialchars(trim($_POST['password']));
+            if (count(str_split($password)) < 5) 
+                throw new ValidationException('Password must be at least 5 characters long');
 
+            $passwordConfirm = htmlspecialchars(trim($_POST['passwordConfirm']));
             if (
-                !isset($_POST['passwordConfirm'])
-                || empty($_POST['passwordConfirm'])
-                || $_POST['password'] !== $_POST['passwordConfirm']
+                !isset($passwordConfirm)
+                || empty($passwordConfirm)
+                || $password !== $passwordConfirm
             )
                 throw new ValidationException('Both passwords must match');
 
-            $student = new User();
+            $student = new Student();
 
             // if (!isset($_POST['profilePicture'])) {
             //     $typeFile = ['image/jpeg', 'image/gif', 'image/png'];
@@ -139,18 +153,19 @@ class AuthController
             //     $student->setProfilePicture(1);
             // }
 
-            $student->setProfilePicture(1);
-            $password = Security::encrypt($_POST['password']);
-            $student->setUsername($_POST['username']);
-            $student->setEmail($_POST['email']);
-            $student->setPassword($password);
-            $student->setRole('ROLE_STUDENT');
+            $password = Security::encrypt($password);
+            $dateOfJoin = new DateTime();
+            $favoriteLanguage = empty($_POST['favoriteLanguage']) ? null : $_POST['favoriteLanguage'];
+            $student->setUsername($username)
+                ->setEmail($email)
+                ->setPassword($password)
+                ->setDateOfJoin($dateOfJoin->format('Y-m-d H:i:s'))
+                ->setFavoriteLanguage($favoriteLanguage);
             $dateOfBirth = !empty($_POST['dateOfBirth']) ? new DateTime($_POST['dateOfBirth']) : null;
             if (isset($dateOfBirth))    $student->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
-            $dateOfJoin = new DateTime();
-            $student->setDateOfJoin($dateOfJoin->format('Y-m-d H:i:s'));
-            $student->setFavoriteLanguage(!empty($_POST['favoriteLanguage']) ? $_POST['favoriteLanguage'] : null);
-            App::getRepository(UserRepository::class)->save($student);
+
+            $userObj = App::getRepository(UserRepository::class)->saveAndReturn($student);
+            App::getRepository(StudentRepository::class)->save($userObj);
             FlashMessage::unset('username');
             FlashMessage::unset('email');
 
@@ -159,7 +174,7 @@ class AuthController
 
             App::get('router')->redirect('login');
         } catch (ValidationException $validationException) {
-            FlashMessage::set('registro-error', [$validationException->getMessage()]);
+            FlashMessage::set('register-error', [$validationException->getMessage()]);
             App::get('router')->redirect('sign-up');
         }
     }
@@ -171,5 +186,10 @@ class AuthController
         }
 
         App::get('router')->redirect('login');
+    }
+
+    private function validateEmail(string $email): bool {
+        $sanitizedEmail = htmlspecialchars(trim($email));
+        return filter_var($sanitizedEmail, FILTER_VALIDATE_EMAIL);
     }
 }
