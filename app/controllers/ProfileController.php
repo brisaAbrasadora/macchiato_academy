@@ -69,23 +69,6 @@ class ProfileController
                 );
         };
 
-        // $profilePictureObject = $profilePictureRepository->findInnerJoin(
-        //     [
-        //         "image.id",
-        //         "profilepicture.id",
-        //         "id_user",
-        //         "name",
-        //     ],
-        //     "image",
-        //     [
-        //         "profilepicture.id",
-        //         "image.id"
-        //     ],
-        //     [
-        //         "profilepicture__id" => "1"
-        //     ],
-        // );
-
         $favoriteLanguage = null;
         if ($user->getFavoriteLanguage())
             $favoriteLanguage = $languageRepository->find($user->getFavoriteLanguage())->getName();
@@ -270,13 +253,6 @@ class ProfileController
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
             App::get('router')->redirect('profile/edit');
         }
-        // $isset = isset($_POST['profilePicture']);
-        // $obj = $_POST['profilePicture'] ?? "none";
-        // $empty = empty($_POST['profilePicture']);
-        // FlashMessage::set('isset', $isset);
-        // FlashMessage::set('obj', $obj);
-        // FlashMessage::set('empty', $empty);
-        // App::get('router')->redirect('testing');
     }
 
     public function validateBirthday()
@@ -288,7 +264,7 @@ class ProfileController
             if (isset($dateOfBirth))    $user->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
 
             App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', "Birthday has changed");
+            FlashMessage::set('message', "Birthday updated");
 
             App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
@@ -297,79 +273,45 @@ class ProfileController
         }
     }
 
-    public function validateEdit()
-    {
+    public function validateFavoriteLanguage() {
         try {
+            $user = App::get('appUser');
 
-            if (!isset($_POST['email']) || empty($_POST['email']))
-                throw new ValidationException('Email can\'t be empty');
-            $email = htmlspecialchars(trim($_POST['email']));
-            if (!Utils::validateEmail($email))
-                throw new ValidationException('Email format isn\'t correct');
-            $emailExists = App::getRepository(UserRepository::class)
-                ->emailExists($email);
-            if ($emailExists)
-                throw new ValidationException('Email alrady exists');
-            FlashMessage::set('email', $email);
-
-            if (!isset($_POST['password']) || empty($_POST['password']))
-                throw new ValidationException('You must set');
-            // THIS IS NOT THE BEST WAY TO DO THIS
-            $password = htmlspecialchars(trim($_POST['password']));
-            if (count(str_split($password)) < 5)
-                throw new ValidationException('Password must be at least 5 characters long');
-
-            $passwordConfirm = htmlspecialchars(trim($_POST['passwordConfirm']));
-            if (
-                !isset($passwordConfirm)
-                || empty($passwordConfirm)
-                || $password !== $passwordConfirm
-            )
-                throw new ValidationException('Both passwords must match');
-
-            $student = new Student();
-
-            // if (!isset($_POST['profilePicture'])) {
-            //     $typeFile = ['image/jpeg', 'image/gif', 'image/png'];
-            //     $pfpFile = new File('profilePicture', $typeFile);
-            //     $pfpFile->saveUploadFile(ProfilePicture::PROFILE_PICTURES_ROUTE);
-            //     $image = new Image($pfpFile->getFileName());
-            //     App::getRepository(ImageRepository::class)->save($image);
-            //     $image = App::getRepository(ImageRepository::class)->findOneBy([
-            //         "image_name" => $pfpFile->getFileName(),
-            //     ]);
-            //     $profilePicture = new ProfilePicture(
-            //         $image->getId(), 
-            //         $image->getImageName(), 
-            //         $image->getId(),
-            //         $user->getId());
-
-            // } else {
-            //     $student->setProfilePicture(1);
-            // }
-
-            $password = Security::encrypt($password);
-            $dateOfJoin = new DateTime();
             $favoriteLanguage = empty($_POST['favoriteLanguage']) ? null : $_POST['favoriteLanguage'];
-            $student->setUsername($username)
-                ->setEmail($email)
-                ->setPassword($password)
-                ->setDateOfJoin($dateOfJoin->format('Y-m-d H:i:s'))
-                ->setFavoriteLanguage($favoriteLanguage);
 
+            $user->setFavoriteLanguage($favoriteLanguage);
+            $favoriteLanguage = App::getRepository(LanguageRepository::class)->find($favoriteLanguage)->getName();
 
-            $userObj = App::getRepository(UserRepository::class)->saveAndReturn($student);
-            App::getRepository(StudentRepository::class)->save($userObj);
-            FlashMessage::unset('username');
-            FlashMessage::unset('email');
+            App::getRepository(UserRepository::class)->update($user);
+            FlashMessage::set('message', "Favorite language changed to $favoriteLanguage");
 
-            $message = 'Student ' . $student->getUsername() . ' created';
-            FlashMessage::set('message', $message);
-
-            App::get('router')->redirect('login');
+            App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
-            FlashMessage::set('register-error', [$validationException->getMessage()]);
-            App::get('router')->redirect('sign-up');
+            FlashMessage::set('edit-error', [$validationException->getMessage()]);
+            App::get('router')->redirect('profile/edit');
         }
     }
+
+    public function validateBiography() {
+        try {
+            $user = App::get('appUser');
+
+            $biography = htmlspecialchars(trim($_POST['biography']));
+            $length = count(str_split($biography));
+
+            if ($length > 500) 
+                throw new ValidationException("Biography max length is 500 characters");
+
+            $user->setBiography($biography);
+
+            App::getRepository(UserRepository::class)->update($user);
+            FlashMessage::set('message', "Biography updated");
+
+            App::get('router')->redirect('profile/edit');
+        } catch (ValidationException $validationException) {
+            FlashMessage::set('edit-error', [$validationException->getMessage()]);
+            App::get('router')->redirect('profile/edit');
+        }
+    }
+
 }

@@ -27,15 +27,6 @@
                                 <input type="password" class="form-control" name="password" />
                             </div>
                             <button class="btn btn-primary btn-lg">Login</button>
-                            <div class="form-group">
-                                <!-- <input
-                  type="submit"
-                  class="btn btn-primary btn-lg"
-                  id="submit"
-                  name="submit"
-                  value="Login"
-                /> -->
-                            </div>
                         </form>
                     </div>
                 </div>

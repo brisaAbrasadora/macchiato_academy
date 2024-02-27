@@ -99,7 +99,7 @@ class AuthController
         );
     }
 
-    public function checkRegisterStudent()
+    public function validateStudentRegister()
     {
         try {
             if (!isset($_POST['username']) || empty($_POST['username']))
@@ -134,36 +134,12 @@ class AuthController
                 throw new ValidationException('Both passwords must match');
 
             $student = new Student();
-
-            // if (!isset($_POST['profilePicture'])) {
-            //     $typeFile = ['image/jpeg', 'image/gif', 'image/png'];
-            //     $pfpFile = new File('profilePicture', $typeFile);
-            //     $pfpFile->saveUploadFile(ProfilePicture::PROFILE_PICTURES_ROUTE);
-            //     $image = new Image($pfpFile->getFileName());
-            //     App::getRepository(ImageRepository::class)->save($image);
-            //     $image = App::getRepository(ImageRepository::class)->findOneBy([
-            //         "image_name" => $pfpFile->getFileName(),
-            //     ]);
-            //     $profilePicture = new ProfilePicture(
-            //         $image->getId(), 
-            //         $image->getImageName(), 
-            //         $image->getId(),
-            //         $user->getId());
-
-            // } else {
-            //     $student->setProfilePicture(1);
-            // }
-
-            $password = Security::encrypt($password);
             $dateOfJoin = new DateTime();
-            $favoriteLanguage = empty($_POST['favoriteLanguage']) ? null : $_POST['favoriteLanguage'];
+            $password = Security::encrypt($password);
             $student->setUsername($username)
                 ->setEmail($email)
                 ->setPassword($password)
-                ->setDateOfJoin($dateOfJoin->format('Y-m-d H:i:s'))
-                ->setFavoriteLanguage($favoriteLanguage);
-            $dateOfBirth = !empty($_POST['dateOfBirth']) ? new DateTime($_POST['dateOfBirth']) : null;
-            if (isset($dateOfBirth))    $student->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
+                ->setDateOfJoin($dateOfJoin->format('Y-m-d H:i:s'));
 
             $userObj = App::getRepository(UserRepository::class)->saveAndReturn($student, [
                 "email" => $student->getEmail()

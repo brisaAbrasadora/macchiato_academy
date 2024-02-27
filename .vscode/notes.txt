@@ -22,3 +22,6 @@ ESTOY HACIENDO EL SIGN UP
 
 verificar en el servidor
 
+
+27/02/2024
+Habilitar delete de cosas del perfil

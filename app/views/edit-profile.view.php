@@ -6,33 +6,34 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="row probootstrap-gutter0">
-                    <div class="col-md-6" id="probootstrap-sidebar">
+                    <div class="col-md-12" id="probootstrap-sidebar">
                         <h2>Edit your profile</h2>
                         <?php include __DIR__ . '/parts/show-error.php' ?>
                         <div class="row">
-                            <div class="col-md-12 border">
+                            <div class="col-md-5 border">
                                 <form action="/validate-username" method="post" class="probootstrap-form" novalidate>
                                     <div class="form-group">
                                         <label for="username">Username</label>
                                         <input type="text" class="form-control" name="username" value="<?= $username ?>" />
                                     </div>
-                                    <button class="btn btn-primary">Edit username</button>
+                                    <button class="btn btn-primary">Edit</button>
                                 </form>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 border">
+                            <div class="col-md-5 border">
                                 <form action="/validate-email" method="post" class="probootstrap-form" novalidate>
                                     <div class="form-group">
                                         <label for="email">Email</label>
                                         <input type="text" class="form-control" name="email" value="<?= $email ?>" />
                                     </div>
-                                    <button class="btn btn-primary">Edit email</button>
+                                    <button class="btn btn-primary">Edit</button>
                                 </form>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12 border">
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 border">
                                 <form action="/validate-password" method="post" class="probootstrap-form" novalidate>
                                     <div class="form-group">
                                         <label for="password">Password</label>
@@ -42,12 +43,10 @@
                                         <label for="confirmPassword">Confirm password</label>
                                         <input type="password" class="form-control" name="confirmPassword" />
                                     </div>
-                                    <button class="btn btn-primary">Edit password</button>
+                                    <button class="btn btn-primary">Edit</button>
                                 </form>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 border">
+                            <div class="col-md-5 border">
                                 <form action="/validate-profile-picture" method="post" class="probootstrap-form" enctype="multipart/form-data" novalidate>
                                     <div class="form-group">
                                         <label for="profilePicture">Profile Picture</label>
@@ -56,24 +55,27 @@
                                     <div>
                                         <img src="<?= $pfpPreview->getProfilePicturesPath() ?>" alt="" width="100px">
                                     </div>
-                                    <button class="btn btn-primary">Edit profile picture</button>
+                                    <button class="btn btn-primary">Edit</button> 
+                                    <button class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12 border">
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5 border">
                                 <form action="/validate-birthday" method="post" class="probootstrap-form" novalidate>
                                     <div class="form-group">
                                         <label for="dateOfBirth">Date of Birth</label>
                                         <input type="date" class="form-control " name="dateOfBirth" value="<?= $dateOfBirth ?>" />
                                     </div>
-                                    <button class="btn btn-primary">Edit birthday</button>
+                                    <button class="btn btn-primary">Edit</button> 
+                                    <button class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 border">
-                                <form action="#" method="post" class="probootstrap-form" novalidate>
+                            <div class="col-md-5 border">
+                                <form action="/validate-favorite-language" method="post" class="probootstrap-form" novalidate>
                                     <div class="form-group">
                                         <label for="favoriteLanguage">Favorite language</label>
                                         <select name="favoriteLanguage" class="form-control">
@@ -84,18 +86,23 @@
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
-                                    <button class="btn btn-primary">Edit favorite language</button>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12 border">
-                                <form action="#" method="post" class="probootstrap-form" novalidate>
+                            
+                        </div>
+                        <div class="row">
+                            <div class="col-md-10 border">
+                                <form action="/validate-biography" method="post" class="probootstrap-form" novalidate>
                                     <div class="form-group">
                                         <label for="dateOfBirth">Biography</label>
                                         <textarea class="form-control " name="biography" rows="4" cols="50"><?= $biography ?></textarea>
                                     </div>
-                                    <button class="btn btn-primary">Edit biography</button>
+                                    <button class="btn btn-primary">Edit</button>
+                                    <button class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                         </div>
