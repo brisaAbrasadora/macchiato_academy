@@ -35,7 +35,7 @@ class QueryBuilder
         $sql = "SELECT * FROM $this->table WHERE id=$id";
         $result = $this->executeQuery($sql);
         if (empty($result))
-            throw new NotFoundException("Didn't found any element with id $id");
+            throw new NotFoundException("Didn't found any $this->table with id $id");
         return $result[0];
     }
 

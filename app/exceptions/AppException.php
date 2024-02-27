@@ -23,12 +23,14 @@ class AppException extends Exception {
     public function handleError() {
         try {
             $httpHeaderMessage = $this->getHttpHeaderMessage();
+            $errorCode = explode(' ', $httpHeaderMessage)[0];
+            $title = "Error $errorCode | Macchiato Academy";
 
             $errorMessage = $this->getMessage();
 
             Response::renderView(
-                'contact',
-                compact ('httpHeaderMessage', 'errorMessage'),
+                'error',
+                compact ('title', 'httpHeaderMessage', 'errorMessage'),
             );
         } catch (Exception $exception) {
             die('An error occurred at out exceptions mannager');

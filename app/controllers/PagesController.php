@@ -7,6 +7,7 @@ use macchiato_academy\app\entity\Image;
 use macchiato_academy\app\exceptions\LanguageException;
 use macchiato_academy\app\repository\LanguageRepository;
 use macchiato_academy\app\repository\ProfilePictureRepository;
+use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\App;
 use macchiato_academy\core\Response;
 
@@ -92,12 +93,18 @@ class PagesController
         );
     }
 
-    public function profile()
+    public function profile(?int $id = null)
     {
         $title = "Profile | Macchiato Academy";
         $profilePictureRepository = App::getRepository(ProfilePictureRepository::class);
         $languageRepository = App::getRepository(LanguageRepository::class);
-        $user = App::get('appUser');
+        $userRepository = App::getRepository(UserRepository::class);
+        if (isset($id)) {
+            $user = $userRepository->find($id);
+        } else {
+            $user = App::get('appUser');
+        }
+
         if ($user->getProfilePicture() !== 1) {
             // En la tabla ProfilePicture, el id 1 tiene un id_user null porque es la imagen por defecto.
             // Entonces, si es diferente a null, contendría el id del usuario, y habría que buscar en
@@ -107,6 +114,7 @@ class PagesController
                 "id" => 1
             ]);
         }
+
         $profilePictureObject = $profilePictureRepository->findInnerJoin(
             [
                 "image.id",
@@ -123,11 +131,11 @@ class PagesController
                 "profilepicture_id" => "1"
             ],
         );
+
         $favoriteLanguage = null;
         if ($user->getFavoriteLanguage())
             $favoriteLanguage = $languageRepository->find($user->getFavoriteLanguage())->getName();
 
-        $imageClass = Image::class;
         Response::renderView(
             'profile',
             compact('title', 'user', 'profilePictureObject', 'favoriteLanguage')
