@@ -23,5 +23,7 @@ ESTOY HACIENDO EL SIGN UP
 verificar en el servidor
 
 
-27/02/2024
+27/02/2024 TO DO
 Habilitar delete de cosas del perfil
+AVERIGUAR COMO FORZAR QUE LA IMAGEN SEA DE 100X100
+Borrado de pfps!!

@@ -27,5 +27,9 @@ $router->post ('validate-profile-picture', 'ProfileController@validateProfilePic
 $router->post ('validate-favorite-language', 'ProfileController@validateFavoriteLanguage');
 $router->post ('validate-biography', 'ProfileController@validateBiography');
 
+$router->post ('delete-birthday', 'ProfileController@deleteBirthday');
+$router->post ('delete-profile-picture', 'ProfileController@deleteProfilePicture');
+$router->post ('delete-favorite-language', 'ProfileController@deleteFavoriteLanguage');
+
 
 $router->post ('testing', 'PagesController@testing');

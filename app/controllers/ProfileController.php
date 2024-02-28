@@ -17,6 +17,7 @@ use macchiato_academy\app\entity\ProfilePicture;
 use macchiato_academy\app\repository\ImageRepository;
 use macchiato_academy\app\entity\Image;
 use macchiato_academy\app\exceptions\FileException;
+use macchiato_academy\app\exceptions\QueryException;
 
 class ProfileController
 {
@@ -35,20 +36,22 @@ class ProfileController
 
         if ($user->getProfilePicture() !== 1) {
             $profilePictureObject = App::getRepository(ProfilePictureRepository::class)
-                ->findInnerJoin([
-                    "image.id",
-                    "profilepicture.id",
-                    "id_user",
-                    "name",
-                ],
-                "image",
-                [
-                    "profilepicture.id",
-                    "image.id",
-                ],
-                [
-                    "id_user" => $user->getId()
-                ]);
+                ->findInnerJoin(
+                    [
+                        "image.id",
+                        "profilepicture.id",
+                        "id_user",
+                        "name",
+                    ],
+                    "image",
+                    [
+                        "profilepicture.id",
+                        "image.id",
+                    ],
+                    [
+                        "id_user" => $user->getId()
+                    ]
+                );
         } else {
             $profilePictureObject = App::getRepository(ProfilePictureRepository::class)
                 ->findInnerJoin(
@@ -95,20 +98,22 @@ class ProfileController
         $biography = $user->getBiography();
         if ($user->getProfilePicture() !== 1) {
             $pfpPreview = App::getRepository(ProfilePictureRepository::class)
-                ->findInnerJoin([
-                    "image.id",
-                    "profilepicture.id",
-                    "id_user",
-                    "name",
-                ],
-                "image",
-                [
-                    "profilepicture.id",
-                    "image.id",
-                ],
-                [
-                    "id_user" => $user->getId()
-                ]);
+                ->findInnerJoin(
+                    [
+                        "image.id",
+                        "profilepicture.id",
+                        "id_user",
+                        "name",
+                    ],
+                    "image",
+                    [
+                        "profilepicture.id",
+                        "image.id",
+                    ],
+                    [
+                        "id_user" => $user->getId()
+                    ]
+                );
         } else {
             $pfpPreview = App::getRepository(ProfilePictureRepository::class)
                 ->findInnerJoin(
@@ -273,17 +278,24 @@ class ProfileController
         }
     }
 
-    public function validateFavoriteLanguage() {
+    public function validateFavoriteLanguage()
+    {
         try {
             $user = App::get('appUser');
 
             $favoriteLanguage = empty($_POST['favoriteLanguage']) ? null : $_POST['favoriteLanguage'];
 
             $user->setFavoriteLanguage($favoriteLanguage);
-            $favoriteLanguage = App::getRepository(LanguageRepository::class)->find($favoriteLanguage)->getName();
+
+            if (empty($favoriteLanguage)) {
+                $message = "Favorite language deleted";
+            } else {
+                $favoriteLanguage = App::getRepository(LanguageRepository::class)->find($favoriteLanguage)->getName();
+                $message = "Favorite language changed to $favoriteLanguage";
+            }
 
             App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', "Favorite language changed to $favoriteLanguage");
+            FlashMessage::set('message', $message);
 
             App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
@@ -292,14 +304,15 @@ class ProfileController
         }
     }
 
-    public function validateBiography() {
+    public function validateBiography()
+    {
         try {
             $user = App::get('appUser');
 
             $biography = htmlspecialchars(trim($_POST['biography']));
             $length = count(str_split($biography));
 
-            if ($length > 500) 
+            if ($length > 500)
                 throw new ValidationException("Biography max length is 500 characters");
 
             $user->setBiography($biography);
@@ -314,4 +327,91 @@ class ProfileController
         }
     }
 
+    public function deleteFavoriteLanguage()
+    {
+        $user = App::get('appUser');
+
+        $user->setFavoriteLanguage(null);
+        App::getRepository(UserRepository::class)->update($user);
+        FlashMessage::set('message', "Favorite language deleted");
+
+        App::get('router')->redirect('profile/edit');
+    }
+
+    public function deleteBirthday()
+    {
+        $user = App::get('appUser');
+
+        $user->setDateOfBirth(null);
+        App::getRepository(UserRepository::class)->update($user);
+        FlashMessage::set('message', "Birthday deleted");
+
+        App::get('router')->redirect('profile/edit');
+    }
+
+    public function deleteProfilePicture()
+    {
+        try {
+            $user = App::get('appUser');
+
+            if ($user->getProfilePicture() !== 1) {
+                $profilePicture = App::getRepository(ProfilePictureRepository::class)
+                    ->findInnerJoin(
+                        [
+                            "image.id",
+                            "profilepicture.id",
+                            "id_user",
+                            "name",
+                        ],
+                        "image",
+                        [
+                            "profilepicture.id",
+                            "image.id",
+                        ],
+                        [
+                            "id_user" => $user->getId()
+                        ]
+                    );
+            } else {
+                //user has already no pfp
+            };
+
+            // if ($profilePicture->deleteFile()) {
+            //     if (App::getRepository(ImageRepository::class)->delete([
+            //         "id" => $user->getProfilePicture()
+            //     ])) {
+            //         $user->setProfilePicture(1);
+            //         App::getRepository(UserRepository::class)
+            //             ->update($user);
+            //     } else {
+            //         throw new QueryException("Error at deleting image");
+            //     }
+            // } else {
+            //     throw new FileException("Couldn't find image");
+            // }
+
+            if (App::getRepository(ImageRepository::class)->delete([
+                "id" => $user->getProfilePicture()
+            ])) {
+                $user->setProfilePicture(1);
+                App::getRepository(UserRepository::class)
+                    ->update($user);
+                if (!$profilePicture->deleteFile()) {
+                    throw new FileException("Couldn't find image");
+                }
+            } else {
+                throw new QueryException("Error at deleting image");
+            }
+
+            FlashMessage::set('message', "Profile picture deleted");
+
+            App::get('router')->redirect('profile/edit');
+        } catch (QueryException $queryException) {
+            FlashMessage::set('edit-error', [$queryException->getMessage()]);
+            App::get('router')->redirect('profile/edit');
+        } catch (FileException $fileException) {
+            FlashMessage::set('edit-error', [$fileException->getMessage()]);
+            App::get('router')->redirect('profile/edit');
+        }
+    }
 }

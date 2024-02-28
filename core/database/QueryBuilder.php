@@ -111,6 +111,14 @@ class QueryBuilder
         return $this->findOneBy($filters);
     }
 
+    public function delete(array $whereClause): bool
+    {
+        $sql = "DELETE FROM $this->table" .
+            $this->getFilters($whereClause);
+        $statement = $this->connection->prepare($sql);
+        return $statement->execute($whereClause);
+    }
+
     private function executeQuery(string $sql, array $parameters = []): array
     {
         $pdoStatement = $this->connection->prepare($sql);

@@ -30,7 +30,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            
+
                         </div>
                         <div class="row">
                             <div class="col-md-5 border">
@@ -47,7 +47,7 @@
                                 </form>
                             </div>
                             <div class="col-md-5 border">
-                                <form action="/validate-profile-picture" method="post" class="probootstrap-form" enctype="multipart/form-data" novalidate>
+                                <form action="/validate-profile-picture" method="post" class="probootstrap-form" enctype="multipart/form-data" style="display: inline;" novalidate>
                                     <div class="form-group">
                                         <label for="profilePicture">Profile Picture</label>
                                         <input type="file" class="form-control-file" name="profilePicture" />
@@ -55,27 +55,28 @@
                                     <div>
                                         <img src="<?= $pfpPreview->getProfilePicturesPath() ?>" alt="" width="100px">
                                     </div>
-                                    <button class="btn btn-primary">Edit</button> 
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <form class="probootstrap-form" action="/delete-profile-picture" method="post" style="display: inline-block;" novalidate>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                         </div>
                         <div class="row">
-                            
-                        </div>
-                        <div class="row">
                             <div class="col-md-5 border">
-                                <form action="/validate-birthday" method="post" class="probootstrap-form" novalidate>
+                                <form action="/validate-birthday" method="post" class="probootstrap-form" style="display: inline;" novalidate>
                                     <div class="form-group">
                                         <label for="dateOfBirth">Date of Birth</label>
                                         <input type="date" class="form-control " name="dateOfBirth" value="<?= $dateOfBirth ?>" />
                                     </div>
-                                    <button class="btn btn-primary">Edit</button> 
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <form class="probootstrap-form" action="/delete-birthday" method="post" style="display: inline-block;" novalidate>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                             <div class="col-md-5 border">
-                                <form action="/validate-favorite-language" method="post" class="probootstrap-form" novalidate>
+                                <form action="/validate-favorite-language" method="post" class="probootstrap-form" style="display: inline;" novalidate>
                                     <div class="form-group">
                                         <label for="favoriteLanguage">Favorite language</label>
                                         <select name="favoriteLanguage" class="form-control">
@@ -86,23 +87,24 @@
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                                <form class="probootstrap-form" action="/delete-favorite-language" method="post" style="display: inline-block;" novalidate>
+                                    <button type="submit" class="btn btn-danger">Delete</button>
                                 </form>
                             </div>
                         </div>
                         <div class="row">
-                            
+
                         </div>
                         <div class="row">
                             <div class="col-md-10 border">
                                 <form action="/validate-biography" method="post" class="probootstrap-form" novalidate>
                                     <div class="form-group">
-                                        <label for="dateOfBirth">Biography</label>
+                                        <label for="biography">Biography</label>
                                         <textarea class="form-control " name="biography" rows="4" cols="50"><?= $biography ?></textarea>
                                     </div>
-                                    <button class="btn btn-primary">Edit</button>
-                                    <button class="btn btn-danger">Delete</button>
+                                    <button type="submit" class="btn btn-primary">Edit</button>
                                 </form>
                             </div>
                         </div>

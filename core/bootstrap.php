@@ -14,9 +14,16 @@ App::bind('config', $config);
 $router = Router::load(__DIR__ . '/../app/' . $config['routes']['filename']);
 App::bind('router', $router);
 
-if (isset($_SESSION['loggedUser']))
-    $appUser = App::getRepository(UserRepository::class)->find($_SESSION['loggedUser']);
-else
+if (isset($_SESSION['loggedUser'])) {
+    $appUser = App::getRepository(UserRepository::class)->findOneBy([
+        "id" => $_SESSION['loggedUser']
+    ]);
+
+    if (empty($appUser)) {
+        $appUser = null;
+    }
+} else {
     $appUser = null;
+}
 
 App::bind('appUser', $appUser);
