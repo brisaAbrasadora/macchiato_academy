@@ -27,3 +27,7 @@ verificar en el servidor
 Habilitar delete de cosas del perfil
 AVERIGUAR COMO FORZAR QUE LA IMAGEN SEA DE 100X100
 Borrado de pfps!!
+
+
+28/02/2024
+estoy trabajando en el control panel

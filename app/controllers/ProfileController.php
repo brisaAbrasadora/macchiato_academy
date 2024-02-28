@@ -182,7 +182,7 @@ class ProfileController
             $emailExists = App::getRepository(UserRepository::class)
                 ->emailExists($email);
             if ($emailExists)
-                throw new ValidationException('Email alrady exists');
+                throw new ValidationException('Email already exists');
 
             $user->setEmail($email);
 

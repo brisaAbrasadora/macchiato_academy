@@ -15,7 +15,6 @@ class Student extends User implements IEntity
         parent::__construct($username, $email, $password, $role, $profilePicture, $dateOfJoin);
     }
 
-
     public function toArray(): array
     {
         return [

@@ -4,35 +4,30 @@ namespace macchiato_academy\app\entity;
 
 class Teacher extends User implements IEntity
 {
-    protected $coursesMade;
-
     public function __construct(
-        string $profilePicture = '',
-        string $email = '',
         string $username = '',
+        string $email = '',
         string $password = '',
-        string $role = 'TEACHER_ROLE',
-        array $coursesMade = []
+        string $role = 'ROLE_TEACHER',
+        int $profilePicture = 1,
+        string $dateOfJoin = '',
     ) {
-        parent::__construct($profilePicture, $email, $username, $password, $role);
-        $this->coursesMade = $coursesMade;
-    }
-
-    public function getCoursesMade(): array {
-        return $this->coursesMade;
+        parent::__construct($username, $email, $password, $role, $profilePicture, $dateOfJoin);
     }
 
     public function toArray(): array
     {
         return [
             'id' => $this->getId(),
-            'profilePicture' => $this->getProfilePicture(),
-            'email' => $this->getemail(),
             'username' => $this->getUsername(),
-            'dateOfBirth' => $this->getDateOfBirth(),
             'password' => $this->getPassword(),
+            'email' => $this->getEmail(),
+            'profilePicture' => $this->getProfilePicture(),
+            'dateOfBirth' => $this->getDateOfBirth(),
+            'dateOfJoin' => $this->getDateOfJoin(),
+            'favoriteLanguage' => $this->getFavoriteLanguage(),
             'role' => $this->getRole(),
-            'coursesMade' => $this->getCoursesMade(),
+            'biography' => $this->getBiography()
         ];
     }
 }

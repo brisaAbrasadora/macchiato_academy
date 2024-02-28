@@ -16,6 +16,8 @@ $router->get ('profile', 'ProfileController@profile');
 $router->get ('profile/edit', 'ProfileController@edit');
 $router->get ('profile/:id', 'ProfileController@profile');
 
+$router->get ('control-panel/register-new-user', 'CPController@newUser', 'ROLE_ADMIN');
+
 
 $router->post ('check-login', 'AuthController@checkLogin');
 $router->post ('validate-student-register', 'AuthController@validateStudentRegister');
@@ -30,6 +32,8 @@ $router->post ('validate-biography', 'ProfileController@validateBiography');
 $router->post ('delete-birthday', 'ProfileController@deleteBirthday');
 $router->post ('delete-profile-picture', 'ProfileController@deleteProfilePicture');
 $router->post ('delete-favorite-language', 'ProfileController@deleteFavoriteLanguage');
+
+$router->post ('validate-user-register', 'CPController@validateUserRegister');
 
 
 $router->post ('testing', 'PagesController@testing');

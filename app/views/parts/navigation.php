@@ -63,12 +63,11 @@ $uri = $_SERVER['REQUEST_URI'];
                         <li class="<?= Utils::isActive('/profile/edit') ? 'active' : '' ?>">
                             <a href="<?= Utils::isActive('/profile/edit') ? '#' : '/profile/edit' ?>">Edit profile</a>
                         </li>
-                        <li class="<?= Utils::isActive('/profile') ? 'active' : '' ?>">
-                            <a href="<?= Utils::isActive('/profile') ? '#' : '/' ?>">Register teacher</a>
+                        <?php if ($app['user']->getRole() === "ROLE_ADMIN") { ?>
+                            <li class="<?= Utils::isActive('/control-panel') ? 'active' : '' ?>">
+                            <a href="<?= Utils::isActive('/control-panel/register-new-user') ? '#' : '/control-panel/register-new-user' ?>">Control Panel</a>
                         </li>
-                        <li class="<?= Utils::isActive('/profile') ? 'active' : '' ?>">
-                            <a href="<?= Utils::isActive('/profile') ? '#' : '/' ?>">Register</a>
-                        </li>
+                        <?php } ?>
                     </ul>
                 </li>
                 <li class="<?= Utils::isActive('/logout') ? 'active' : '' ?>">

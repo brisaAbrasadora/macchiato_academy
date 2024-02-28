@@ -115,7 +115,7 @@ class AuthController
             $emailExists = App::getRepository(UserRepository::class)
                 ->emailExists($email);
             if ($emailExists)
-                throw new ValidationException('Email alrady exists');
+                throw new ValidationException('Email already exists');
             FlashMessage::set('email', $email);
 
             if (!isset($_POST['password']) || empty($_POST['password']))

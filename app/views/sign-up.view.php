@@ -24,7 +24,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="email">Email</label>
-                                <input type="email" class="form-control <? if ($errors) echo 'is-invalid' ?>" value="<?= $email ?>" name="email"  />
+                                <input type="email" class="form-control" value="<?= $email ?>" name="email"  />
                             </div>
                             <div class="form-group">
                                 <label for="password">Password</label>
@@ -35,15 +35,6 @@
                                 <input type="password" class="form-control" name="passwordConfirm"  />
                             </div>
                             <button class="btn btn-primary btn-lg">Sign up</button>
-                            <div class="form-group">
-                                <!-- <input
-                  type="submit"
-                  class="btn btn-primary btn-lg"
-                  id="submit"
-                  name="submit"
-                  value="Login"
-                /> -->
-                            </div>
                         </form>
                     </div>
                 </div>
