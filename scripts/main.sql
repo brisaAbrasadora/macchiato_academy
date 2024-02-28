@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS student_joins_course (
 );
 
 INSERT INTO image (
-	image_name ) VALUES (
+	name ) VALUES (
     "default.jpg"
 );
 

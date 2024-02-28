@@ -247,9 +247,7 @@ class ProfileController
                 $imageObj->getName(),
                 $user->getId()
             );
-            App::getRepository(ProfilePictureRepository::class)->save($profilePicture);
-            $user->setProfilePicture($imageObj->getId());
-            App::getRepository(UserRepository::class)->update($user);
+            App::getRepository(ProfilePictureRepository::class)->updateProfilePicture($user, $profilePicture, $imageObj);
             FlashMessage::set('message', "Profile Picture updated");
             App::get('router')->redirect('profile/edit');
         } catch (FileException $fileException) {
@@ -376,32 +374,8 @@ class ProfileController
                 //user has already no pfp
             };
 
-            // if ($profilePicture->deleteFile()) {
-            //     if (App::getRepository(ImageRepository::class)->delete([
-            //         "id" => $user->getProfilePicture()
-            //     ])) {
-            //         $user->setProfilePicture(1);
-            //         App::getRepository(UserRepository::class)
-            //             ->update($user);
-            //     } else {
-            //         throw new QueryException("Error at deleting image");
-            //     }
-            // } else {
-            //     throw new FileException("Couldn't find image");
-            // }
-
-            if (App::getRepository(ImageRepository::class)->delete([
-                "id" => $user->getProfilePicture()
-            ])) {
-                $user->setProfilePicture(1);
-                App::getRepository(UserRepository::class)
-                    ->update($user);
-                if (!$profilePicture->deleteFile()) {
-                    throw new FileException("Couldn't find image");
-                }
-            } else {
-                throw new QueryException("Error at deleting image");
-            }
+            App::getRepository(ProfilePictureRepository::class)
+                ->deleteProfilePicture($user, $profilePicture);
 
             FlashMessage::set('message', "Profile picture deleted");
 
