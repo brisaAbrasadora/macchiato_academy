@@ -59,6 +59,8 @@ class File
         if (is_uploaded_file($this->file['tmp_name']) === false)
             throw new FileException('File has not been uploaded from a form');
         $this->fileName = $this->file['name'];
+        $extension = explode(".", $this->fileName)[1];
+
         // Vamos a crear la variable path y le asignamos la path completa donde se alojara nuestro fichero
         $path = $_SERVER['DOCUMENT_ROOT'] . $destiny . $this->fileName;
         // Comprobamos si ya existe el fichero con ese nombre
@@ -76,5 +78,46 @@ class File
             // alojar la imagen, incluyendo el nombre del archivo.
         )
             throw new FileException('Couldn\'t move the file to its destiny');
+
+        if ($extension === "jpg" || $extension === "jpeg") {
+            $this->cropJpeg($path);
+        } else if ($extension === "png") {
+            $this->cropPng($path);
+        }
+    }
+
+    private function cropJpeg(string $path) {
+        $image = imagecreatefromjpeg($path);
+
+        $original_width = imagesx($image);
+        $original_height = imagesy($image);
+
+        $croppedImage = imagecreatetruecolor(100, 100);
+
+        imagecopyresampled($croppedImage, $image, 0, 0, 0, 0, 100, 100, $original_width, $original_height);
+
+        imagejpeg($croppedImage, $path);
+
+        imagedestroy($image);
+        imagedestroy($croppedImage);
+    }
+
+    private function cropPng(string $path) {
+        $image = imagecreatefrompng($path);
+
+        $original_width = imagesx($image);
+        $original_height = imagesy($image);
+
+        $croppedImage = imagecreatetruecolor(100, 100);
+
+        imagealphablending($croppedImage, false);
+        imagesavealpha($croppedImage, true);
+
+        imagecopyresampled($croppedImage, $image, 0, 0, 0, 0, 100, 100, $original_width, $original_height);
+
+        imagepng($croppedImage, $path);
+
+        imagedestroy($image);
+        imagedestroy($croppedImage);
     }
 }

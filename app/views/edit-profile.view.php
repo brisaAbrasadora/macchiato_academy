@@ -53,7 +53,7 @@
                                         <input type="file" class="form-control-file" name="profilePicture" />
                                     </div>
                                     <div>
-                                        <img src="<?= $pfpPreview->getProfilePicturesPath() ?>" alt="" width="100px">
+                                        <img src="<?= $pfpPreview->getProfilePicturesPath() ?>" alt="" >
                                     </div>
                                     <button type="submit" class="btn btn-primary">Edit</button>
                                 </form>

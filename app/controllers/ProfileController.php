@@ -238,6 +238,7 @@ class ProfileController
             $typeFile = ['image/jpeg', 'image/png'];
             $pfpFile = new File('profilePicture', $typeFile);
             $pfpFile->saveUploadFile(ProfilePicture::PROFILE_PICTURES_ROUTE);
+            
             $image = new Image($pfpFile->getFileName());
             $imageObj = App::getRepository(ImageRepository::class)->saveAndReturn($image, [
                 "name" => $image->getName()
@@ -249,11 +250,11 @@ class ProfileController
             );
             App::getRepository(ProfilePictureRepository::class)->updateProfilePicture($user, $profilePicture, $imageObj);
             FlashMessage::set('message', "Profile Picture updated");
-            App::get('router')->redirect('profile/edit');
         } catch (FileException $fileException) {
             FlashMessage::set('edit-error', [$fileException->getMessage()]);
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
+        } finally {
             App::get('router')->redirect('profile/edit');
         }
     }

@@ -27,7 +27,7 @@ class ProfilePicture extends Image implements IEntity {
     }
 
     public function deleteFile(): bool {
-        return unlink(__DIR__ . "/../.." . $this->getProfilePicturesPath());
+        return unlink($_SERVER['DOCUMENT_ROOT'] . $this->getProfilePicturesPath());
     }
 
     public function toArray(): array {
