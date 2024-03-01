@@ -43,6 +43,7 @@
                                 </select>
                             </div>
                             <button class="btn btn-primary btn-lg">Register</button>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -44,17 +44,19 @@ class ProfilePictureRepository extends QueryBuilder {
     }
 
     public function deleteProfilePicture(User $user, ProfilePicture $profilePicture) {
-        if (App::getRepository(ImageRepository::class)->delete([
-            "id" => $user->getProfilePicture()
-        ])) {
-            $user->setProfilePicture(1);
-            App::getRepository(UserRepository::class)
-                ->update($user);
-            if (!$profilePicture->deleteFile()) {
-                throw new FileException("Couldn't find image");
+        if ($profilePicture->getId() !== 1 ) {
+            if (App::getRepository(ImageRepository::class)->delete([
+                "id" => $user->getProfilePicture()
+            ])) {
+                $user->setProfilePicture(1);
+                App::getRepository(UserRepository::class)
+                    ->update($user);
+                if (!$profilePicture->deleteFile()) {
+                    throw new FileException("Couldn't find image");
+                }
+            } else {
+                throw new QueryException("Error at deleting image");
             }
-        } else {
-            throw new QueryException("Error at deleting image");
         }
     }
 

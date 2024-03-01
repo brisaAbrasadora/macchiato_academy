@@ -82,7 +82,7 @@ class ProfileController
         );
     }
 
-    public function edit()
+    public function edit(?int $id = null)
     {
         $title = "Edit profile | Macchiato Academy";
         $errors = FlashMessage::get('edit-error', []);
@@ -90,7 +90,11 @@ class ProfileController
         $languageRepository = App::getRepository(LanguageRepository::class);
         $languages = $languageRepository->findAll();
 
-        $user = App::get('appUser');
+        if (isset($id)) {
+            $user = App::getRepository(UserRepository::class)->find($id);
+        } else {
+            $user = App::get('appUser');
+        }
         $username = $user->getUsername();
         $email = $user->getEmail();
         $dateOfBirth = $user->getDateOfBirth();
@@ -136,14 +140,18 @@ class ProfileController
 
         Response::renderView(
             'edit-profile',
-            compact('title', 'username', 'email', 'dateOfBirth', 'langSelected', 'languages', 'pfpPreview', 'biography', 'errors', 'message')
+            compact('title', 'username', 'email', 'dateOfBirth', 'langSelected', 'languages', 'pfpPreview', 'biography', 'errors', 'message', 'id')
         );
     }
 
-    public function validateUsername()
+    public function validateUsername(?int $id = null)
     {
         try {
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
 
             if (!isset($_POST['username']) || empty($_POST['username']))
                 throw new ValidationException('Username can\'t be empty');
@@ -157,17 +165,21 @@ class ProfileController
             App::getRepository(UserRepository::class)->update($user);
             FlashMessage::set('message', "Username changed to $username");
 
-            App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
+        } finally {
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 
-    public function validateEmail()
+    public function validateEmail(?int $id = null)
     {
         try {
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
 
             if (!isset($_POST['email']) || empty($_POST['email']))
                 throw new ValidationException('Email can\'t be empty');
@@ -189,14 +201,14 @@ class ProfileController
             App::getRepository(UserRepository::class)->update($user);
             FlashMessage::set('message', "Email changed to $email");
 
-            App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
+        } finally {
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 
-    public function validatePassword()
+    public function validatePassword(?int $id = null)
     {
         try {
             if (!isset($_POST['password']) || empty($_POST['password']))
@@ -217,23 +229,31 @@ class ProfileController
 
             $password = Security::encrypt($password);
 
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
             $user->setPassword($password);
 
             App::getRepository(UserRepository::class)->update($user);
             FlashMessage::set('message', "Password has changed");
 
-            App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
+        } finally {
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 
-    public function validateProfilePicture()
+    public function validateProfilePicture(?int $id = null)
     {
         try {
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
 
             $typeFile = ['image/jpeg', 'image/png'];
             $pfpFile = new File('profilePicture', $typeFile);
@@ -255,14 +275,18 @@ class ProfileController
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
         } finally {
-            App::get('router')->redirect('profile/edit');
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 
-    public function validateBirthday()
+    public function validateBirthday(?int $id = null)
     {
         try {
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
 
             $dateOfBirth = !empty($_POST['dateOfBirth']) ? new DateTime($_POST['dateOfBirth']) : null;
             if (isset($dateOfBirth))    $user->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
@@ -270,17 +294,21 @@ class ProfileController
             App::getRepository(UserRepository::class)->update($user);
             FlashMessage::set('message', "Birthday updated");
 
-            App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
+        } finally {
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 
-    public function validateFavoriteLanguage()
+    public function validateFavoriteLanguage(?int $id = null)
     {
         try {
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
 
             $favoriteLanguage = empty($_POST['favoriteLanguage']) ? null : $_POST['favoriteLanguage'];
 
@@ -296,17 +324,21 @@ class ProfileController
             App::getRepository(UserRepository::class)->update($user);
             FlashMessage::set('message', $message);
 
-            App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
+        } finally {
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 
-    public function validateBiography()
+    public function validateBiography(?int $id = null)
     {
         try {
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
 
             $biography = htmlspecialchars(trim($_POST['biography']));
             $length = count(str_split($biography));
@@ -319,39 +351,51 @@ class ProfileController
             App::getRepository(UserRepository::class)->update($user);
             FlashMessage::set('message', "Biography updated");
 
-            App::get('router')->redirect('profile/edit');
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
+        } finally {
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 
-    public function deleteFavoriteLanguage()
+    public function deleteFavoriteLanguage(?int $id = null)
     {
-        $user = App::get('appUser');
+        if (isset($id)) {
+            $user = App::getRepository(UserRepository::class)->find($id);
+        } else {
+            $user = App::get('appUser');
+        }
 
         $user->setFavoriteLanguage(null);
         App::getRepository(UserRepository::class)->update($user);
         FlashMessage::set('message', "Favorite language deleted");
 
-        App::get('router')->redirect('profile/edit');
+        App::get('router')->redirect('profile/edit/' . $id ?? '');
     }
 
-    public function deleteBirthday()
+    public function deleteBirthday(?int $id = null)
     {
-        $user = App::get('appUser');
+        if (isset($id)) {
+            $user = App::getRepository(UserRepository::class)->find($id);
+        } else {
+            $user = App::get('appUser');
+        }
 
         $user->setDateOfBirth(null);
         App::getRepository(UserRepository::class)->update($user);
         FlashMessage::set('message', "Birthday deleted");
 
-        App::get('router')->redirect('profile/edit');
+        App::get('router')->redirect('profile/edit/' . $id ?? '');
     }
 
-    public function deleteProfilePicture()
+    public function deleteProfilePicture(?int $id = null)
     {
         try {
-            $user = App::get('appUser');
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                $user = App::get('appUser');
+            }
 
             if ($user->getProfilePicture() !== 1) {
                 $profilePicture = App::getRepository(ProfilePictureRepository::class)
@@ -380,13 +424,12 @@ class ProfileController
 
             FlashMessage::set('message', "Profile picture deleted");
 
-            App::get('router')->redirect('profile/edit');
         } catch (QueryException $queryException) {
             FlashMessage::set('edit-error', [$queryException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
         } catch (FileException $fileException) {
             FlashMessage::set('edit-error', [$fileException->getMessage()]);
-            App::get('router')->redirect('profile/edit');
+        } finally {
+            App::get('router')->redirect('profile/edit/' . $id ?? '');
         }
     }
 }

@@ -72,3 +72,48 @@ img.pfp {
 }
 
 
+table {
+    width: 100%;
+}
+
+th {
+    background-color: #6a41ed;
+    color: white;
+    padding: 10px 5px;
+}
+
+td {
+    padding: 10px 5px;
+}
+
+tr:nth-child(even) {
+    background-color: rgb(245, 245, 245);
+}
+
+table th:nth-child(1) {
+    width: 5%;
+}
+
+table th:nth-child(2) {
+    width: 20%;
+}
+
+table th:nth-child(3) {
+    width: 40%;
+}
+
+table th:nth-child(4) {
+    width: 20%;
+}
+
+table th:nth-child(5) {
+    width: 15%;
+}
+
+table button {
+    
+}
+table i {
+    margin: 0px 5px;
+    
+}

@@ -2,11 +2,6 @@
 
 namespace macchiato_academy\app\controllers;
 
-use macchiato_academy\app\repository\ImageRepository;
-use macchiato_academy\app\entity\Image;
-use macchiato_academy\app\exceptions\LanguageException;
-use macchiato_academy\app\repository\LanguageRepository;
-use macchiato_academy\app\repository\ProfilePictureRepository;
 use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\App;
 use macchiato_academy\core\Response;
@@ -19,11 +14,22 @@ use macchiato_academy\app\repository\StudentRepository;
 use macchiato_academy\app\repository\TeacherRepository;
 use macchiato_academy\core\Security;
 use DateTime;
+use macchiato_academy\app\exceptions\AppException;
+use macchiato_academy\app\exceptions\QueryException;
+use Exception;
+use macchiato_academy\app\exceptions\FileException;
+
 
 class CPController
 {
+    private array $sidebar = [
+        "Register new user" => "/control-panel/register-new-user",
+        "Manage users" => "/control-panel/manage-users",
+    ];
+
     public function newUser()
     {
+        $sidebar = $this->sidebar;
         $title = "CPanel - Register new user | Macchiato Academy";
         $errors = FlashMessage::get('register-error', []);
         $email = FlashMessage::get('email');
@@ -32,7 +38,7 @@ class CPController
 
         Response::renderView(
             'cpanel-new-user',
-            compact('title', 'errors', 'email', 'username', 'message')
+            compact('title', 'errors', 'email', 'username', 'message', 'sidebar')
         );
     }
 
@@ -105,6 +111,53 @@ class CPController
         } catch (ValidationException $validationException) {
             FlashMessage::set('register-error', [$validationException->getMessage()]);
             App::get('router')->redirect('control-panel/register-new-user');
+        }
+    }
+
+    public function manageUsers()
+    {
+        $title = "CPanel - Manage users | Macchiato Academy";
+        $sidebar = $this->sidebar;
+        $errors = FlashMessage::get('error-delete', []);
+        $message = FlashMessage::get('message');
+
+
+        try {
+            $users = App::getRepository(UserRepository::class)
+                ->findAll();
+        } catch (QueryException $queryException) {
+            FlashMessage::set('errors', [$queryException->getMessage()]);
+        } catch (AppException $appException) {
+            FlashMessage::set('errors', [$appException->getMessage()]);
+        } catch (Exception $exception) {
+            FlashMessage::set('errors', [$exception->getMessage()]);
+        }
+
+        FlashMessage::unset('errors');
+        FlashMessage::unset('message');
+
+        Response::renderView(
+            'cpanel-manage-users',
+            compact('title', 'sidebar', 'users', 'errors', 'message')
+        );
+    }
+
+    public function deleteUser(int $id) {
+        try {
+            if ($id === 1) {
+                throw new AppException("The admin of this site can't be deleted");
+            } else {
+                App::getRepository(UserRepository::class)->deleteUser(
+                    App::getRepository(UserRepository::class)->find($id)
+                );
+            }
+            FlashMessage::set('message', "User with id $id deleted");
+        } catch (FileException $fileException) {
+            FlashMessage::set('error-delete', [$fileException->getMessage()]);
+        } catch (AppException $appException) {
+            FlashMessage::set('error-delete', [$appException->getMessage()]);
+        } finally {
+            App::get('router')->redirect('control-panel/manage-users');
         }
     }
 
