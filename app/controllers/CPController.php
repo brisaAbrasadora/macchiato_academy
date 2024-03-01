@@ -18,7 +18,7 @@ use macchiato_academy\app\exceptions\AppException;
 use macchiato_academy\app\exceptions\QueryException;
 use Exception;
 use macchiato_academy\app\exceptions\FileException;
-
+use macchiato_academy\app\repository\LanguageRepository;
 
 class CPController
 {
@@ -118,8 +118,11 @@ class CPController
     {
         $title = "CPanel - Manage users | Macchiato Academy";
         $sidebar = $this->sidebar;
-        $errors = FlashMessage::get('error-delete', []);
+        $errors = FlashMessage::get('manage-error', []);
         $message = FlashMessage::get('message');
+        $roles = App::get('config')['security']['roles'];
+        array_pop($roles);
+
 
 
         try {
@@ -133,12 +136,12 @@ class CPController
             FlashMessage::set('errors', [$exception->getMessage()]);
         }
 
-        FlashMessage::unset('errors');
+        FlashMessage::unset('manage-error');
         FlashMessage::unset('message');
 
         Response::renderView(
             'cpanel-manage-users',
-            compact('title', 'sidebar', 'users', 'errors', 'message')
+            compact('title', 'sidebar', 'users', 'errors', 'message', 'roles')
         );
     }
 
@@ -153,9 +156,9 @@ class CPController
             }
             FlashMessage::set('message', "User with id $id deleted");
         } catch (FileException $fileException) {
-            FlashMessage::set('error-delete', [$fileException->getMessage()]);
+            FlashMessage::set('manage-error', [$fileException->getMessage()]);
         } catch (AppException $appException) {
-            FlashMessage::set('error-delete', [$appException->getMessage()]);
+            FlashMessage::set('manage-error', [$appException->getMessage()]);
         } finally {
             App::get('router')->redirect('control-panel/manage-users');
         }
@@ -172,5 +175,40 @@ class CPController
             'testing',
             compact('title', 'isset', 'obj', 'empty')
         );
+    }
+
+    public function updateRole(int $id)
+    {
+        try {
+            if (isset($id)) {
+                $user = App::getRepository(UserRepository::class)->find($id);
+            } else {
+                throw new ValidationException("The ID must be set");
+            }
+
+            if ($id === 1) {
+                throw new AppException("The administrator cannot change their role");
+            }
+
+            if (!isset($_POST['role']) || empty($_POST['role']))
+                throw new ValidationException('Role can\'t be empty');
+            $role = htmlspecialchars(trim($_POST['role']));
+
+            if ($user->getRole() === $role)
+                throw new ValidationException("{$user->getUsername()} is already that role");
+
+            $user->setRole($role);
+
+            App::getRepository(UserRepository::class)->update($user);
+            $role = explode("_", $role)[1];
+            FlashMessage::set('message', "{$user->getUsername()} is now a $role");
+
+        } catch (ValidationException $validationException) {
+            FlashMessage::set('manage-error', [$validationException->getMessage()]);
+        } catch (AppException $appException) {
+            FlashMessage::set('manage-error', [$appException->getMessage()]);
+        } finally {
+            App::get('router')->redirect('control-panel/manage-users');
+        }
     }
 }

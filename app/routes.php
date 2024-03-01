@@ -1,5 +1,7 @@
 <?php
 
+use macchiato_academy\app\controllers\CPController;
+
 $router->get ('', 'PagesController@index');
 $router->get ('courses', 'PagesController@courses', 'ROLE_STUDENT');
 $router->get ('teachers', 'PagesController@teachers');
@@ -47,6 +49,7 @@ $router->post ('delete-favorite-language/:id', 'ProfileController@deleteFavorite
 
 $router->post ('validate-user-register', 'CPController@validateUserRegister', 'ROLE_ADMIN');
 $router->get ('delete-user/:id', 'CPController@deleteUser', 'ROLE_ADMIN');
+$router->post ('update-role/:id', 'CPController@updateRole', 'ROLE_ADMIN');
 
 
 $router->post ('testing', 'PagesController@testing');

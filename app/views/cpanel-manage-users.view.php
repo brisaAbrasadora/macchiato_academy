@@ -34,7 +34,20 @@
                                         <td><?= $user->getId() ?></td>
                                         <td><?= $user->getUsername() ?></td>
                                         <td><?= $user->getEmail() ?></td>
-                                        <td><?= $user->getRole() ?></td>
+                                        <td>
+                                            <form action="/update-role/<?= $user->getId() ?>" method="post" class="probootstrap-form" style="display: inline;" novalidate>
+                                                    <select name="role" class="form-control" style="display: inline; width: auto;">
+                                                        <?php foreach ($roles as $role => $value) : ?>
+                                                            <option value="<?= $role ?>" <?= ($role == $user->getRole()) ? 'selected' : '' ?>>
+                                                                <?= explode("_", $role)[1] ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                                    <button class="submit">
+                                                <span style="color: LimeGreen">
+                                                <i class="fa-solid fa-floppy-disk fa-lg"></i>
+                                                </span></button>
+                                            </form>
+                                        </td>
                                         <td><a href="/profile/<?= $user->getId() ?>">
                                                 <span style="color: DodgerBlue">
                                                     <i class="fa-solid fa-eye fa-lg"></i>
