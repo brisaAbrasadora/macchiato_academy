@@ -192,16 +192,55 @@ class CPController
 
             if (!isset($_POST['role']) || empty($_POST['role']))
                 throw new ValidationException('Role can\'t be empty');
-            $role = htmlspecialchars(trim($_POST['role']));
 
-            if ($user->getRole() === $role)
+            $newRole = htmlspecialchars(trim($_POST['role']));
+            if ($newRole === "ROLE_ADMIN") {
+                $repositoryNewRole = App::getRepository(UserRepository::class) ;
+            } else if ($newRole === "ROLE_STUDENT") {
+                $repositoryNewRole = App::getRepository(StudentRepository::class) ;
+            } else if ($newRole === "ROLE_TEACHER") {
+                $repositoryNewRole = App::getRepository(TeacherRepository::class) ;
+            }
+
+            $role = $user->getRole();
+            if ($role === "ROLE_ADMIN") {
+                $repositoryOldRole = App::getRepository(UserRepository::class) ;
+            } else if ($role === "ROLE_STUDENT") {
+                $repositoryOldRole = App::getRepository(StudentRepository::class) ;
+            } else if ($role === "ROLE_TEACHER") {
+                $repositoryOldRole = App::getRepository(TeacherRepository::class) ;
+            }
+
+            if ($user->getRole() === $newRole)
                 throw new ValidationException("{$user->getUsername()} is already that role");
 
-            $user->setRole($role);
+            if ($role === "ROLE_ADMIN") {
+                $repositoryNewRole->insert([
+                    "id" => $user->getId()
+                ]);
+            } else {
+                if ($newRole === "ROLE_ADMIN") {
+                    $repositoryOldRole->delete([
+                        "id" => $user->getId()
+                    ]);
+                } else {
+                    $repositoryOldRole->delete([
+                        "id" => $user->getId()
+                    ]);
+        
+                    $repositoryNewRole->insert([
+                        "id" => $user->getId()
+                    ]);
+                }
+            }
+
+            $user->setRole($newRole);
 
             App::getRepository(UserRepository::class)->update($user);
-            $role = explode("_", $role)[1];
-            FlashMessage::set('message', "{$user->getUsername()} is now a $role");
+
+
+            $newRole = explode("_", $newRole)[1];
+            FlashMessage::set('message', "{$user->getUsername()} is now a $newRole");
 
         } catch (ValidationException $validationException) {
             FlashMessage::set('manage-error', [$validationException->getMessage()]);

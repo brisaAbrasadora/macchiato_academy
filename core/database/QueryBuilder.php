@@ -119,6 +119,22 @@ class QueryBuilder
         return $statement->execute($whereClause);
     }
 
+    public function insert(array $fields)
+    {
+        try {
+            $sql = sprintf(
+                'INSERT INTO %s (%s) VALUES (%s)',
+                $this->table,
+                implode(', ', array_keys($fields)),
+                ':' . implode(', :', array_keys($fields))
+            );
+            $statement = $this->connection->prepare($sql);
+            $statement->execute($fields);
+        } catch (PDOException $exception) {
+            throw new QueryException("Error al insertar en la base de datos.");
+        }
+    }
+
     private function executeQuery(string $sql, array $parameters = []): array
     {
         $pdoStatement = $this->connection->prepare($sql);
