@@ -20,7 +20,7 @@ var_dump($teachers);
                         <h2>Register new course</h2>
                         <p>Register a course.</p>
                         <?php include __DIR__ . '/parts/show-error.php' ?>
-                        <form action="/validate-course-register" method="post" class="probootstrap-form" novalidate>
+                        <form action="/validate-course-register" method="post" class="probootstrap-form" enctype="multipart/form-data" novalidate>
                             <div class="form-group">
                                 <label for="title">Title</label>
                                 <input type="text" class="form-control" name="title" value="<?= $title ?? '' ?>" />
@@ -49,6 +49,10 @@ var_dump($teachers);
                                     <?php endforeach; ?>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                        <label for="picture">Picture</label>
+                                        <input type="file" class="form-control-file" name="picture" />
+                                    </div>
                             <button class="btn btn-primary btn-lg">Register</button>
                         </form>
                     </div>

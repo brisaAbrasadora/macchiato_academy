@@ -18,10 +18,15 @@ use macchiato_academy\app\exceptions\AppException;
 use macchiato_academy\app\exceptions\QueryException;
 use Exception;
 use macchiato_academy\app\entity\Course;
+use macchiato_academy\app\entity\CoursePicture;
+use macchiato_academy\app\entity\Image;
 use macchiato_academy\app\exceptions\FileException;
+use macchiato_academy\app\repository\CoursePictureRepository;
 use macchiato_academy\app\repository\CourseRepository;
+use macchiato_academy\app\repository\ImageRepository;
 use macchiato_academy\app\repository\LanguageRepository;
 use macchiato_academy\app\repository\StudentJoinsCourseRepository;
+use macchiato_academy\app\utils\File;
 
 class CPController
 {
@@ -310,12 +315,35 @@ class CPController
             $teacher = htmlspecialchars(trim($_POST['teacher']));
             FlashMessage::set('teacher', $teacher);
 
+            $typeFile = ['image/jpeg', 'image/png'];
+            $pictureFile = new File('picture', $typeFile);
+            $pictureFile->saveUploadFile(CoursePicture::COURSE_PICTURES_ROUTE);
+            
+            $image = new Image($pictureFile->getFileName());
+            $imageObj = App::getRepository(ImageRepository::class)->saveAndReturn($image, [
+                "name" => $image->getName()
+            ]);
+
             $course = new Course();
             $course->setTitle($title)
                 ->setDescription($description)
                 ->setLanguage($language)
                 ->setTeacher($teacher);
-            App::getRepository(CourseRepository::class)->save($course);
+            $courseObj = App::getRepository(CourseRepository::class)->saveAndReturn($course, [
+                "title" => $course->getTitle()
+            ]);
+
+            $coursePicture = new CoursePicture(
+                $imageObj->getId(),
+                $imageObj->getName(),
+                $courseObj->getId()
+            );
+
+            App::getRepository(CoursePictureRepository::class)->save($coursePicture);
+
+            $courseObj->setPicture($coursePicture->getId());
+
+            App::getRepository(CourseRepository::class)->update($courseObj);
 
             FlashMessage::unset('title');
             FlashMessage::unset('description');

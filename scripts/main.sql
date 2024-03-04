@@ -133,6 +133,7 @@ CREATE TABLE IF NOT EXISTS course (
     description VARCHAR(255) NOT NULL,
 	teacher INT UNSIGNED NOT NULL,
     language INT UNSIGNED NOT NULL,
+    picture INT UNSIGNED NOT NULL,
 	FOREIGN KEY (teacher) REFERENCES teacher(id),
     FOREIGN KEY (language) REFERENCES language(id)
 );

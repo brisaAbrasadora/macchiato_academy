@@ -19,6 +19,8 @@ $router->get ('profile/edit', 'ProfileController@edit');
 $router->get ('profile/edit/:id', 'ProfileController@edit', 'ROLE_ADMIN');
 $router->get ('profile/:id', 'ProfileController@profile');
 
+$router->get ('course/:id', 'CoursesController@course');
+
 $router->get ('control-panel/register-new-user', 'CPController@newUser', 'ROLE_ADMIN');
 $router->get ('control-panel/manage-users', 'CPController@manageUsers', 'ROLE_ADMIN');
 $router->get ('control-panel/register-new-course', 'CPController@newCourse', 'ROLE_ADMIN');

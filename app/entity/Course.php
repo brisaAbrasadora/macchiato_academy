@@ -9,14 +9,16 @@ class Course implements IEntity
     protected string $description;
     protected int $language;
     protected int $teacher;
+    protected int $picture;
 
-    public function __construct(string $title = '', string $description = '', int $language = 0, int $teacher = 0)
+    public function __construct(string $title = '', string $description = '', int $language = 0, int $teacher = 0, int $picture = 0)
     {
         $this->id = null;
         $this->title = $title;
         $this->description = $description;
         $this->language = $language;
         $this->teacher = $teacher;
+        $this->picture = $picture;
     }
 
     public function getId(): ?int
@@ -44,6 +46,11 @@ class Course implements IEntity
         return $this->teacher;
     }
 
+    public function getPicture(): int
+    {
+        return $this->picture;
+    }
+
     public function setTitle(string $title): Course
     {
         $this->title = $title;
@@ -68,6 +75,13 @@ class Course implements IEntity
         return $this;
     }
 
+    public function setPicture(int $picture): Course
+    {
+        $this->picture = $picture;
+        return $this;
+    }
+
+
     public function toArray(): array
     {
         return [
@@ -75,7 +89,8 @@ class Course implements IEntity
             'title' => $this->getTitle(),
             'description' => $this->getDescription(),
             'teacher' => $this->getTeacher(),
-            'language' => $this->getLanguage()
+            'language' => $this->getLanguage(),
+            'picture' => $this->getPicture()
         ];
     }
 }
