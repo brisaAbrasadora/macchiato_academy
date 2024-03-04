@@ -51,5 +51,7 @@ $router->post ('validate-user-register', 'CPController@validateUserRegister', 'R
 $router->get ('delete-user/:id', 'CPController@deleteUser', 'ROLE_ADMIN');
 $router->post ('update-role/:id', 'CPController@updateRole', 'ROLE_ADMIN');
 $router->post ('validate-course-register', 'CPController@validateCourseRegister', 'ROLE_ADMIN');
+$router->post ('update-teacher/:id', 'CPController@updateTeacher', 'ROLE_ADMIN');
+$router->get ('delete-course/:id', 'CPController@deleteCourse', 'ROLE_ADMIN');
 
 $router->post ('testing', 'PagesController@testing');

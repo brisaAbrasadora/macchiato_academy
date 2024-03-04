@@ -142,7 +142,7 @@ class QueryBuilder
         }
     }
 
-    private function executeQuery(string $sql, array $parameters = []): array
+    public function executeQuery(string $sql, array $parameters = []): array
     {
         $pdoStatement = $this->connection->prepare($sql);
         if ($pdoStatement->execute($parameters) === false)

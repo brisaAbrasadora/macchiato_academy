@@ -38,3 +38,12 @@ editando iconos
 02/03/2024
 
 MANEJAR QUE CUANDO UN USUARIO TENGA LA PFP 1 SALGA LA DEFAULT
+
+04/03/2024
+
+Crear repositorio de Student_joins_course.
+Tengo que, antes de borrar un curso, desmatricular a todos los estudiantes.
+tengo que eliminar asi
+DELETE FROM Student_joins_course
+WHERE id_student = id_student 
+AND id_course = id_course;

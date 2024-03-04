@@ -21,6 +21,7 @@ use macchiato_academy\app\entity\Course;
 use macchiato_academy\app\exceptions\FileException;
 use macchiato_academy\app\repository\CourseRepository;
 use macchiato_academy\app\repository\LanguageRepository;
+use macchiato_academy\app\repository\StudentJoinsCourseRepository;
 
 class CPController
 {
@@ -310,10 +311,10 @@ class CPController
             FlashMessage::set('teacher', $teacher);
 
             $course = new Course();
-            $course ->setTitle($title)
-                    ->setDescription($description)
-                    ->setLanguage($language)
-                    ->setTeacher($teacher);
+            $course->setTitle($title)
+                ->setDescription($description)
+                ->setLanguage($language)
+                ->setTeacher($teacher);
             App::getRepository(CourseRepository::class)->save($course);
 
             FlashMessage::unset('title');
@@ -323,11 +324,71 @@ class CPController
 
             $message = "Course {$course->getTitle()} created";
             FlashMessage::set('message', $message);
-
         } catch (ValidationException $validationException) {
             FlashMessage::set('register-error', [$validationException->getMessage()]);
         } finally {
             App::get('router')->redirect('control-panel/register-new-course');
+        }
+    }
+
+    public function manageCourses()
+    {
+        $title = "CPanel - Manage courses | Macchiato Academy";
+        $sidebar = $this->sidebar;
+        $errors = FlashMessage::get('manage-error', []);
+        $message = FlashMessage::get('message');
+
+        try {
+            $courses = App::getRepository(CourseRepository::class)
+                ->findAll();
+            $languageRepository = App::getRepository(LanguageRepository::class);
+            $teachers = App::getRepository(TeacherRepository::class)
+                ->findAll();
+        } catch (QueryException $queryException) {
+            FlashMessage::set('errors', [$queryException->getMessage()]);
+        } catch (AppException $appException) {
+            FlashMessage::set('errors', [$appException->getMessage()]);
+        } catch (Exception $exception) {
+            FlashMessage::set('errors', [$exception->getMessage()]);
+        }
+
+        FlashMessage::unset('manage-error');
+        FlashMessage::unset('message');
+
+        Response::renderView(
+            'cpanel-manage-courses',
+            compact('title', 'sidebar', 'courses', 'errors', 'message', 'languageRepository', 'teachers')
+        );
+    }
+
+    public function deleteCourse(int $id)
+    {
+        try {
+            if (!isset($id) || empty($id))
+                throw new ValidationException('ID course can\'t be empty');
+
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $course = $courseRepository
+                ->find($id);
+
+            $students = App::getRepository(StudentRepository::class)
+                ->findInCourse([
+                    "id_course" => $course->getId()
+                ]);
+            foreach ($students as $student) {
+                App::getRepository(StudentJoinsCourseRepository::class)
+                    ->unsign($student, $course);
+            }
+
+            $courseRepository->delete([
+                "id" => $course->getId()
+            ]);
+
+            FlashMessage::set('message', "Course with id $id deleted");
+        } catch (AppException $appException) {
+            FlashMessage::set('manage-error', [$appException->getMessage()]);
+        } finally {
+            App::get('router')->redirect('control-panel/manage-courses');
         }
     }
 }

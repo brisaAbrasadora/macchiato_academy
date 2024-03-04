@@ -1,20 +1,21 @@
 <?php
 namespace macchiato_academy\app\repository;
 
-use macchiato_academy\app\entity\Student;
 use macchiato_academy\core\database\QueryBuilder;
 use macchiato_academy\app\entity\IEntity;
 use PDOException;
 use macchiato_academy\app\exceptions\QueryException;
 use macchiato_academy\app\entity\Course;
+use macchiato_academy\app\entity\StudentJoinsCourse;
+use macchiato_academy\app\entity\Student;
 
-class StudentRepository extends QueryBuilder
+class StudentJoinsCourseRepository extends QueryBuilder
 {
     /**
      * @param string $table
      * @param string $classEntity
      */
-    public function __construct(string $table = 'student', string $classEntity = Student::class)
+    public function __construct(string $table = 'student_joins_course', string $classEntity = StudentJoinsCourse::class)
     {
         parent::__construct($table, $classEntity);
     }
@@ -36,14 +37,13 @@ class StudentRepository extends QueryBuilder
         }
     }
 
-    public function unsign(Course $course) {
+    public function unsign(Student $student, Course $course) {
         try {
-            $parameters = ["id_course" => $course->getId()];
+            $parameters = ["id_course" => $course->getId(), "id_student" => $student->getId()];
             $sql = sprintf(
-                "DELETE FROM %s WHERE %s",
+                "DELETE FROM %s %s",
                 "student_joins_course",
-                implode(", ", array_keys($parameters)),
-                ":" . implode(", :", array_keys($parameters))
+               $this->getFilters($parameters)
             );
 
             $statement = $this->connection->prepare($sql);
@@ -51,19 +51,5 @@ class StudentRepository extends QueryBuilder
         } catch (PDOException $exception) {
             throw new QueryException("Error al insertar en la base de datos.");
         }
-    }
-
-    public function findInCourse(
-        array $whereClause
-    )
-    {
-        $userKeys = array_map(fn ($key): string => "user.$key", array_keys((new Student())->toArray()));
-        $sql =  "SELECT " . implode(", ", $userKeys) . " FROM user " .
-                "INNER JOIN student_joins_course " .
-                "ON id_student = user.id " . 
-                "INNER JOIN course " . 
-                "ON id_course = course.id " . 
-                $this->getFilters($whereClause);
-        return $this->executeQuery($sql, $whereClause);
     }
 }
