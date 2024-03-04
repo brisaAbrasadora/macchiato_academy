@@ -14,16 +14,16 @@
             <div class="col-md-12">
                 <div class="row probootstrap-gutter0">
                     <?php include __DIR__ . '/parts/sidebar.php'; ?>
-                    <div class="col-md-8 testing probootstrap-animate" id="probootstrap-content" style="padding-left: 20px">
+                    <div class="col-md-8 probootstrap-animate" id="probootstrap-content" style="padding-left: 20px">
                         <h2>Manage users</h2>
                         <p>Register a student or a teacher.</p>
                         <?php include __DIR__ . '/parts/show-error.php' ?>
-                        <table class="testing" style="width:100%">
+                        <table>
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Username</th>
-                                    <th scope="col" class="testing">Email</th>
+                                    <th scope="col">Email</th>
                                     <th scope="col">Role</th>
                                     <th scope="col">Actions</th>
                                 </tr>

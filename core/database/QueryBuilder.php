@@ -29,6 +29,13 @@ class QueryBuilder
         return $this->executeQuery($sql);
     }
 
+    public function findAllNotNull(array $whereClause): array
+    {
+        $sql = "SELECT * FROM $this->table" .
+            " WHERE " . implode(" AND ", $whereClause) . " IS NOT NULL";
+        return $this->executeQuery($sql);
+    }
+
     // Returns a single object, searched by id
     public function find(int $id): IEntity
     {
@@ -68,7 +75,7 @@ class QueryBuilder
             $this->getFilters($whereClause);
         $result = $this->executeQuery($sql, $whereClause);
         if (empty($result))
-            throw new NotFoundException("Didn't found any element with id {$whereClause['id']}");
+            throw new NotFoundException("Didn't found any element with id " . $whereClause['profilePicture__id_user'] ?? "null");
         return $result[0];
     }
 

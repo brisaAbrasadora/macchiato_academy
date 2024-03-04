@@ -34,3 +34,7 @@ estoy trabajando en el control panel
 
 editando iconos
 
+
+02/03/2024
+
+MANEJAR QUE CUANDO UN USUARIO TENGA LA PFP 1 SALGA LA DEFAULT

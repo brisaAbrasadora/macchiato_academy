@@ -4,13 +4,16 @@ namespace macchiato_academy\app\controllers;
 
 use macchiato_academy\app\repository\ImageRepository;
 use macchiato_academy\app\entity\Image;
+use macchiato_academy\app\entity\ProfilePicture;
 use macchiato_academy\app\exceptions\LanguageException;
 use macchiato_academy\app\repository\LanguageRepository;
 use macchiato_academy\app\repository\ProfilePictureRepository;
+use macchiato_academy\app\repository\TeacherRepository;
 use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\App;
 use macchiato_academy\core\Response;
 use macchiato_academy\core\helpers\FlashMessage;
+use macchiato_academy\app\entity\Teacher;
 
 class PagesController
 {
@@ -87,10 +90,81 @@ class PagesController
     public function teachers()
     {
         $title = "Teachers | Macchiato Academy";
+        $teacherIds = array_map(
+            function ($teacher) {
+                return $teacher->getId();
+            },
+            App::getRepository(TeacherRepository::class)->findAll()
+        );
+        $teacher = new Teacher();
+        $userKeys = array_map(fn ($key): string => "user.$key", array_keys($teacher->toArray()));
+        array_push($userKeys, "teacher.id");
+
+        $teachers = [];
+        foreach ($teacherIds as $teacherId) {
+            $teacher = App::getRepository(TeacherRepository::class)->findInnerJoin(
+                $userKeys,
+                "user",
+                [
+                    "user.id",
+                    "teacher.id"
+                ],
+                [
+                    "teacher__id" => $teacherId
+                ]
+            );
+            array_push($teachers, $teacher);
+        }
+
+        $profilePicturesObj = [];
+        $profilePictureIds = array_map(
+            function ($profilePicture) {
+                return $profilePicture->getId();
+            },
+            App::getRepository(ProfilePictureRepository::class)->findAll()
+        );
+        $profilePicture = new ProfilePicture();
+        $imageKeys = array_map(
+            function ($key): string {
+                return "image.$key";
+            },
+            array_keys((new Image())->toArray())
+        );
+        array_push($imageKeys, "profilePicture.id", "profilePicture.id_user");
+
+        $profilePicturesObj = [];
+        foreach ($profilePictureIds as $profilePictureId) {
+            $profilePicture = App::getRepository(ProfilePictureRepository::class)
+                ->findInnerJoin(
+                    $imageKeys,
+                    "image",
+                    [
+                        "image.id",
+                        "profilePicture.id"
+                    ],
+                    [
+                        "profilePicture__id" => $profilePictureId
+                    ]
+                );
+            array_push($profilePicturesObj, $profilePicture);
+        }
+
+        $pfps = [];
+        foreach ($profilePicturesObj as $profilePicture) {
+            $pfps[$profilePicture->getIdUser()] = $profilePicture;
+        }
+
+        $languagesObj = App::getRepository(LanguageRepository::class)->findAll();
+
+        $languages = [];
+        foreach ($languagesObj as $key => $value) {
+            $key = $value->getId();
+            $languages[$key] = $value;
+        }
 
         Response::renderView(
             'teachers',
-            compact('title')
+            compact('title', 'teachers', 'pfps', 'languages')
         );
     }
 

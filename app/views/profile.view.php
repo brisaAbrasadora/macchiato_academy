@@ -1,12 +1,5 @@
 <?php
-echo '<h1>$user</h1>';
-var_dump($user);
-echo '<h1>$profilePictureObject</h1>';
-var_dump($profilePictureObject);
-var_dump($profilePictureObject->getProfilePicturesPath());
-
 use macchiato_academy\app\utils\Utils;
-
 ?>
 
 <section class="proboostrap-section">
