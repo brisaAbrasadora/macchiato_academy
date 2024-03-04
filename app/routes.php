@@ -3,7 +3,7 @@
 use macchiato_academy\app\controllers\CPController;
 
 $router->get ('', 'PagesController@index');
-$router->get ('courses', 'PagesController@courses', 'ROLE_STUDENT');
+$router->get ('courses', 'PagesController@courses');
 $router->get ('teachers', 'PagesController@teachers');
 $router->get ('events', 'PagesController@events');
 $router->get ('about', 'PagesController@about');
@@ -21,7 +21,8 @@ $router->get ('profile/:id', 'ProfileController@profile');
 
 $router->get ('control-panel/register-new-user', 'CPController@newUser', 'ROLE_ADMIN');
 $router->get ('control-panel/manage-users', 'CPController@manageUsers', 'ROLE_ADMIN');
-
+$router->get ('control-panel/register-new-course', 'CPController@newCourse', 'ROLE_ADMIN');
+$router->get ('control-panel/manage-courses', 'CPController@manageCourses', 'ROLE_ADMIN');
 
 $router->post ('check-login', 'AuthController@checkLogin');
 $router->post ('validate-student-register', 'AuthController@validateStudentRegister');
@@ -46,10 +47,9 @@ $router->post ('delete-profile-picture/:id', 'ProfileController@deleteProfilePic
 $router->post ('delete-favorite-language', 'ProfileController@deleteFavoriteLanguage');
 $router->post ('delete-favorite-language/:id', 'ProfileController@deleteFavoriteLanguage', 'ROLE_ADMIN');
 
-
 $router->post ('validate-user-register', 'CPController@validateUserRegister', 'ROLE_ADMIN');
 $router->get ('delete-user/:id', 'CPController@deleteUser', 'ROLE_ADMIN');
 $router->post ('update-role/:id', 'CPController@updateRole', 'ROLE_ADMIN');
-
+$router->post ('validate-course-register', 'CPController@validateCourseRegister', 'ROLE_ADMIN');
 
 $router->post ('testing', 'PagesController@testing');

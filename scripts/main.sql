@@ -46,21 +46,8 @@ CREATE TABLE IF NOT EXISTS teacher (
     FOREIGN KEY (id) REFERENCES user(id)
 );
 
-CREATE TABLE IF NOT EXISTS course (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	title VARCHAR(50) NOT NULL,
-	id_teacher INT UNSIGNED NULL,
-	FOREIGN KEY (id_teacher) REFERENCES user(id)
-	ON DELETE SET NULL
-);
 
-CREATE TABLE IF NOT EXISTS student_joins_course (
-	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	id_student INT UNSIGNED NOT NULL,
-	id_course INT UNSIGNED NOT NULL,
-	FOREIGN KEY (id_student) REFERENCES user(id),
-	FOREIGN KEY (id_course) REFERENCES course(id)
-);
+
 
 INSERT INTO image (
 	name ) VALUES (
@@ -111,7 +98,8 @@ INSERT INTO student_joins_course (
 
 CREATE TABLE IF NOT EXISTS language (
 	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	name VARCHAR(20) NOT NULL UNIQUE
+	name VARCHAR(20) NOT NULL UNIQUE,
+    INDEX(id)
 );
 
 INSERT INTO language (
@@ -137,4 +125,30 @@ INSERT INTO language (
 INSERT INTO language (
 	name) VALUES (
 	'Phyton'
+);
+
+CREATE TABLE IF NOT EXISTS course (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	title VARCHAR(50) NOT NULL,
+    description VARCHAR(255) NOT NULL,
+	teacher INT UNSIGNED NOT NULL,
+    language INT UNSIGNED NOT NULL,
+	FOREIGN KEY (teacher) REFERENCES teacher(id),
+    FOREIGN KEY (language) REFERENCES language(id)
+);
+
+CREATE TABLE IF NOT EXISTS student_joins_course (
+	id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id_student INT UNSIGNED NOT NULL,
+	id_course INT UNSIGNED NOT NULL,
+	FOREIGN KEY (id_student) REFERENCES student(id),
+	FOREIGN KEY (id_course) REFERENCES course(id)
+);
+
+CREATE TABLE IF NOT EXISTS coursePicture (
+	id INT UNSIGNED NOT NULL,
+    id_course INT UNSIGNED,
+    FOREIGN KEY (id) REFERENCES image(id)
+    ON DELETE CASCADE,
+    FOREIGN KEY (id_course) REFERENCES course(id)
 );

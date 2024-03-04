@@ -1,31 +1,32 @@
 <?php
+
 namespace macchiato_academy\app\entity;
 
-class Course implements IEntity {
-    protected $id;
-    protected $username;
-    protected $description;
-    protected $duration;
-    protected $teacher;
-    protected $students;
+class Course implements IEntity
+{
+    protected ?int $id;
+    protected string $title;
+    protected string $description;
+    protected int $language;
+    protected int $teacher;
 
-    public function __construct(string $username = '', string $description = '', string $duration = '', string $teacher = '', array $students) {
+    public function __construct(string $title = '', string $description = '', int $language = 0, int $teacher = 0)
+    {
         $this->id = null;
-        $this->name = $username;
+        $this->title = $title;
         $this->description = $description;
-        $this->duration = $duration;
+        $this->language = $language;
         $this->teacher = $teacher;
-        $this->students = $students;
     }
-    
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): string
+    public function getTitle(): string
     {
-        return $this->name;
+        return $this->title;
     }
 
     public function getDescription(): string
@@ -33,9 +34,9 @@ class Course implements IEntity {
         return $this->description;
     }
 
-    public function getDuration(): string
+    public function getLanguage(): int
     {
-        return $this->duration;
+        return $this->language;
     }
 
     public function getTeacher(): string
@@ -43,20 +44,38 @@ class Course implements IEntity {
         return $this->teacher;
     }
 
-    public function getStudents(): array
+    public function setTitle(string $title): Course
     {
-        return $this->students;
+        $this->title = $title;
+        return $this;
+    }
+
+    public function setDescription(string $description): Course
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function setTeacher(int $teacher): Course
+    {
+        $this->teacher = $teacher;
+        return $this;
+    }
+
+    public function setLanguage(int $language): Course
+    {
+        $this->language = $language;
+        return $this;
     }
 
     public function toArray(): array
     {
-         return [
+        return [
             'id' => $this->getId(),
-            'name' => $this->getName(),
+            'title' => $this->getTitle(),
             'description' => $this->getDescription(),
-            'duration' => $this->getduration(),
             'teacher' => $this->getTeacher(),
-            'students' => $this->getStudents(),
+            'language' => $this->getLanguage()
         ];
     }
 }

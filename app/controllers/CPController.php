@@ -17,7 +17,9 @@ use DateTime;
 use macchiato_academy\app\exceptions\AppException;
 use macchiato_academy\app\exceptions\QueryException;
 use Exception;
+use macchiato_academy\app\entity\Course;
 use macchiato_academy\app\exceptions\FileException;
+use macchiato_academy\app\repository\CourseRepository;
 use macchiato_academy\app\repository\LanguageRepository;
 
 class CPController
@@ -25,6 +27,8 @@ class CPController
     private array $sidebar = [
         "Register new user" => "/control-panel/register-new-user",
         "Manage users" => "/control-panel/manage-users",
+        "Register new course" => "/control-panel/register-new-course",
+        "Manage courses" => "/control-panel/manage-courses"
     ];
 
     public function newUser()
@@ -65,7 +69,7 @@ class CPController
                 throw new ValidationException('Password can\'t be empty');
             // THIS IS NOT THE BEST WAY TO DO THIS
             $password = htmlspecialchars(trim($_POST['password']));
-            if (count(str_split($password)) < 5) 
+            if (count(str_split($password)) < 5)
                 throw new ValidationException('Password must be at least 5 characters long');
 
             $passwordConfirm = htmlspecialchars(trim($_POST['passwordConfirm']));
@@ -145,7 +149,8 @@ class CPController
         );
     }
 
-    public function deleteUser(int $id) {
+    public function deleteUser(int $id)
+    {
         try {
             if ($id === 1) {
                 throw new AppException("The admin of this site can't be deleted");
@@ -195,20 +200,20 @@ class CPController
 
             $newRole = htmlspecialchars(trim($_POST['role']));
             if ($newRole === "ROLE_ADMIN") {
-                $repositoryNewRole = App::getRepository(UserRepository::class) ;
+                $repositoryNewRole = App::getRepository(UserRepository::class);
             } else if ($newRole === "ROLE_STUDENT") {
-                $repositoryNewRole = App::getRepository(StudentRepository::class) ;
+                $repositoryNewRole = App::getRepository(StudentRepository::class);
             } else if ($newRole === "ROLE_TEACHER") {
-                $repositoryNewRole = App::getRepository(TeacherRepository::class) ;
+                $repositoryNewRole = App::getRepository(TeacherRepository::class);
             }
 
             $role = $user->getRole();
             if ($role === "ROLE_ADMIN") {
-                $repositoryOldRole = App::getRepository(UserRepository::class) ;
+                $repositoryOldRole = App::getRepository(UserRepository::class);
             } else if ($role === "ROLE_STUDENT") {
-                $repositoryOldRole = App::getRepository(StudentRepository::class) ;
+                $repositoryOldRole = App::getRepository(StudentRepository::class);
             } else if ($role === "ROLE_TEACHER") {
-                $repositoryOldRole = App::getRepository(TeacherRepository::class) ;
+                $repositoryOldRole = App::getRepository(TeacherRepository::class);
             }
 
             if ($user->getRole() === $newRole)
@@ -227,7 +232,7 @@ class CPController
                     $repositoryOldRole->delete([
                         "id" => $user->getId()
                     ]);
-        
+
                     $repositoryNewRole->insert([
                         "id" => $user->getId()
                     ]);
@@ -241,13 +246,88 @@ class CPController
 
             $newRole = explode("_", $newRole)[1];
             FlashMessage::set('message', "{$user->getUsername()} is now a $newRole");
-
         } catch (ValidationException $validationException) {
             FlashMessage::set('manage-error', [$validationException->getMessage()]);
         } catch (AppException $appException) {
             FlashMessage::set('manage-error', [$appException->getMessage()]);
         } finally {
             App::get('router')->redirect('control-panel/manage-users');
+        }
+    }
+
+    public function newCourse()
+    {
+        $sidebar = $this->sidebar;
+        $title = "CPanel - Register new course | Macchiato Academy";
+        $errors = FlashMessage::get('register-error', []);
+        $description = FlashMessage::get('description');
+        $title = FlashMessage::get('title');
+        $message = FlashMessage::get('message');
+        $langSelected = FlashMessage::get('lang');
+        $teacherAssigned = FlashMessage::get('teacher');
+
+        $languages = App::getRepository(LanguageRepository::class)->findAll();
+        $teachers = App::getRepository(TeacherRepository::class)->findAll();
+
+        Response::renderView(
+            'cpanel-new-course',
+            compact(
+                'title',
+                'errors',
+                'description',
+                'title',
+                'message',
+                'sidebar',
+                'languages',
+                'langSelected',
+                'teachers',
+                'teacherAssigned'
+            )
+        );
+    }
+
+    public function validateCourseRegister()
+    {
+        try {
+            if (!isset($_POST['title']) || empty($_POST['title']))
+                throw new ValidationException('Title can\'t be empty');
+            $title = htmlspecialchars(trim($_POST['title']));
+            FlashMessage::set('title', $title);
+
+            if (!isset($_POST['description']) || empty($_POST['description']))
+                throw new ValidationException('Description can\'t be empty');
+            $description = htmlspecialchars(trim($_POST['description']));
+            FlashMessage::set('description', $description);
+
+            if (!isset($_POST['language']) || empty($_POST['language']))
+                throw new ValidationException('Language must be selected');
+            $language = htmlspecialchars(trim($_POST['language']));
+            FlashMessage::set('lang', $language);
+
+            if (!isset($_POST['teacher']) || empty($_POST['teacher']))
+                throw new ValidationException('Teacher must be selected');
+            $teacher = htmlspecialchars(trim($_POST['teacher']));
+            FlashMessage::set('teacher', $teacher);
+
+            $course = new Course();
+            $course ->setTitle($title)
+                    ->setDescription($description)
+                    ->setLanguage($language)
+                    ->setTeacher($teacher);
+            App::getRepository(CourseRepository::class)->save($course);
+
+            FlashMessage::unset('title');
+            FlashMessage::unset('description');
+            FlashMessage::unset('teacher');
+            FlashMessage::unset('lang');
+
+            $message = "Course {$course->getTitle()} created";
+            FlashMessage::set('message', $message);
+
+        } catch (ValidationException $validationException) {
+            FlashMessage::set('register-error', [$validationException->getMessage()]);
+        } finally {
+            App::get('router')->redirect('control-panel/register-new-course');
         }
     }
 }
