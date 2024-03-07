@@ -20,6 +20,7 @@ $router->get ('profile/edit/:id', 'ProfileController@edit', 'ROLE_ADMIN');
 $router->get ('profile/:id', 'ProfileController@profile');
 
 $router->get ('course/:id', 'CoursesController@course');
+$router->get ('course/edit/:id', 'CoursesController@edit', 'ROLE_ADMIN');
 
 
 $router->get ('control-panel/register-new-user', 'CPController@newUser', 'ROLE_ADMIN');
@@ -43,6 +44,15 @@ $router->post ('validate-favorite-language/:id', 'ProfileController@validateFavo
 $router->post ('validate-biography', 'ProfileController@validateBiography');
 $router->post ('validate-biography/:id', 'ProfileController@validateBiography', 'ROLE_ADMIN');
 
+$router->post ('validate-title/:id', 'CoursesController@validateTitle', 'ROLE_ADMIN');
+$router->post ('validate-description/:id', 'CoursesController@validateDescription', 'ROLE_ADMIN');
+$router->post ('validate-teacher/:id', 'CoursesController@validateTeacher', 'ROLE_ADMIN');
+$router->post ('validate-language/:id', 'CoursesController@validateLanguage', 'ROLE_ADMIN');
+$router->post ('validate-course-picture/:id', 'CoursesController@validateCoursePicture', 'ROLE_ADMIN');
+$router->post ('enroll-course/:id', 'CoursesController@enroll', 'ROLE_STUDENT');
+$router->post ('unsign-course/:id', 'CoursesController@unsign', 'ROLE_STUDENT');
+
+
 $router->post ('delete-birthday', 'ProfileController@deleteBirthday');
 $router->post ('delete-birthday/:id', 'ProfileController@deleteBirthday', 'ROLE_ADMIN');
 $router->post ('delete-profile-picture', 'ProfileController@deleteProfilePicture');
@@ -56,7 +66,6 @@ $router->post ('update-role/:id', 'CPController@updateRole', 'ROLE_ADMIN');
 $router->post ('validate-course-register', 'CPController@validateCourseRegister', 'ROLE_ADMIN');
 $router->post ('update-teacher/:id', 'CPController@updateTeacher', 'ROLE_ADMIN');
 $router->get ('delete-course/:id', 'CPController@deleteCourse', 'ROLE_ADMIN');
-
-$router->post ('enroll-course/:id', 'CoursesController@enroll', 'ROLE_STUDENT');
+$router->post('unsign', 'CPController@unsign', 'ROLE_ADMIN');
 
 $router->post ('testing', 'PagesController@testing');

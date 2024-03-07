@@ -1,14 +1,14 @@
 <section class="probootstrap-section probootstrap-section-colored">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-12 text-left section-heading probootstrap-animate">
-        <h1>Our Courses</h1>
-      </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-left section-heading probootstrap-animate">
+                <h1>Our Courses</h1>
+            </div>
+        </div>
     </div>
-  </div>
 </section>
 
-<section class="probootstrap-section">
+<!-- <section class="probootstrap-section">
   <div class="container">
     <div class="row">
       <div class="col-md-12">
@@ -41,223 +41,39 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 
 <section class="probootstrap-section">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_1.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
+    <div class="container">
+        <div class="row">
+            <?php foreach ($courses as $course) : ?>
+            <div class="col-md-6">
+                <div class="probootstrap-service-2 probootstrap-animate">
+                    <div class="image">
+                        <div class="image-bg">
+                            <img src="<?= $coursePictures[$course->getId()]->getCoursePicturesPath() ?>" alt="Free Bootstrap Template by ProBootstrap.com" />
+                        </div>
+                    </div>
+                    <div class="text">
+                        <!-- <span class="probootstrap-meta"><i class="icon-calendar2"></i> July 10, 2017</span> -->
+                        <h3><?= $course->getTitle() ?></h3>
+                        <p>
+                            <?= $course->getDescription() ?>
+                        </p>
+                        <p>
+                            <a href="/course/<?= $course->getId() ?>" class="btn btn-primary">More details</a>
+                            <span class="enrolled-count"><?= $studentJoinsCourseRepository->countNumOfStudents($course->getId()) ?> students enrolled</span>
+                        </p>
+                    </div>
+                </div>
             </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>Application Design</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">2,928 students enrolled</span>
-            </p>
-          </div>
+            <?php endforeach ?>
         </div>
-
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_3.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
-            </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>Chemical Engineering</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">7,202 students enrolled</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_2.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
-            </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>Math Major</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">12,582 students enrolled</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_4.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
-            </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>English Major</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">9,582 students enrolled</span>
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_1.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
-            </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>Application Design</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">2,928 students enrolled</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_3.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
-            </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>Chemical Engineering</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">7,202 students enrolled</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_2.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
-            </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>Math Major</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">12,582 students enrolled</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="probootstrap-service-2 probootstrap-animate">
-          <div class="image">
-            <div class="image-bg">
-              <img
-                src="../../public/img/img_sm_4.jpg"
-                alt="Free Bootstrap Template by ProBootstrap.com"
-              />
-            </div>
-          </div>
-          <div class="text">
-            <span class="probootstrap-meta"
-              ><i class="icon-calendar2"></i> July 10, 2017</span
-            >
-            <h3>English Major</h3>
-            <p>
-              Laboriosam pariatur modi praesentium deleniti molestiae officiis
-              atque numquam quos quis nisi voluptatum architecto rerum error.
-            </p>
-            <p>
-              <a href="#" class="btn btn-primary">Enroll now</a>
-              <span class="enrolled-count">9,582 students enrolled</span>
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </section>
 
-<section class="probootstrap-section">
+<!-- <section class="probootstrap-section">
   <div class="container">
     <div class="row">
       <div
@@ -269,10 +85,10 @@
           perspiciatis nostrum porro nesciunt
         </p>
       </div>
-    </div>
-    <!-- END row -->
+    </div> -->
+<!-- END row -->
 
-    <div class="row">
+<!-- <div class="row">
       <div class="col-md-3 col-sm-6">
         <div class="probootstrap-teacher text-center probootstrap-animate">
           <figure class="media">
@@ -392,4 +208,4 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->

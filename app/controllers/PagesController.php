@@ -2,18 +2,22 @@
 
 namespace macchiato_academy\app\controllers;
 
+use macchiato_academy\app\entity\CoursePicture;
 use macchiato_academy\app\repository\ImageRepository;
 use macchiato_academy\app\entity\Image;
 use macchiato_academy\app\entity\ProfilePicture;
 use macchiato_academy\app\exceptions\LanguageException;
 use macchiato_academy\app\repository\LanguageRepository;
 use macchiato_academy\app\repository\ProfilePictureRepository;
+use macchiato_academy\app\repository\CoursePictureRepository;
 use macchiato_academy\app\repository\TeacherRepository;
 use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\App;
 use macchiato_academy\core\Response;
 use macchiato_academy\core\helpers\FlashMessage;
 use macchiato_academy\app\entity\Teacher;
+use macchiato_academy\app\repository\CourseRepository;
+use macchiato_academy\app\repository\StudentJoinsCourseRepository;
 
 class PagesController
 {
@@ -40,10 +44,57 @@ class PagesController
     public function courses()
     {
         $title = "Courses | Macchiato Academy";
+        $courses = App::getRepository(CourseRepository::class)->findAll();
+        $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
+        
+        $coursePictureIds = array_map(
+            function ($coursePicture) {
+                return $coursePicture->getId();
+            },
+            App::getRepository(CoursePictureRepository::class)->findAll()
+        );
+        $coursePicture = new CoursePicture();
+        $imageKeys = array_map(
+            function ($key): string {
+                return "image.$key";
+            },
+            array_keys((new Image())->toArray())
+        );
+        array_push($imageKeys, "coursePicture.id", "coursePicture.id_course");
+
+        $coursePicturesObj = [];
+        foreach ($coursePictureIds as $coursePictureId) {
+            $coursePicture = App::getRepository(CoursePictureRepository::class)
+                ->findInnerJoin(
+                    $imageKeys,
+                    "image",
+                    [
+                        "image.id",
+                        "coursePicture.id"
+                    ],
+                    [
+                        "coursePicture__id" => $coursePictureId
+                    ]
+                );
+            array_push($coursePicturesObj, $coursePicture);
+        }
+
+        $coursePictures = [];
+        foreach ($coursePicturesObj as $coursePicture) {
+            $coursePictures[$coursePicture->getIdCourse()] = $coursePicture;
+        }
+
+        $languagesObj = App::getRepository(LanguageRepository::class)->findAll();
+
+        $languages = [];
+        foreach ($languagesObj as $key => $value) {
+            $key = $value->getId();
+            $languages[$key] = $value;
+        }
 
         Response::renderView(
             'courses',
-            compact('title')
+            compact('title', 'courses', 'coursePictures', 'languages', 'studentJoinsCourseRepository')
         );
     }
 

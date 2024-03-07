@@ -1,6 +1,7 @@
 <?php
 namespace macchiato_academy\app\repository;
 
+use Exception;
 use macchiato_academy\core\database\QueryBuilder;
 use macchiato_academy\app\entity\IEntity;
 use PDOException;
@@ -69,7 +70,22 @@ class StudentJoinsCourseRepository extends QueryBuilder
             $statement = $this->connection->prepare($sql);
             $statement->execute($parametrers);
         } catch (PDOException $exception) {
-            throw new QueryException("Error al insertar en la base de datos.");
+            throw new QueryException("Only the students can enroll in a course");
+        }
+    }
+
+    public function getStudents(int $id_course) {
+        try {
+            $parameters = [
+                "id_course" => $id_course
+            ];
+            $sql =  "SELECT * FROM {$this->table} " .
+                    $this->getFilters($parameters);
+            $statement = $this->connection->prepare($sql);
+            $statement->execute($parameters);
+            return $statement->fetchAll(PDO::FETCH_OBJ);
+        } catch (PDOException $exception) {
+            throw new QueryException("Something went wrong at getStudents");
         }
     }
 

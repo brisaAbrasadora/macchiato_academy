@@ -46,82 +46,80 @@ img.pfp {
 }
 
 .btn.btn-danger {
-    border: 1px solid #ee2323;
-    background: #ee2323;
-    color: white;
-  }
-  
-  .btn.btn-danger:hover,
-  .btn.btn-danger:active,
-  .btn.btn-danger:focus {
-    background: rgb(252, 60, 60);
-  }
+  border: 1px solid #ee2323;
+  background: #ee2323;
+  color: white;
+}
+
+.btn.btn-danger:hover,
+.btn.btn-danger:active,
+.btn.btn-danger:focus {
+  background: rgb(252, 60, 60);
+}
 
 .border {
-    border: 1px solid #8b8e94;
-    border-radius: 10px;
-    margin: 10px;
+  border: 1px solid #8b8e94;
+  border-radius: 10px;
+  margin: 10px;
 }
 
 .probootstrap-form:has(button) {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .probootstrap-form img {
-    margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
-
 table {
-    width: 100%;
+  width: 100%;
 }
 
 th {
-    background-color: #6a41ed;
-    color: white;
-    padding: 10px 5px;
+  background-color: #6a41ed;
+  color: white;
+  padding: 10px 5px;
 }
 
 td {
-    padding: 10px 5px;
+  padding: 10px 5px;
 }
 
 tr:nth-child(even) {
-    background-color: rgb(245, 245, 245);
+  background-color: rgb(245, 245, 245);
 }
 
 table th:nth-child(1) {
-    width: 5%;
+  width: 5%;
 }
 
 table th:nth-child(2) {
-    width: 20%;
+  width: 20%;
 }
 
 table th:nth-child(3) {
-    width: 40%;
+  width: 40%;
 }
 
 table th:nth-child(4) {
-    width: 20%;
+  width: 20%;
 }
 
 table th:nth-child(5) {
-    width: 15%;
+  width: 15%;
 }
 
 table i {
-    margin: 0px 5px;
-    
+  margin: 0px 5px;
 }
 
 button.submit {
-    border: none;
-    background-color: rgba(0, 0, 0, 0);
+  border: none;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .test {
-    height: 46px;
+  height: 46px;
   -webkit-box-shadow: none;
   box-shadow: none;
   font-size: 16px;
@@ -130,27 +128,45 @@ button.submit {
   appearance: none;
 }
 
-
 table.courses th:nth-child(1) {
-    width: 5%;
+  width: 5%;
 }
 
 table.courses th:nth-child(2) {
-    width: 30%;
+  width: 30%;
 }
 
 table.courses th:nth-child(3) {
-    width: 25%;
+  width: 25%;
 }
 
 table.courses th:nth-child(4) {
-    width: 25%;
+  width: 25%;
 }
 
 table.courses th:nth-child(5) {
-    width: 15%;
+  width: 15%;
 }
 
 .bold {
-    font-weight: 700;
+  font-weight: 700;
+}
+
+.students {
+  max-height: 500px;
+  overflow-y: auto;
+  padding-bottom: 10px;
+}
+.students label {
+    font-weight: normal;
+}
+.students table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.students th,
+td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
 }

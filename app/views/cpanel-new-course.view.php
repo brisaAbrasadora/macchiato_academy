@@ -23,7 +23,7 @@ var_dump($teachers);
                         <form action="/validate-course-register" method="post" class="probootstrap-form" enctype="multipart/form-data" novalidate>
                             <div class="form-group">
                                 <label for="title">Title</label>
-                                <input type="text" class="form-control" name="title" value="<?= $title ?? '' ?>" />
+                                <input type="text" class="form-control" name="title" value="<?= $titleCourse ?? '' ?>" />
                             </div>
                             <div class="form-group">
                                 <label for="email">Description</label>

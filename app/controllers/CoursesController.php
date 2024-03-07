@@ -22,12 +22,23 @@ use macchiato_academy\app\repository\CoursePictureRepository;
 use macchiato_academy\app\repository\CourseRepository;
 use macchiato_academy\app\repository\TeacherRepository;
 use macchiato_academy\app\entity\Course;
+use macchiato_academy\app\entity\Student;
 use macchiato_academy\app\entity\Teacher;
 use macchiato_academy\app\exceptions\AppException;
 use macchiato_academy\app\repository\StudentJoinsCourseRepository;
+use macchiato_academy\app\repository\StudentRepository;
 
 class CoursesController
 {
+    // public function show()
+    // {
+    //     $title = "Courses | Macchiato Academy";
+
+    //     Response::renderView(
+    //         'courses',
+    //         compact('title')
+    //     );
+    // }
 
     public function course(int $id)
     {
@@ -59,8 +70,8 @@ class CoursesController
                     "id_course" => $id
                 ]
             );
-        
-        
+
+
         $language = null;
         if ($course->getLanguage())
             $language = $languageRepository->find($course->getLanguage())->getName();
@@ -83,15 +94,15 @@ class CoursesController
             $user = App::get('appUser');
             if (!isset($user)) {
                 throw new AppException("You must be logged in to enroll into a course");
-            } 
+            }
             if ($user instanceof Teacher) {
                 throw new ValidationException("Teachers can't enroll into a course");
             }
-            
-            
+
+
             $courseRepository = App::getRepository(CourseRepository::class);
             $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
-    
+
             $course = $courseRepository->find($id);
 
             if (Utils::isStudentEnrolled($user->getId(), $course->getId())) {
@@ -99,365 +110,244 @@ class CoursesController
             }
             $studentJoinsCourseRepository->sign($user->getId(), $course->getId());
             FlashMessage::set('message', "You have enrolled the course {$course->getTitle()} succesfully!");
-            App::get('router')->redirect("profile/edit");
+            App::get('router')->redirect("course/$id");
         } catch (AppException $appException) {
-            FlashMessage::set('login-error', [$appException->getMessage()]);
-            App::get('router')->redirect('login');
+            FlashMessage::set('enroll-error', [$appException->getMessage()]);
+            App::get('router')->redirect("course/$id");
         } catch (ValidationException $validationException) {
             FlashMessage::set('enroll-error', [$validationException->getMessage()]);
             App::get('router')->redirect("course/$id");
         }
-
     }
 
-    public function edit(?int $id = null)
+    public function edit(int $id)
     {
-        $title = "Edit profile | Macchiato Academy";
+        $title = "Edit course | Macchiato Academy";
         $errors = FlashMessage::get('edit-error', []);
         $message = FlashMessage::get('message');
         $languageRepository = App::getRepository(LanguageRepository::class);
+        $coursePictureRepository = App::getRepository(CoursePictureRepository::class);
+        $teacherRepository = App::getRepository(TeacherRepository::class);
         $languages = $languageRepository->findAll();
+        $studentRepository = App::getRepository(StudentRepository::class);
+        $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
 
-        if (isset($id)) {
-            $user = App::getRepository(UserRepository::class)->find($id);
-        } else {
-            $user = App::get('appUser');
+        $course = App::getRepository(CourseRepository::class)->find($id);
+        $titleCourse = $course->getTitle();
+        $description = $course->getDescription();
+
+        $userKeys = array_map(fn ($key): string => "user.$key", array_keys((new Teacher())->toArray()));
+
+        $teacherKeys = $userKeys;
+        array_push($teacherKeys, "teacher.id");
+        $teacherIds = array_map(
+            function ($teacher) {
+                return $teacher->getId();
+            },
+            App::getRepository(TeacherRepository::class)->findAll()
+        );
+        $teachers = [];
+        foreach ($teacherIds as $teacherId) {
+            $teacher = App::getRepository(TeacherRepository::class)->findInnerJoin(
+                $userKeys,
+                "user",
+                [
+                    "user.id",
+                    "teacher.id"
+                ],
+                [
+                    "teacher__id" => $teacherId
+                ]
+            );
+            array_push($teachers, $teacher);
         }
-        $username = $user->getUsername();
-        $email = $user->getEmail();
-        $dateOfBirth = $user->getDateOfBirth();
-        $langSelected = $user->getFavoriteLanguage();
-        $biography = $user->getBiography();
-        if ($user->getProfilePicture() !== 1) {
-            $pfpPreview = App::getRepository(ProfilePictureRepository::class)
-                ->findInnerJoin(
-                    [
-                        "image.id",
-                        "profilepicture.id",
-                        "id_user",
-                        "name",
-                    ],
-                    "image",
-                    [
-                        "profilepicture.id",
-                        "image.id",
-                    ],
-                    [
-                        "id_user" => $user->getId()
-                    ]
-                );
-        } else {
-            $pfpPreview = App::getRepository(ProfilePictureRepository::class)
-                ->findInnerJoin(
-                    [
-                        "image.id",
-                        "profilepicture.id",
-                        "id_user",
-                        "name",
-                    ],
-                    "image",
-                    [
-                        "profilepicture.id",
-                        "image.id"
-                    ],
-                    [
-                        "profilepicture__id" => "1"
-                    ],
-                );
-        };
+
+        $students = $studentRepository->findInCourse([
+            "id_course" => $course->getId()
+        ]);
+
+        $teacher = $course->getTeacher();
+        $language = $course->getLanguage();
+        $currentPicture = $coursePictureRepository->findInnerJoin(
+            [
+                "image.id",
+                "coursepicture.id",
+                "id_course",
+                "name"
+            ],
+            "image",
+            [
+                "coursepicture.id",
+                "image.id"
+            ],
+            [
+                "id_course" => $id
+            ]
+        );
 
         Response::renderView(
-            'edit-profile',
-            compact('title', 'username', 'email', 'dateOfBirth', 'langSelected', 'languages', 'pfpPreview', 'biography', 'errors', 'message', 'id')
+            'edit-course',
+            compact('title', 'course', 'titleCourse', 'description', 'teachers', 'teacher', 'students', 'language', 'languages', 'currentPicture', 'errors', 'message', 'id')
         );
     }
 
-    public function validateUsername(?int $id = null)
-    {
+    public function unsign(int $id) {
         try {
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $studentRepository = App::getRepository(StudentRepository::class);
+            $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
+            $course = $courseRepository->find($id);
+           $user = App::get('appUser');
 
-            if (!isset($_POST['username']) || empty($_POST['username']))
-                throw new ValidationException('Username can\'t be empty');
-            $username = htmlspecialchars(trim($_POST['username']));
+            $student = $studentRepository->findInCourse([
+                "id_course" => $course->getId(),
+                "id_student" => $user->getId()
+            ])[0];
 
-            if ($user->getUsername() === $username)
-                throw new ValidationException('Username is identical');
+            $studentJoinsCourseRepository->unsign($student, $course);
 
-            $user->setUsername($username);
-
-            App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', "Username changed to $username");
-
+            FlashMessage::set('message', "You have unenrolled this course");
         } catch (ValidationException $validationException) {
-            FlashMessage::set('edit-error', [$validationException->getMessage()]);
+            FlashMessage::set('enroll-error', [$validationException->getMessage()]);
         } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
+            App::get('router')->redirect('course/' . $id);
         }
     }
 
-    public function validateEmail(?int $id = null)
+    public function validateTitle(int $id)
     {
         try {
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $course = $courseRepository->find($id);
+            if (!isset($_POST['title']) || empty($_POST['title']))
+                throw new ValidationException('Title can\'t be empty');
+            $title = htmlspecialchars(trim($_POST['title']));
 
-            if (!isset($_POST['email']) || empty($_POST['email']))
-                throw new ValidationException('Email can\'t be empty');
-            $email = htmlspecialchars(trim($_POST['email']));
 
-            if (!Utils::validateEmail($email))
-                throw new ValidationException('Email format isn\'t correct');
+            if ($course->getTitle() === $title)
+                throw new ValidationException('Title is identical');
 
-            if ($user->getEmail() === $email)
-                throw new ValidationException('Email is identical');
+            $course->setTitle($title);
 
-            $emailExists = App::getRepository(UserRepository::class)
-                ->emailExists($email);
-            if ($emailExists)
-                throw new ValidationException('Email already exists');
-
-            $user->setEmail($email);
-
-            App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', "Email changed to $email");
-
+            $courseRepository->update($course);
+            FlashMessage::set('message', "Title changed to $title");
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
         } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
+            App::get('router')->redirect('course/edit/' . $id);
         }
     }
 
-    public function validatePassword(?int $id = null)
+    public function validateDescription(int $id)
     {
         try {
-            if (!isset($_POST['password']) || empty($_POST['password']))
-                throw new ValidationException('Password can\'t be empty');
-            // THIS IS NOT THE BEST WAY TO DO THIS
-            $password = htmlspecialchars(trim($_POST['password']));
-            if (count(str_split($password)) < 5)
-                throw new ValidationException('Password must be at least 5 characters long');
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $course = $courseRepository->find($id);
+            if (!isset($_POST['description']) || empty($_POST['description']))
+                throw new ValidationException('Description can\'t be empty');
+            $description = htmlspecialchars(trim($_POST['description']));
 
-            $passwordConfirm = htmlspecialchars(trim($_POST['passwordConfirm']));
+            if ($course->getDescription() === $description)
+                throw new ValidationException('Description is identical');
 
-            if (
-                !isset($passwordConfirm)
-                || empty($passwordConfirm)
-                || $password !== $passwordConfirm
-            )
-                throw new ValidationException('Both passwords must match');
+            $course->setDescription($description);
 
-            $password = Security::encrypt($password);
-
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
-            $user->setPassword($password);
-
-            App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', "Password has changed");
-
+            $courseRepository->update($course);
+            FlashMessage::set('message', "Description updated");
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
         } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
+            App::get('router')->redirect('course/edit/' . $id);
         }
     }
 
-    public function validateProfilePicture(?int $id = null)
+    public function validateTeacher(int $id)
     {
         try {
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $course = $courseRepository->find($id);
+
+            if (!isset($_POST['teacher']) || empty($_POST['teacher']))
+                throw new ValidationException('Teacher can\'t be empty');
+            $teacherId = htmlspecialchars(trim($_POST['teacher']));
+
+            $teacherRepository = App::getRepository(TeacherRepository::class);
+            $teacherKeys = array_map(fn ($key): string => "user.$key", array_keys((new Teacher())->toArray()));
+            array_push($teacherKeys, "teacher.id");
+            $teacher = $teacherRepository
+                ->findInnerJoin(
+                    $teacherKeys,
+                    "user",
+                    [
+                        "user.id",
+                        "teacher.id"
+                    ],
+                    [
+                        "teacher__id" => $teacherId
+                    ]
+                );
+
+            $course->setTeacher($teacher->getId());
+
+            $courseRepository->update($course);
+            FlashMessage::set('message', "Teacher is now {$teacher->getUsername()}");
+        } catch (ValidationException $validationException) {
+            FlashMessage::set('edit-error', [$validationException->getMessage()]);
+        } finally {
+            App::get('router')->redirect('course/edit/' . $id );
+        }
+    }
+
+    public function validateCoursePicture(int $id)
+    {
+        try {
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $course = $courseRepository->find($id);
 
             $typeFile = ['image/jpeg', 'image/png'];
-            $pfpFile = new File('profilePicture', $typeFile);
-            $pfpFile->saveUploadFile(CoursePicture::COURSE_PICTURES_ROUTE);
-            
-            $image = new Image($pfpFile->getFileName());
+            $picFile = new File('coursePicture', $typeFile);
+            $picFile->saveUploadFile(CoursePicture::COURSE_PICTURES_ROUTE);
+
+            $image = new Image($picFile->getFileName());
             $imageObj = App::getRepository(ImageRepository::class)->saveAndReturn($image, [
                 "name" => $image->getName()
             ]);
-            $profilePicture = new CoursePicture(
+            $coursePicture = new CoursePicture(
                 $imageObj->getId(),
                 $imageObj->getName(),
-                $user->getId()
+                $course->getId()
             );
-            App::getRepository(ProfilePictureRepository::class)->updateProfilePicture($user, $profilePicture, $imageObj);
-            FlashMessage::set('message', "Profile Picture updated");
+            App::getRepository(CoursePictureRepository::class)->updateCoursePicture($course, $coursePicture, $imageObj);
+            FlashMessage::set('message', "Course's picture updated");
         } catch (FileException $fileException) {
             FlashMessage::set('edit-error', [$fileException->getMessage()]);
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
         } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
+            App::get('router')->redirect('course/edit/' . $id );
         }
     }
 
-    public function validateBirthday(?int $id = null)
+    public function validateLanguage(int $id)
     {
         try {
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $course = $courseRepository->find($id);
 
-            $dateOfBirth = !empty($_POST['dateOfBirth']) ? new DateTime($_POST['dateOfBirth']) : null;
-            if (isset($dateOfBirth))    $user->setDateOfBirth($dateOfBirth->format('Y-m-d H:i:s'));
+            if (!isset($_POST['language']) || empty($_POST['language']))
+                throw new ValidationException('Language can\'t be empty');
+            $language = htmlspecialchars(trim($_POST['language']));
 
-            App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', "Birthday updated");
+            $course->setLanguage($language);
 
+            $courseRepository->update($course);
+
+            $language = App::getRepository(LanguageRepository::class)->find($language)->getName();
+            FlashMessage::set('message', "Language updated to $language");
         } catch (ValidationException $validationException) {
             FlashMessage::set('edit-error', [$validationException->getMessage()]);
         } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
-        }
-    }
-
-    public function validateFavoriteLanguage(?int $id = null)
-    {
-        try {
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
-
-            $favoriteLanguage = empty($_POST['favoriteLanguage']) ? null : $_POST['favoriteLanguage'];
-
-            $user->setFavoriteLanguage($favoriteLanguage);
-
-            if (empty($favoriteLanguage)) {
-                $message = "Favorite language deleted";
-            } else {
-                $favoriteLanguage = App::getRepository(LanguageRepository::class)->find($favoriteLanguage)->getName();
-                $message = "Favorite language changed to $favoriteLanguage";
-            }
-
-            App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', $message);
-
-        } catch (ValidationException $validationException) {
-            FlashMessage::set('edit-error', [$validationException->getMessage()]);
-        } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
-        }
-    }
-
-    public function validateBiography(?int $id = null)
-    {
-        try {
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
-
-            $biography = htmlspecialchars(trim($_POST['biography']));
-            $length = count(str_split($biography));
-
-            if ($length > 500)
-                throw new ValidationException("Biography max length is 500 characters");
-
-            $user->setBiography($biography);
-
-            App::getRepository(UserRepository::class)->update($user);
-            FlashMessage::set('message', "Biography updated");
-
-        } catch (ValidationException $validationException) {
-            FlashMessage::set('edit-error', [$validationException->getMessage()]);
-        } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
-        }
-    }
-
-    public function deleteFavoriteLanguage(?int $id = null)
-    {
-        if (isset($id)) {
-            $user = App::getRepository(UserRepository::class)->find($id);
-        } else {
-            $user = App::get('appUser');
-        }
-
-        $user->setFavoriteLanguage(null);
-        App::getRepository(UserRepository::class)->update($user);
-        FlashMessage::set('message', "Favorite language deleted");
-
-        App::get('router')->redirect('profile/edit/' . $id ?? '');
-    }
-
-    public function deleteBirthday(?int $id = null)
-    {
-        if (isset($id)) {
-            $user = App::getRepository(UserRepository::class)->find($id);
-        } else {
-            $user = App::get('appUser');
-        }
-
-        $user->setDateOfBirth(null);
-        App::getRepository(UserRepository::class)->update($user);
-        FlashMessage::set('message', "Birthday deleted");
-
-        App::get('router')->redirect('profile/edit/' . $id ?? '');
-    }
-
-    public function deleteProfilePicture(?int $id = null)
-    {
-        try {
-            if (isset($id)) {
-                $user = App::getRepository(UserRepository::class)->find($id);
-            } else {
-                $user = App::get('appUser');
-            }
-
-            if ($user->getProfilePicture() !== 1) {
-                $profilePicture = App::getRepository(ProfilePictureRepository::class)
-                    ->findInnerJoin(
-                        [
-                            "image.id",
-                            "profilepicture.id",
-                            "id_user",
-                            "name",
-                        ],
-                        "image",
-                        [
-                            "profilepicture.id",
-                            "image.id",
-                        ],
-                        [
-                            "id_user" => $user->getId()
-                        ]
-                    );
-            } else {
-                //user has already no pfp
-            };
-
-            App::getRepository(ProfilePictureRepository::class)
-                ->deleteProfilePicture($user, $profilePicture);
-
-            FlashMessage::set('message', "Profile picture deleted");
-
-        } catch (QueryException $queryException) {
-            FlashMessage::set('edit-error', [$queryException->getMessage()]);
-        } catch (FileException $fileException) {
-            FlashMessage::set('edit-error', [$fileException->getMessage()]);
-        } finally {
-            App::get('router')->redirect('profile/edit/' . $id ?? '');
+            App::get('router')->redirect('course/edit/' . $id);
         }
     }
 }

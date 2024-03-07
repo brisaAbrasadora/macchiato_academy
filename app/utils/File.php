@@ -1,4 +1,5 @@
 <?php
+
 namespace macchiato_academy\app\utils;
 
 use macchiato_academy\app\exceptions\FileException;
@@ -69,7 +70,7 @@ class File
             $idUnico = time();
             $this->fileName = $idUnico . "_" . $this->fileName;
             // Modificamos el contenido de la variable para que contenga ahora el nuevo nombre
-            $path = $_SERVER['DOCUMENT_ROOT'] . $destiny . $this->fileName; 
+            $path = $_SERVER['DOCUMENT_ROOT'] . $destiny . $this->fileName;
         }
         if (
             move_uploaded_file($this->file['tmp_name'], $path) ===
@@ -79,14 +80,17 @@ class File
         )
             throw new FileException('Couldn\'t move the file to its destiny');
 
-        if ($extension === "jpg" || $extension === "jpeg") {
-            $this->cropJpeg($path);
-        } else if ($extension === "png") {
-            $this->cropPng($path);
+        if (strpos($_SERVER["REQUEST_URI"], "/validate-profile-picture") === 0) {
+            if ($extension === "jpg" || $extension === "jpeg") {
+                $this->cropJpeg($path);
+            } else if ($extension === "png") {
+                $this->cropPng($path);
+            }
         }
     }
 
-    private function cropJpeg(string $path) {
+    private function cropJpeg(string $path)
+    {
         $image = imagecreatefromjpeg($path);
 
         $original_width = imagesx($image);
@@ -102,7 +106,8 @@ class File
         imagedestroy($croppedImage);
     }
 
-    private function cropPng(string $path) {
+    private function cropPng(string $path)
+    {
         $image = imagecreatefrompng($path);
 
         $original_width = imagesx($image);

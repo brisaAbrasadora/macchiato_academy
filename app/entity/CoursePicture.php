@@ -13,11 +13,11 @@ class CoursePicture extends Image implements IEntity {
         $this->id_course = $id_course;
     }
 
-    public function getIdUser(): ?int {
+    public function getIdCourse(): ?int {
         return $this->id_course;
     }
 
-    public function setIdUser(?int $id_course): CoursePicture {
+    public function setIdCourse(?int $id_course): CoursePicture {
         $this->id_course = $id_course;
         return $this;
     }
@@ -34,7 +34,7 @@ class CoursePicture extends Image implements IEntity {
         return [
             'id' => $this->getId(),
             // 'name' => $this->getName(),
-            'id_course' => $this->getIdUser()
+            'id_course' => $this->getIdCourse()
         ];
     }
 

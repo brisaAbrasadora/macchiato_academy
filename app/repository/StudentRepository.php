@@ -53,9 +53,7 @@ class StudentRepository extends QueryBuilder
         }
     }
 
-    public function findInCourse(
-        array $whereClause
-    )
+    public function findInCourse(array $whereClause)
     {
         $userKeys = array_map(fn ($key): string => "user.$key", array_keys((new Student())->toArray()));
         $sql =  "SELECT " . implode(", ", $userKeys) . " FROM user " .

@@ -267,7 +267,7 @@ class CPController
         $title = "CPanel - Register new course | Macchiato Academy";
         $errors = FlashMessage::get('register-error', []);
         $description = FlashMessage::get('description');
-        $title = FlashMessage::get('title');
+        $titleCourse = FlashMessage::get('title');
         $message = FlashMessage::get('message');
         $langSelected = FlashMessage::get('lang');
         $teacherAssigned = FlashMessage::get('teacher');
@@ -281,7 +281,7 @@ class CPController
                 'title',
                 'errors',
                 'description',
-                'title',
+                'titleCourse',
                 'message',
                 'sidebar',
                 'languages',
@@ -354,6 +354,8 @@ class CPController
             FlashMessage::set('message', $message);
         } catch (ValidationException $validationException) {
             FlashMessage::set('register-error', [$validationException->getMessage()]);
+        } catch (Exception $exception) {
+            FlashMessage::set('register-error', [$exception->getMessage()]);
         } finally {
             App::get('router')->redirect('control-panel/register-new-course');
         }
@@ -418,5 +420,52 @@ class CPController
         } finally {
             App::get('router')->redirect('control-panel/manage-courses');
         }
+    }
+
+    public function unsign()
+    {
+        if (!isset($_POST['student']) || empty($_POST['student']))
+            throw new ValidationException('Student can\'t be empty');
+        $studentId = htmlspecialchars(trim($_POST['student']));
+        if (!isset($_POST['course']) || empty($_POST['course']))
+            throw new ValidationException('Course can\'t be empty');
+        $courseId = htmlspecialchars(trim($_POST['course']));
+
+        $courseRepository = App::getRepository(CourseRepository::class);
+        $studentRepository = App::getRepository(StudentRepository::class);
+        $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
+
+        $course = $courseRepository
+            ->find($courseId);
+
+        $studentKeys = array_map(fn ($key): string => "user.$key", array_keys((new Student())->toArray()));
+
+        array_push($studentKeys, "student.id");
+
+        $student = $studentRepository
+            ->findInnerJoin(
+                $studentKeys,
+                "user",
+                [
+                    "user.id",
+                    "student.id"
+                ],
+                [
+                    "student__id" => $studentId
+                ]
+            );;
+
+        $studentIsInCourse = !empty($studentRepository->findInCourse([
+            "id_course" => $course->getId(),
+            "id_student" => $student->getId()
+        ]));
+
+        if ($studentIsInCourse) {
+            $studentJoinsCourseRepository
+                ->unsign($student, $course);
+        }
+
+        FlashMessage::set("message", "Student {$student->getUsername()} unenrolled");
+        App::get('router')->redirect("course/edit/{$course->getId()}");
     }
 }
