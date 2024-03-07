@@ -21,6 +21,7 @@ $router->get ('profile/:id', 'ProfileController@profile');
 
 $router->get ('course/:id', 'CoursesController@course');
 
+
 $router->get ('control-panel/register-new-user', 'CPController@newUser', 'ROLE_ADMIN');
 $router->get ('control-panel/manage-users', 'CPController@manageUsers', 'ROLE_ADMIN');
 $router->get ('control-panel/register-new-course', 'CPController@newCourse', 'ROLE_ADMIN');
@@ -55,5 +56,7 @@ $router->post ('update-role/:id', 'CPController@updateRole', 'ROLE_ADMIN');
 $router->post ('validate-course-register', 'CPController@validateCourseRegister', 'ROLE_ADMIN');
 $router->post ('update-teacher/:id', 'CPController@updateTeacher', 'ROLE_ADMIN');
 $router->get ('delete-course/:id', 'CPController@deleteCourse', 'ROLE_ADMIN');
+
+$router->post ('enroll-course/:id', 'CoursesController@enroll', 'ROLE_STUDENT');
 
 $router->post ('testing', 'PagesController@testing');

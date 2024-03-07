@@ -13,11 +13,18 @@ use macchiato_academy\core\helpers\FlashMessage;
 use macchiato_academy\core\Security;
 use DateTime;
 use macchiato_academy\app\utils\File;
-use macchiato_academy\app\entity\ProfilePicture;
+use macchiato_academy\app\entity\CoursePicture;
 use macchiato_academy\app\repository\ImageRepository;
 use macchiato_academy\app\entity\Image;
 use macchiato_academy\app\exceptions\FileException;
 use macchiato_academy\app\exceptions\QueryException;
+use macchiato_academy\app\repository\CoursePictureRepository;
+use macchiato_academy\app\repository\CourseRepository;
+use macchiato_academy\app\repository\TeacherRepository;
+use macchiato_academy\app\entity\Course;
+use macchiato_academy\app\entity\Teacher;
+use macchiato_academy\app\exceptions\AppException;
+use macchiato_academy\app\repository\StudentJoinsCourseRepository;
 
 class CoursesController
 {
@@ -25,61 +32,82 @@ class CoursesController
     public function course(int $id)
     {
         $title = "Course | Macchiato Academy";
-        $profilePictureRepository = App::getRepository(ProfilePictureRepository::class);
+        $errors = FlashMessage::get('enroll-error', []);
+        $message = FlashMessage::get('message');
+        $coursePictureRepository = App::getRepository(CoursePictureRepository::class);
         $languageRepository = App::getRepository(LanguageRepository::class);
-        $userRepository = App::getRepository(UserRepository::class);
-        if (isset($id)) {
-            $user = $userRepository->find($id);
-        } else {
-            $user = App::get('appUser');
-        }
+        $teacherRepository = App::getRepository(UserRepository::class);
+        $courseRepository = App::getRepository(CourseRepository::class);
+        $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
 
-        if ($user->getProfilePicture() !== 1) {
-            $profilePictureObject = App::getRepository(ProfilePictureRepository::class)
-                ->findInnerJoin(
-                    [
-                        "image.id",
-                        "profilepicture.id",
-                        "id_user",
-                        "name",
-                    ],
-                    "image",
-                    [
-                        "profilepicture.id",
-                        "image.id",
-                    ],
-                    [
-                        "id_user" => $user->getId()
-                    ]
-                );
-        } else {
-            $profilePictureObject = App::getRepository(ProfilePictureRepository::class)
-                ->findInnerJoin(
-                    [
-                        "image.id",
-                        "profilepicture.id",
-                        "id_user",
-                        "name",
-                    ],
-                    "image",
-                    [
-                        "profilepicture.id",
-                        "image.id"
-                    ],
-                    [
-                        "profilepicture__id" => "1"
-                    ],
-                );
-        };
+        $course = $courseRepository->find($id);
 
-        $favoriteLanguage = null;
-        if ($user->getFavoriteLanguage())
-            $favoriteLanguage = $languageRepository->find($user->getFavoriteLanguage())->getName();
+        $coursePictureObj = App::getRepository(CoursePictureRepository::class)
+            ->findInnerJoin(
+                [
+                    "image.id",
+                    "coursepicture.id",
+                    "id_course",
+                    "name"
+                ],
+                "image",
+                [
+                    "coursepicture.id",
+                    "image.id"
+                ],
+                [
+                    "id_course" => $id
+                ]
+            );
+        
+        
+        $language = null;
+        if ($course->getLanguage())
+            $language = $languageRepository->find($course->getLanguage())->getName();
+
+        $teacher = $teacherRepository->find($course->getTeacher())->getUsername();
+
+        $studentsEnrolled = $studentJoinsCourseRepository->countNumOfStudents($id);
+
+
 
         Response::renderView(
-            'profile',
-            compact('title', 'user', 'profilePictureObject', 'favoriteLanguage')
+            'course-single',
+            compact('title', 'course', 'coursePictureObj', 'language', 'studentsEnrolled', 'teacher', 'errors', 'message')
         );
+    }
+
+    public function enroll(int $id)
+    {
+        try {
+            $user = App::get('appUser');
+            if (!isset($user)) {
+                throw new AppException("You must be logged in to enroll into a course");
+            } 
+            if ($user instanceof Teacher) {
+                throw new ValidationException("Teachers can't enroll into a course");
+            }
+            
+            
+            $courseRepository = App::getRepository(CourseRepository::class);
+            $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
+    
+            $course = $courseRepository->find($id);
+
+            if (Utils::isStudentEnrolled($user->getId(), $course->getId())) {
+                throw new ValidationException("You have already enrolled this course");
+            }
+            $studentJoinsCourseRepository->sign($user->getId(), $course->getId());
+            FlashMessage::set('message', "You have enrolled the course {$course->getTitle()} succesfully!");
+            App::get('router')->redirect("profile/edit");
+        } catch (AppException $appException) {
+            FlashMessage::set('login-error', [$appException->getMessage()]);
+            App::get('router')->redirect('login');
+        } catch (ValidationException $validationException) {
+            FlashMessage::set('enroll-error', [$validationException->getMessage()]);
+            App::get('router')->redirect("course/$id");
+        }
+
     }
 
     public function edit(?int $id = null)
@@ -257,13 +285,13 @@ class CoursesController
 
             $typeFile = ['image/jpeg', 'image/png'];
             $pfpFile = new File('profilePicture', $typeFile);
-            $pfpFile->saveUploadFile(ProfilePicture::PROFILE_PICTURES_ROUTE);
+            $pfpFile->saveUploadFile(CoursePicture::COURSE_PICTURES_ROUTE);
             
             $image = new Image($pfpFile->getFileName());
             $imageObj = App::getRepository(ImageRepository::class)->saveAndReturn($image, [
                 "name" => $image->getName()
             ]);
-            $profilePicture = new ProfilePicture(
+            $profilePicture = new CoursePicture(
                 $imageObj->getId(),
                 $imageObj->getName(),
                 $user->getId()

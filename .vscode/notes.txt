@@ -47,3 +47,13 @@ tengo que eliminar asi
 DELETE FROM Student_joins_course
 WHERE id_student = id_student 
 AND id_course = id_course;
+
+
+06/03
+
+ESTOY INTENTANDO ENCONTRAR UNA OCURRENCIA EN LA TABLA Student_joins_course
+Y CREANDO EN EL REPOSITORIO UNA NUEVA FINDONEBY
+EL ERROR ES ESTE
+
+eprecated: Creation of dynamic property macchiato_academy\app\entity\StudentJoinsCourse::$id 
+is deprecated in D:\xampp\htdocs\proyectos\macchiato_academy\core\database\QueryBuilder.php on line 15

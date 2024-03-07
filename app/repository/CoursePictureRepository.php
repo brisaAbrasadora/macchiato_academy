@@ -22,5 +22,4 @@ class CoursePictureRepository extends QueryBuilder {
         parent::__construct($table, $classEntity);
     }
 
-
 }

@@ -2,6 +2,12 @@
 
 namespace macchiato_academy\app\utils;
 
+use macchiato_academy\app\exceptions\QueryException;
+use macchiato_academy\app\repository\StudentJoinsCourseRepository;
+use macchiato_academy\app\repository\StudentRepository;
+use macchiato_academy\core\App;
+use PDO;
+
 class Utils
 {
 
@@ -57,5 +63,18 @@ class Utils
         //     }
         //     echo '</li>';
         // }
+    }
+
+    public static function isStudentEnrolled(int $id_student, int $id_course) {
+        $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
+        $studentRepository = App::getRepository(StudentRepository::class);
+        $whereClause = [
+            "id_student" => $id_student,
+            "id_course" => $id_course
+        ];
+
+        $exists = $studentJoinsCourseRepository->isStudentEnrolled($whereClause);
+
+        return !empty($exists);
     }
 }

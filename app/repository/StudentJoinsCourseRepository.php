@@ -8,6 +8,7 @@ use macchiato_academy\app\exceptions\QueryException;
 use macchiato_academy\app\entity\Course;
 use macchiato_academy\app\entity\StudentJoinsCourse;
 use macchiato_academy\app\entity\Student;
+use PDO;
 
 class StudentJoinsCourseRepository extends QueryBuilder
 {
@@ -51,5 +52,51 @@ class StudentJoinsCourseRepository extends QueryBuilder
         } catch (PDOException $exception) {
             throw new QueryException("Error al insertar en la base de datos.");
         }
+    }
+
+    public function sign(int $id_student, int $id_course) {
+        try {
+            $parametrers = [
+                "id_student" => $id_student,
+                "id_course" => $id_course
+            ];
+            $sql = sprintf(
+                'INSERT INTO %s (%s) VALUES (%s)',
+                $this->table,
+                implode(', ', array_keys($parametrers)),
+                ':' . implode(', :', array_keys($parametrers))
+            );
+            $statement = $this->connection->prepare($sql);
+            $statement->execute($parametrers);
+        } catch (PDOException $exception) {
+            throw new QueryException("Error al insertar en la base de datos.");
+        }
+    }
+
+    public function countNumOfStudents(int $id) {
+        $parameters = [
+            "id_course" => $id
+        ];
+        $sql = sprintf(
+            "SELECT COUNT(*) as NumOfStudents FROM %s %s",
+            $this->table,
+            $this->getFilters($parameters)
+        );
+        $statement = $this->connection->prepare($sql);
+        $statement->execute($parameters);
+        return $statement->fetch(PDO::FETCH_ASSOC)['NumOfStudents'];
+    }
+
+    public function isStudentEnrolled(array $whereClause): array {
+        $sql =  "SELECT * FROM $this->table " .
+                $this->getFilters($whereClause);
+
+        $pdoStatement = $this->connection->prepare($sql);
+        if ($pdoStatement->execute($whereClause) === false)
+            throw new QueryException("No se ha podido ejecutar la query solicitada.");
+        $result = $pdoStatement->fetch(PDO::FETCH_ASSOC);
+        if ($result === false)
+            return [];
+        return $result;
     }
 }
