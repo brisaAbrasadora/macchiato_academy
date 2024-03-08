@@ -18,6 +18,7 @@ use macchiato_academy\core\helpers\FlashMessage;
 use macchiato_academy\app\entity\Teacher;
 use macchiato_academy\app\repository\CourseRepository;
 use macchiato_academy\app\repository\StudentJoinsCourseRepository;
+use macchiato_academy\app\repository\StudentRepository;
 
 class PagesController
 {
@@ -226,6 +227,61 @@ class PagesController
         Response::renderView(
             'contact',
             compact('title')
+        );
+    }
+
+    public function myCourses()
+    {
+        $title = "My courses | Macchiato Academy";
+        $courseRepository = App::getRepository(CourseRepository::class);
+        $coursePictureRepository = App::getRepository(CoursePictureRepository::class);
+        $studentJoinsCourseRepository = App::getRepository(StudentJoinsCourseRepository::class);
+        $message = FlashMessage::get('message');
+        $user = App::get('appUser');
+        $courses = $courseRepository->listCourses([
+            "id_student" => $user->getId() 
+        ]);
+
+        $coursePictureIds = array_map(
+            function ($coursePicture) {
+                return $coursePicture->getId();
+            },
+            $coursePictureRepository->findAll()
+        );
+
+        $imageKeys = array_map(
+            function ($key): string {
+                return "image.$key";
+            },
+            array_keys((new Image())->toArray())
+        );
+        array_push($imageKeys, "coursePicture.id", "coursePicture.id_course");
+
+        $coursePicturesObj = [];
+        foreach ($coursePictureIds as $coursePictureId) {
+            $coursePicture = $coursePictureRepository
+                ->findInnerJoin(
+                    $imageKeys,
+                    "image",
+                    [
+                        "image.id",
+                        "coursePicture.id"
+                    ],
+                    [
+                        "coursePicture__id" => $coursePictureId
+                    ]
+                );
+            array_push($coursePicturesObj, $coursePicture);
+        }
+
+        $coursePictures = [];
+        foreach ($coursePicturesObj as $coursePicture) {
+            $coursePictures[$coursePicture->getIdCourse()] = $coursePicture;
+        }
+
+        Response::renderView(
+            'my-courses',
+            compact('title', 'message', 'courses', 'coursePictures', 'studentJoinsCourseRepository')
         );
     }
 

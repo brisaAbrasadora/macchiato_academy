@@ -3,26 +3,20 @@
 namespace macchiato_academy\app\controllers;
 
 use macchiato_academy\core\Response;
-use macchiato_academy\app\repository\ProfilePictureRepository;
 use macchiato_academy\app\repository\LanguageRepository;
 use macchiato_academy\app\repository\UserRepository;
 use macchiato_academy\core\App;
 use macchiato_academy\app\exceptions\ValidationException;
 use macchiato_academy\app\utils\Utils;
 use macchiato_academy\core\helpers\FlashMessage;
-use macchiato_academy\core\Security;
-use DateTime;
 use macchiato_academy\app\utils\File;
 use macchiato_academy\app\entity\CoursePicture;
 use macchiato_academy\app\repository\ImageRepository;
 use macchiato_academy\app\entity\Image;
 use macchiato_academy\app\exceptions\FileException;
-use macchiato_academy\app\exceptions\QueryException;
 use macchiato_academy\app\repository\CoursePictureRepository;
 use macchiato_academy\app\repository\CourseRepository;
 use macchiato_academy\app\repository\TeacherRepository;
-use macchiato_academy\app\entity\Course;
-use macchiato_academy\app\entity\Student;
 use macchiato_academy\app\entity\Teacher;
 use macchiato_academy\app\exceptions\AppException;
 use macchiato_academy\app\repository\StudentJoinsCourseRepository;
@@ -30,15 +24,6 @@ use macchiato_academy\app\repository\StudentRepository;
 
 class CoursesController
 {
-    // public function show()
-    // {
-    //     $title = "Courses | Macchiato Academy";
-
-    //     Response::renderView(
-    //         'courses',
-    //         compact('title')
-    //     );
-    // }
 
     public function course(int $id)
     {
@@ -110,7 +95,7 @@ class CoursesController
             }
             $studentJoinsCourseRepository->sign($user->getId(), $course->getId());
             FlashMessage::set('message', "You have enrolled the course {$course->getTitle()} succesfully!");
-            App::get('router')->redirect("course/$id");
+            App::get('router')->redirect("my-courses/");
         } catch (AppException $appException) {
             FlashMessage::set('enroll-error', [$appException->getMessage()]);
             App::get('router')->redirect("course/$id");

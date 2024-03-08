@@ -57,3 +57,9 @@ EL ERROR ES ESTE
 
 eprecated: Creation of dynamic property macchiato_academy\app\entity\StudentJoinsCourse::$id 
 is deprecated in D:\xampp\htdocs\proyectos\macchiato_academy\core\database\QueryBuilder.php on line 15
+
+
+07/03/2024
+
+Estoy implementando My Courses
+LAST PART LETS GO

@@ -68,6 +68,11 @@ $uri = $_SERVER['REQUEST_URI'];
                             <a href="<?= Utils::isActive('/control-panel/register-new-user') ? '#' : '/control-panel/register-new-user' ?>">Control Panel</a>
                         </li>
                         <?php } ?>
+                        <?php if ($app['user']->getRole() === "ROLE_STUDENT") { ?>
+                            <li class="<?= Utils::isActive('/my-courses') ? 'active' : '' ?>">
+                            <a href="<?= Utils::isActive('/my-courses') ? '#' : '/my-courses' ?>">My Courses</a>
+                        </li>
+                        <?php } ?>
                     </ul>
                 </li>
                 <li class="<?= Utils::isActive('/logout') ? 'active' : '' ?>">
